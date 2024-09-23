@@ -15,42 +15,52 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { valibotResolver } from '@hookform/resolvers/valibot';
 import { maxLength, minLength, object, string, array, number } from 'valibot';
 import MachineBasicInformation from './StepsForm/MachineBasicInformation';
+import MachineList from './list/MachineList';
 
-const schemas = []
+const schemas = [
+    object({
+        category: string([minLength(1, 'این فیلد الزامی است')]),
+        machine_type: string([minLength(1, 'این فیلد الزامی است')]),
+        machine_title: string([minLength(1, 'این فیلد الزامی است')]),
+    }),
+]
 
 const Machinery = () => {
-
-    // States
-    const [machines, setMachines] = useState([]);
-    const [openModal, setOpenModal] = useState(false);
-    const [mode, setMode] = useState('add');
     const [step, setStep] = useState(0);
-    const [data, setData] = useState({});
-
-
     const methods = useForm({
         resolver: valibotResolver(schemas[step]),
+        defaultValues: {
+            id: Date.now(),
+            category: '',
+            machine_type: '',
+            machine_title: '',
+        }
     })
+    const [openModal, setOpenModal] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [mode, setMode] = useState('add');
+    const [data, setData] = useState(methods);
+
+
 
     const handleOpenForm = () => setOpenModal(true);
     const handleCloseForm = () => {
         methods.reset();
-        setData({});
         setStep(0);
         setOpenModal(false);
     };
 
     const steps = [
-        { step: 1, name: "اطلاعات پایه ماشین آلات", content: (<MachineBasicInformation />) },
-        // { step: 2, name: "ثبت اطلاعات ماشین", content: (<StepPopulationNew data={data} setData={setData} step={step} setStep={setStep} />) },
-        // { step: 3, name: "بهای تمام شده ماشین", content: (<StepIncomeNew data={data} setData={setData} step={step} setStep={setStep} onClose={handleCloseForm} users={users} setUsers={setUsers} mode={mode} methods={methods} />) },
+        { step: 1, name: "اطلاعات پایه ماشین آلات", content: (<MachineBasicInformation setData={setData} setStep={setStep} />) },
+        // { step: 2, name: "ثبت اطلاعات ماشین", content: (<MachineBasicInformation setData={setData} setStep={setStep} />) },
+        // { step: 3, name: "بهای تمام شده ماشین", content: (<MachineBasicInformation setData={setData} setStep={setStep} />) },
         // { step: 4, name: "وضعیت ماشین", content: (<StepIncomeNew data={data} setData={setData} step={step} setStep={setStep} onClose={handleCloseForm} users={users} setUsers={setUsers} mode={mode} methods={methods} />) }
     ];
 
 
     return (
         <>
-            <Button onClick={handleOpenForm}>باز کردن فرم ماشین آلات</Button>
+            <MachineList handleOpenModal={handleOpenForm} setData={setData} setMode={setMode} methods={methods} loading={loading} setLoading={setLoading} />
             <Modal open={openModal} onClose={handleCloseForm} style={{ margin: '2%' }}>
                 <Paper style={{ maxHeight: '100%', overflowY: 'auto' }}>
                     <div className='bg-backgroundPaper h-full lg:h-auto rounded-2xl'>

@@ -9,13 +9,15 @@ const persianToEnglishDigits = (str) => {
     return str.replace(/[۰-۹]/g, (char) => englishDigits[persianDigits.indexOf(char)]);
 };
 
-const MachineBasicInformation = () => {
+const MachineBasicInformation = ({ setData, setStep }) => {
 
-    const { control, handleSubmit, formState: { errors }, watch, setValue } = useFormContext();
+    const { control, handleSubmit, formState: { errors } } = useFormContext();
 
-    const onSubmit = () => { }
+    const onSubmit = (data) => {
+        setStep(1);
+    }
 
-    const renderTextField = (name, label, errorText) => (
+    const renderTextField = (name, label) => (
         <Controller
             name={name}
             control={control}
@@ -43,14 +45,14 @@ const MachineBasicInformation = () => {
     return (
         <Grid container spacing={2} mt={1}>
             <Grid item xs={12} mb={5}>
-                <DividerSimple title={'سازمان مورد نظر خودتان را انتخاب کنید'} />
+                <DividerSimple title={'اطلاعات مورد نظر خودتان را انتخاب کنید'} />
             </Grid>
             <form className='w-full' onSubmit={handleSubmit(onSubmit)}>
                 <Grid container gap={5}>
-                    <div className='grid md:grid-cols-4 w-full gap-5'>
-                        {renderTextField('hierarchical_code', 'کد سلسله مراتبی', 'کد سلسله مراتبی الزامی است')}
-                        {renderTextField('village_code', 'کد آبادی', 'کد آبادی مراتبی الزامی است')}
-                        {renderTextField('nid', 'شناسه ملی', 'شناسه ملی مراتبی الزامی است')}
+                    <div className='grid md:grid-cols-3 w-full gap-5'>
+                        {renderTextField('category', 'دسته بندی', 'دسته بندی الزامی است')}
+                        {renderTextField('machine_type', 'نوع', 'نوع الزامی است')}
+                        {renderTextField('machine_title', 'عنوان ماشین آلات', 'عنوان ماشین آلات الزامی است')}
                     </div>
                 </Grid>
                 <Box display={'flex'} mt={2} gap={5} justifyContent={'end'} >
