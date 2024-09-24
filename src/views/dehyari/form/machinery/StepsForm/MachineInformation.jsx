@@ -16,11 +16,16 @@ const MachineInformation = ({ setData, setStep }) => {
 
     const { control, handleSubmit, formState: { errors } } = useFormContext();
 
+    const systems = [
+        { value: 0, label: 'ساده' },
+        { value: 1, label: 'جک دار' },
+    ];
+
     const fuels = [
-        { value: 0, lable: 'بنزینی' },
-        { value: 1, lable: 'گازوئیلی' },
-        { value: 2, lable: 'ترکیبی' },
-    ]
+        { value: 0, label: 'بنزینی' },
+        { value: 1, label: 'گازوئیلی' },
+        { value: 2, label: 'ترکیبی' },
+    ];
 
     const onSubmit = (data) => {
         setStep(2);
@@ -131,7 +136,7 @@ const MachineInformation = ({ setData, setStep }) => {
             <form className='w-full' onSubmit={handleSubmit(onSubmit)}>
                 <Grid container gap={5}>
                     <div className='grid md:grid-cols-3 w-full gap-5'>
-                        {renderTextField('system', 'سیستم', 'سیستم الزامی است')}
+                        {renderSelect('system', 'سیستم', systems)}
                         {renderTextField('engine_number', 'شماره موتور', 'شماره موتور الزامی است')}
                         {renderTextField('manufacturing_year', 'سال ساخت', 'سال ساخت الزامی است')}
                         {renderTextField('chassis_number', 'شماره شاسی', 'شماره شاسی الزامی است')}
