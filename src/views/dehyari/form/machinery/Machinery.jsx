@@ -16,6 +16,7 @@ import { valibotResolver } from '@hookform/resolvers/valibot';
 import { maxLength, minLength, object, string, array, number } from 'valibot';
 import MachineBasicInformation from './StepsForm/MachineBasicInformation';
 import MachineList from './list/MachineList';
+import MachineInformation from './StepsForm/MachineInformation';
 
 const schemas = [
     object({
@@ -23,6 +24,35 @@ const schemas = [
         machine_type: string([minLength(1, 'این فیلد الزامی است')]),
         machine_title: string([minLength(1, 'این فیلد الزامی است')]),
     }),
+    object({
+        system: string([minLength(1, 'این فیلد الزامی است')]),
+        engine_number: string([minLength(1, 'این فیلد الزامی است')]),
+        manufacturing_year: string([
+            minLength(1, 'این فیلد الزامی است'),
+            minLength(4, 'سال ساخت باید 4 رقمی وارد شود'),
+            maxLength(4, 'سال ساخت نمیتواند بیشتر از 4 رقم باشد')
+        ]),
+        chassis_number: string([minLength(1, 'این فیلد الزامی است')]),
+        number_of_cylinders: string([
+            minLength(1, 'این فیلد الزامی است'),
+            minLength(2, 'تعداد سیلندر باید 2 رقمی وارد شود'),
+            maxLength(2, 'تعداد سیلندر نمیتواند بیشتر از 2 رقم داشته باشد')
+        ]),
+        capacity: string([
+            minLength(1, 'این فیلد الزامی است'),
+            minLength(2, 'ظرفیت باید 2 رقمی وارد شود'),
+            maxLength(2, 'ظرفیت نمیتواند بیشتر از 2 رقم داشته باشد')
+        ]),
+        number_of_axles: string([
+            minLength(1, 'این فیلد الزامی است'),
+            maxLength(1, 'تعداد محور ها نمیتواند بیش از 1 رقم داشته باشد'),
+        ]),
+        color: string([minLength(1, 'این فیلد الزامی است')]),
+        fuel: string([minLength(1, 'این فیلد الزامی است')]),
+        delivery_date: string([minLength(1, 'این فیلد الزامی است')]),
+        plate_type: string([minLength(1, 'این فیلد الزامی است')]),
+        registration_plate: string([minLength(1, 'این فیلد الزامی است')]),
+    })
 ]
 
 const Machinery = () => {
@@ -34,6 +64,18 @@ const Machinery = () => {
             category: '',
             machine_type: '',
             machine_title: '',
+            system: '',
+            engine_number: '',
+            manufacturing_year: '',
+            chassis_number: '',
+            number_of_cylinders: '',
+            capacity: '',
+            number_of_axles: '',
+            color: '',
+            fuel: '',
+            delivery_date: '',
+            plate_type: '',
+            registration_plate: '',
         }
     })
     const [openModal, setOpenModal] = useState(false);
@@ -52,7 +94,7 @@ const Machinery = () => {
 
     const steps = [
         { step: 1, name: "اطلاعات پایه ماشین آلات", content: (<MachineBasicInformation setData={setData} setStep={setStep} />) },
-        // { step: 2, name: "ثبت اطلاعات ماشین", content: (<MachineBasicInformation setData={setData} setStep={setStep} />) },
+        { step: 2, name: "ثبت اطلاعات ماشین", content: (<MachineInformation setData={setData} setStep={setStep} />) },
         // { step: 3, name: "بهای تمام شده ماشین", content: (<MachineBasicInformation setData={setData} setStep={setStep} />) },
         // { step: 4, name: "وضعیت ماشین", content: (<StepIncomeNew data={data} setData={setData} step={step} setStep={setStep} onClose={handleCloseForm} users={users} setUsers={setUsers} mode={mode} methods={methods} />) }
     ];
