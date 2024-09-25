@@ -25,7 +25,7 @@ const schemas = [
         machine_title: string([minLength(1, 'این فیلد الزامی است')]),
     }),
     object({
-        system: string([minLength(1, 'این فیلد الزامی است')]),
+        system: number(minLength(1, 'این فیلد الزامی است')),
         engine_number: string([minLength(1, 'این فیلد الزامی است')]),
         manufacturing_year: string([
             minLength(1, 'این فیلد الزامی است'),
@@ -48,7 +48,7 @@ const schemas = [
             maxLength(1, 'تعداد محور ها نمیتواند بیش از 1 رقم داشته باشد'),
         ]),
         color: string([minLength(1, 'این فیلد الزامی است')]),
-        fuel: string([minLength(1, 'این فیلد الزامی است')]),
+        fuel: number(minLength(1, 'این فیلد الزامی است')),
         delivery_date: string([minLength(1, 'این فیلد الزامی است')]),
         plate_type: string([minLength(1, 'این فیلد الزامی است')]),
         registration_plate: string([minLength(1, 'این فیلد الزامی است')]),

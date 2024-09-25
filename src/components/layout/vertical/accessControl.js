@@ -7,6 +7,7 @@ const accessControl = {
         { label: 'لیست پرسنل', href: '/dehyari/cfo/table' },
         { label: 'تشکیلات دهیاری', href: '/dehyari' },
         { label: 'ثبت اطلاعات پرسنلی', href: '/dehyari/form' },
+        { label: 'ماشین آلات', href: '/dehyari/form/machinery' },
     ],
     [WORK_GROUPS.Admin]: [
         { label: 'جدول خطاها', href: '/admin/logtable' },
@@ -14,7 +15,6 @@ const accessControl = {
     [WORK_GROUPS.GOVERNOR]: [
         { label: 'لیست پرسنل', href: '/dehyari/governor/table' },
         { label: 'کاربران سامانه', href: '/municipality/list' },
-        { label: 'ماشین آلات', href: '/dehyari/form/machinery' },
     ],
     [WORK_GROUPS.BAKHSHDAR]: [
         { label: 'لیست پرسنل', href: '/dehyari/bakhshdar/table' },

@@ -5,6 +5,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 import DatePicker from 'react-multi-date-picker';
 import persian from "react-date-object/calendars/persian"
 import persian_fa from "react-date-object/locales/persian_fa"
+import PlateCreator from './PlateCreator';
 
 const persianToEnglishDigits = (str) => {
     const persianDigits = "۰۱۲۳۴۵۶۷۸۹";
@@ -67,7 +68,6 @@ const MachineInformation = ({ setData, setStep }) => {
                     locale={persian_fa}
                     onChange={date => {
                         const newDate = `${date.year}/${date.month}/${date.day}`
-                        console.log("New Date => ", newDate);
                         setTimeout(() => {
                             setData(prevValues => ({ ...prevValues, [name]: newDate }));
                             onChange(newDate)
@@ -104,7 +104,7 @@ const MachineInformation = ({ setData, setStep }) => {
             <Controller
                 name={name}
                 control={control}
-                render={({ field: { value = '', onChange } }) => (
+                render={({ field: { value, onChange } }) => (
                     <Select
                         value={value}
                         label={label}
@@ -113,6 +113,9 @@ const MachineInformation = ({ setData, setStep }) => {
                             setTimeout(() => {
                                 setData(prevValues => ({ ...prevValues, [name]: newValue }));
                                 onChange(newValue)
+                                console.log("Data =>", newValue);
+                                console.log("Errors => ", errors[name]);
+
                             }, 0);
                         }}
                         fullWidth
@@ -144,10 +147,9 @@ const MachineInformation = ({ setData, setStep }) => {
                         {renderTextField('capacity', 'ظرفیت (نفر)', 'ظرفیت الزامی است')}
                         {renderTextField('number_of_axles', 'تعداد محور', 'تعداد محور الزامی است')}
                         {renderTextField('color', 'رنگ', 'رنگ الزامی است')}
-                        {renderTextField('fuel', 'سوخت', 'سوخت الزامی است')}
+                        {renderSelect('fuel', 'سوخت', fuels)}
                         {renderDatePicker('delivery_date', 'تاریخ تحویل', 'تاریخ تحویل الزامی است')}
-                        {renderTextField('plate_type', 'نوع پلاک', 'نوع پلاک الزامی است')}
-                        {renderTextField('registration_plate', 'پلاک انتظامی', 'پلاک انتظامی الزامی است')}
+                        <PlateCreator setData={setData} />
                     </div>
                 </Grid>
                 <Box display={'flex'} mt={2} gap={5} justifyContent={'end'} >
