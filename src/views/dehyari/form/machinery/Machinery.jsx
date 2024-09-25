@@ -50,8 +50,10 @@ const schemas = [
         color: string([minLength(1, 'این فیلد الزامی است')]),
         fuel: number(minLength(1, 'این فیلد الزامی است')),
         delivery_date: string([minLength(1, 'این فیلد الزامی است')]),
-        plate_type: string([minLength(1, 'این فیلد الزامی است')]),
-        registration_plate: string([minLength(1, 'این فیلد الزامی است')]),
+        plate_province_code: string([minLength(2, 'الزامی')]),
+        plate_category_letter: number(minLength(1, 'این فیلد الزامی است')),
+        plate_uniqe_identifier: string([minLength(3, 'الزامی')]),
+        plate_registration_number: string([minLength(2, 'الزامی')]),
     })
 ]
 
@@ -74,8 +76,10 @@ const Machinery = () => {
             color: '',
             fuel: '',
             delivery_date: '',
-            plate_type: '',
-            registration_plate: '',
+            plate_province_code: '',
+            plate_category_letter: '',
+            plate_uniqe_identifier: '',
+            plate_registration_number: '',
         }
     })
     const [openModal, setOpenModal] = useState(false);
