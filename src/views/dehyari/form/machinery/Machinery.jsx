@@ -17,14 +17,12 @@ import { maxLength, minLength, object, string, array, number } from 'valibot';
 import MachineBasicInformation from './StepsForm/MachineBasicInformation';
 import MachineList from './list/MachineList';
 import MachineInformation from './StepsForm/MachineInformation';
+import MachineCost from './StepsForm/MachineCost';
+import MachineStatus from './StepsForm/MachineStatus';
 
 const schemas = [
     object({
-        category: string([minLength(1, 'این فیلد الزامی است')]),
-        machine_type: string([minLength(1, 'این فیلد الزامی است')]),
-        machine_title: string([minLength(1, 'این فیلد الزامی است')]),
-    }),
-    object({
+        machine_basic_id: number(minLength(1, 'انتخاب اطلاعات پایه الزامی است')),
         system: number(minLength(1, 'این فیلد الزامی است')),
         engine_number: string([minLength(1, 'این فیلد الزامی است')]),
         manufacturing_year: string([
@@ -35,12 +33,10 @@ const schemas = [
         chassis_number: string([minLength(1, 'این فیلد الزامی است')]),
         number_of_cylinders: string([
             minLength(1, 'این فیلد الزامی است'),
-            minLength(2, 'تعداد سیلندر باید 2 رقمی وارد شود'),
             maxLength(2, 'تعداد سیلندر نمیتواند بیشتر از 2 رقم داشته باشد')
         ]),
         capacity: string([
             minLength(1, 'این فیلد الزامی است'),
-            minLength(2, 'ظرفیت باید 2 رقمی وارد شود'),
             maxLength(2, 'ظرفیت نمیتواند بیشتر از 2 رقم داشته باشد')
         ]),
         number_of_axles: string([
@@ -54,7 +50,20 @@ const schemas = [
         plate_category_letter: number(minLength(1, 'این فیلد الزامی است')),
         plate_uniqe_identifier: string([minLength(3, 'الزامی')]),
         plate_registration_number: string([minLength(2, 'الزامی')]),
-    })
+    }),
+    object({
+        machine_cost_fields:
+            array(
+                object({
+                    funding_source: number(minLength(1, 'این فیلد الزامی است')),
+                    amount: string([
+                        minLength(1, 'این فیلد الزامی است'),
+                        maxLength(20, 'مبلغ نمیتواند بیش از 20 رقم داشته باشد'),
+                    ]),
+                    description: string([minLength(1, 'این فیلد الزامی است')]),
+                })
+            ),
+    }),
 ]
 
 const Machinery = () => {
@@ -63,9 +72,7 @@ const Machinery = () => {
         resolver: valibotResolver(schemas[step]),
         defaultValues: {
             id: Date.now(),
-            category: '',
-            machine_type: '',
-            machine_title: '',
+            machine_basic_id: '',
             system: '',
             engine_number: '',
             manufacturing_year: '',
@@ -80,6 +87,7 @@ const Machinery = () => {
             plate_category_letter: '',
             plate_uniqe_identifier: '',
             plate_registration_number: '',
+            machine_cost_fields: [{ funding_source: '', amount: '', description: '' }]
         }
     })
     const [openModal, setOpenModal] = useState(false);
@@ -97,10 +105,9 @@ const Machinery = () => {
     };
 
     const steps = [
-        { step: 1, name: "اطلاعات پایه ماشین آلات", content: (<MachineBasicInformation setData={setData} setStep={setStep} />) },
-        { step: 2, name: "ثبت اطلاعات ماشین", content: (<MachineInformation setData={setData} setStep={setStep} />) },
-        // { step: 3, name: "بهای تمام شده ماشین", content: (<MachineBasicInformation setData={setData} setStep={setStep} />) },
-        // { step: 4, name: "وضعیت ماشین", content: (<StepIncomeNew data={data} setData={setData} step={step} setStep={setStep} onClose={handleCloseForm} users={users} setUsers={setUsers} mode={mode} methods={methods} />) }
+        { step: 1, name: "ثبت اطلاعات ماشین", content: (<MachineInformation setData={setData} setStep={setStep} />) },
+        { step: 2, name: "بهای تمام شده ماشین", content: (<MachineCost data={data} setData={setData} setStep={setStep} onClose={handleCloseForm} mode={mode} methods={methods} />) },
+        // { step: 4, name: "وضعیت ماشین", content: (<MachineStatus setData={setData} setStep={setStep} onClose={handleCloseForm} mode={mode} methods={methods} />) }
     ];
 
 
@@ -114,10 +121,10 @@ const Machinery = () => {
                         <Grid container p={5} py={10} >
                             <Grid display={'flex'} item xs={12} gap={2} justifyContent={'center'}>
                                 {steps.map((currentStep) => (
-                                    <div className={`flex ${currentStep.step == steps[step].step ? 'border-primary text-primary font-bold' : 'sm:flex hidden'} gap-2 items-center justify-between `}>
+                                    <div className={`flex ${currentStep.step == steps[step].step ? 'border-primary text-primary font-bold' : 'md:flex hidden'} gap-2 items-center justify-between `}>
                                         <div className={`flex rounded-full justify-center items-center h-8 w-8  ${currentStep.step == steps[step].step ? 'border-primary text-primary' : 'border-secondary text-secondary'} font-bold border-4`}>{currentStep.step}</div>
                                         <div>{currentStep.name}</div>
-                                        {currentStep.step !== steps.length ? <div className='sm:block hidden text-secondary font-medium'>------------------------------------------------------</div> : ''}
+                                        {currentStep.step !== steps.length ? <div className='md:block hidden text-secondary font-medium'>----------</div> : ''}
                                     </div>
                                 ))}
                             </Grid>
