@@ -6,6 +6,7 @@ import DatePicker from 'react-multi-date-picker';
 import persian from "react-date-object/calendars/persian"
 import persian_fa from "react-date-object/locales/persian_fa"
 import PlateCreator from './PlateCreator';
+import MachineBasicInformation from './MachineBasicInformation';
 
 const persianToEnglishDigits = (str) => {
     const persianDigits = "۰۱۲۳۴۵۶۷۸۹";
@@ -29,7 +30,8 @@ const MachineInformation = ({ setData, setStep }) => {
     ];
 
     const onSubmit = (data) => {
-        setStep(2);
+        console.log("Data=>", data);
+        setStep(prevStep => prevStep + 1);
     }
 
     const renderTextField = (name, label) => (
@@ -39,6 +41,7 @@ const MachineInformation = ({ setData, setStep }) => {
             rules={{ required: true }}
             render={({ field: { value, onChange } }) => (
                 <TextField
+                    autoComplete="off"
                     InputProps={
                         { style: { height: 45 }, inputProps: { style: { textAlign: 'center' } } }
                     }
@@ -76,6 +79,7 @@ const MachineInformation = ({ setData, setStep }) => {
                     }
                     render={(value, onChange) => (
                         <TextField
+                            autoComplete="off"
                             label={label}
                             value={value}
                             error={errors[name]}
@@ -139,6 +143,7 @@ const MachineInformation = ({ setData, setStep }) => {
             <form className='w-full' onSubmit={handleSubmit(onSubmit)}>
                 <Grid container gap={5}>
                     <div className='grid md:grid-cols-3 w-full gap-5'>
+                        <MachineBasicInformation setData={setData} />
                         {renderSelect('system', 'سیستم', systems)}
                         {renderTextField('engine_number', 'شماره موتور', 'شماره موتور الزامی است')}
                         {renderTextField('manufacturing_year', 'سال ساخت', 'سال ساخت الزامی است')}
@@ -153,7 +158,6 @@ const MachineInformation = ({ setData, setStep }) => {
                     </div>
                 </Grid>
                 <Box display={'flex'} mt={2} gap={5} justifyContent={'end'} >
-                    <Button variant='contained' color='secondary' onClick={() => setStep(0)} >بازگشت</Button>
                     <Button variant='contained' color='primary' type='submit' >بعدی</Button>
                 </Box>
             </form>
