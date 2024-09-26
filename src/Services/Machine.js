@@ -5,4 +5,8 @@ const getMachineBasicInformation = () => {
     return `${BaseUrl}/machine/basic-information`
 }
 
-export { getMachineBasicInformation }
+const getMachineInformation = () => {
+    return `${BaseUrl}/machine/machine-information`
+}
+
+export { getMachineBasicInformation, getMachineInformation }
