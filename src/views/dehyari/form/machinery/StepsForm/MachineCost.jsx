@@ -2,6 +2,10 @@ import React from 'react'
 import { Box, Button, Divider, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 import { Controller, useFieldArray, useForm, useFormContext } from 'react-hook-form';
 import { toast } from 'react-toastify';
+import { MachineInformationDTO } from '@/utils/MachineInformationDTO';
+import api from '@/utils/axiosInstance';
+import { getMachineInformation } from '@/Services/Machine';
+import typePlates from "@data/typePlates"
 
 const persianToEnglishDigits = (str) => {
     const persianDigits = "۰۱۲۳۴۵۶۷۸۹";
@@ -9,7 +13,7 @@ const persianToEnglishDigits = (str) => {
     return str.replace(/[۰-۹]/g, (char) => englishDigits[persianDigits.indexOf(char)]);
 };
 
-const MachineCost = ({ setData, setStep }) => {
+const MachineCost = ({ data, setData, setStep, onClose, mode, methods }) => {
 
     const { control, handleSubmit, formState: { errors } } = useFormContext();
 
@@ -20,20 +24,31 @@ const MachineCost = ({ setData, setStep }) => {
 
 
     const fundingSources = [
-        { value: 0, label: 'مستحلک' },
-        { value: 1, label: 'عادی' },
+        { value: 0, label: 'منابع داخلی' },
+        { value: 1, label: 'کمک های دولتی' },
     ]
 
     const onSubmit = (newData) => {
         console.log("New Data => ", newData);
         if (newData.machine_cost_fields.length) {
             setData(prevValues => ({ ...prevValues, machine_cost_fields: newData.machine_cost_fields }));
-            setStep(3)
-        } else {
-            toast.error("شما باید حداقل یک ردیف ایجاد کنید", {
-                position: "top-center",
-                duration: 3000,
-            })
+            const machineDTO = new MachineInformationDTO(data);
+            const finallyData = {
+                ...data,
+                registration_plate: `${data.plate_registration_number}${data.plate_uniqe_identifier}${data.plate_province_code}`,
+                plate_type: typePlates[data.plate_category_letter].value,
+                machine_cost_fields: newData.machine_cost_fields
+            }
+            console.log("Finally Data => ", finallyData);
+
+            api.post(getMachineInformation(), finallyData, { requiresAuth: true })
+                .then(() => {
+                    toast.success("ماشین با موفقیت افزوده شد", {
+                        position: "top-center"
+                    });
+                    handleSidebarClose();
+                    // setLoading(true);
+                }).catch((error) => error)
         }
     }
 
@@ -131,10 +146,8 @@ const MachineCost = ({ setData, setStep }) => {
                 افزودن
             </Button>
             <Box display={'flex'} mt={10} gap={5} justifyContent={'space-between'}>
-                <Button variant='contained' color='secondary' onClick={() => { setStep(1) }}>برگشت</Button>
-                <Button variant="contained" type="submit" >
-                    بعدی
-                </Button>
+                <Button variant='contained' color='secondary' onClick={() => { setStep(prevStep => prevStep - 1); }}>برگشت</Button>
+                <Button variant="contained" color="success" type="submit" >ثبت</Button>
             </Box>
         </Box>
     );
