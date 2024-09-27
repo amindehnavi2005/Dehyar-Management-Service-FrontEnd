@@ -66,14 +66,14 @@ const MachineInformation = ({ setData, setStep }) => {
             control={control}
             render={({ field: { onChange, value } }) => (
                 <DatePicker
-                    value={value}
+                    value={value ? new Date(value * 1000) : ""}
                     calendar={persian}
                     locale={persian_fa}
                     onChange={date => {
-                        const newDate = `${date.year}/${date.month}/${date.day}`
+                        // const newDate = `${date.year}/${date.month}/${date.day}`
                         setTimeout(() => {
-                            setData(prevValues => ({ ...prevValues, [name]: newDate }));
-                            onChange(newDate)
+                            setData(prevValues => ({ ...prevValues, [name]: `${date.toUnix()}` }));
+                            onChange(date ? `${date.toUnix()}` : '');
                         }, 0);
                     }
                     }
@@ -148,9 +148,9 @@ const MachineInformation = ({ setData, setStep }) => {
                         {renderTextField('engine_number', 'شماره موتور', 'شماره موتور الزامی است')}
                         {renderTextField('manufacturing_year', 'سال ساخت', 'سال ساخت الزامی است')}
                         {renderTextField('chassis_number', 'شماره شاسی', 'شماره شاسی الزامی است')}
-                        {renderTextField('number_of_cylinders', 'تعداد سیلندر', 'تعداد سیلندر الزامی است')}
+                        {renderTextField('number_cylinders', 'تعداد سیلندر', 'تعداد سیلندر الزامی است')}
                         {renderTextField('capacity', 'ظرفیت (نفر)', 'ظرفیت الزامی است')}
-                        {renderTextField('number_of_axles', 'تعداد محور', 'تعداد محور الزامی است')}
+                        {renderTextField('number_axles', 'تعداد محور', 'تعداد محور الزامی است')}
                         {renderTextField('color', 'رنگ', 'رنگ الزامی است')}
                         {renderSelect('fuel', 'سوخت', fuels)}
                         {renderDatePicker('delivery_date', 'تاریخ تحویل', 'تاریخ تحویل الزامی است')}
