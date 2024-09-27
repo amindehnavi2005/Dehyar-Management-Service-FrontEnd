@@ -31,7 +31,7 @@ const schemas = [
             maxLength(4, 'سال ساخت نمیتواند بیشتر از 4 رقم باشد')
         ]),
         chassis_number: string([minLength(1, 'این فیلد الزامی است')]),
-        number_of_cylinders: string([
+        number_cylinders: string([
             minLength(1, 'این فیلد الزامی است'),
             maxLength(2, 'تعداد سیلندر نمیتواند بیشتر از 2 رقم داشته باشد')
         ]),
@@ -39,9 +39,9 @@ const schemas = [
             minLength(1, 'این فیلد الزامی است'),
             maxLength(2, 'ظرفیت نمیتواند بیشتر از 2 رقم داشته باشد')
         ]),
-        number_of_axles: string([
+        number_axles: string([
             minLength(1, 'این فیلد الزامی است'),
-            maxLength(1, 'تعداد محور ها نمیتواند بیش از 1 رقم داشته باشد'),
+            maxLength(2, 'تعداد محور ها نمیتواند بیش از 1 رقم داشته باشد'),
         ]),
         color: string([minLength(1, 'این فیلد الزامی است')]),
         fuel: number(minLength(1, 'این فیلد الزامی است')),
@@ -77,9 +77,9 @@ const Machinery = () => {
             engine_number: '',
             manufacturing_year: '',
             chassis_number: '',
-            number_of_cylinders: '',
+            number_cylinders: '',
             capacity: '',
-            number_of_axles: '',
+            number_axles: '',
             color: '',
             fuel: '',
             delivery_date: '',
