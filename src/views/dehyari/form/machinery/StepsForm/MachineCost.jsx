@@ -40,7 +40,7 @@ const MachineCost = ({ data, setData, setStep, onClose, mode, methods }) => {
                 machine_cost_fields: newData.machine_cost_fields
             }
             console.log("Finally Data => ", finallyData);
-
+            setStep(prevValue => prevValue + 1);
             api.post(getMachineInformation(), finallyData, { requiresAuth: true })
                 .then(() => {
                     toast.success("ماشین با موفقیت افزوده شد", {
@@ -55,7 +55,7 @@ const MachineCost = ({ data, setData, setStep, onClose, mode, methods }) => {
     console.log("ERRORS => ", errors);
 
 
-    const renderTextField = (index, itemName, name, label) => {
+    const renderTextField = (index, itemName, name, label, type = "textField") => {
         return (
             <FormControl fullWidth >
                 <Controller
@@ -68,9 +68,9 @@ const MachineCost = ({ data, setData, setStep, onClose, mode, methods }) => {
                                 { style: { height: 45 }, inputProps: { style: { textAlign: 'center' } } }
                             }
                             label={label}
-                            value={value}
+                            value={type == "price" ? Number(value.replace(/,/g, "")).toLocaleString() : value}
                             onChange={(e) => {
-                                const value = persianToEnglishDigits(e.target.value);
+                                const value = persianToEnglishDigits(e.target.value).replace(/,/g, '');
                                 setData(prevValues => ({ ...prevValues, [name]: value }));
                                 onChange(value);
                             }}
@@ -120,15 +120,14 @@ const MachineCost = ({ data, setData, setStep, onClose, mode, methods }) => {
         </FormControl>
     )
 
-
     return (
         <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ mt: 2 }}>
             {fields.map((field, index) => (
                 <>
                     <div key={field.id} className='md:flex grid mb-2 gap-2'>
                         {renderSelect(index, 'funding_source', `machine_cost_fields.${index}.funding_source`, 'محل تامین مالی', fundingSources)}
-                        {renderTextField(index, 'amount', `machine_cost_fields.${index}.amount`, 'مبلغ')}
-                        {renderTextField(index, 'description', `machine_cost_fields.${index}.description`, 'توضیحات')}
+                        {renderTextField(index, 'amount', `machine_cost_fields.${index}.amount`, 'هزینه (میلیون ریال)', 'price')}
+                        {renderTextField(index, 'description', `machine_cost_fields.${index}.description`, 'توضیحات', 'textField')}
                         <Button variant="contained" color="error" onClick={() => remove(index)} >
                             <i className='ri-delete-bin-line'></i>
                         </Button>

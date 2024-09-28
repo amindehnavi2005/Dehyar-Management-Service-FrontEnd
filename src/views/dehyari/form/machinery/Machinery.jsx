@@ -19,6 +19,7 @@ import MachineList from './list/MachineList';
 import MachineInformation from './StepsForm/MachineInformation';
 import MachineCost from './StepsForm/MachineCost';
 import MachineStatus from './StepsForm/MachineStatus';
+import ViewMachineInformation from './list/ViewMachineInformation';
 
 const schemas = [
     object({
@@ -45,7 +46,7 @@ const schemas = [
         ]),
         color: string([minLength(1, 'این فیلد الزامی است')]),
         fuel: number(minLength(1, 'این فیلد الزامی است')),
-        delivery_date: string([minLength(1, 'این فیلد الزامی است')]),
+        delivery_date: number(minLength(1, 'این فیلد الزامی است')),
         plate_province_code: string([minLength(2, 'الزامی')]),
         plate_category_letter: number(minLength(1, 'این فیلد الزامی است')),
         plate_uniqe_identifier: string([minLength(3, 'الزامی')]),
@@ -107,6 +108,7 @@ const Machinery = () => {
     const steps = [
         { step: 1, name: "ثبت اطلاعات ماشین", content: (<MachineInformation setData={setData} setStep={setStep} />) },
         { step: 2, name: "بهای تمام شده ماشین", content: (<MachineCost data={data} setData={setData} setStep={setStep} onClose={handleCloseForm} mode={mode} methods={methods} />) },
+        { step: 3, name: "نمایش اطلاعات ماشین", content: (<ViewMachineInformation onClose={handleCloseForm} data={data} />) }
         // { step: 4, name: "وضعیت ماشین", content: (<MachineStatus setData={setData} setStep={setStep} onClose={handleCloseForm} mode={mode} methods={methods} />) }
     ];
 

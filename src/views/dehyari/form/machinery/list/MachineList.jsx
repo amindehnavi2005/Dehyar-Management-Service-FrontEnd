@@ -3,7 +3,7 @@ import { Box, Button, IconButton, Menu, MenuItem } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { MaterialReactTable, useMaterialReactTable } from 'material-react-table';
 import api from '@/utils/axiosInstance';
-import { getMachineBasicInformation } from '@/Services/Machine';
+import { getMachineInformation } from '@/Services/Machine';
 
 const MachineList = ({ handleOpenModal, setData, setMode, methods, loading, setLoading }) => {
     const [machines, setMachines] = useState([]);
@@ -11,15 +11,18 @@ const MachineList = ({ handleOpenModal, setData, setMode, methods, loading, setL
     const [selectedRow, setSelectedRow] = useState(null);
     const open = Boolean(anchorEl);
 
+    console.log("Loading => ", loading);
+
+
     const fetchMachine = async () => {
+        console.log("Start Fetch...");
         setLoading(true);
-        await api.get(getMachineBasicInformation(), { requiresAuth: true })
+        await api.get(getMachineInformation(), { requiresAuth: true })
             .then((response) => {
                 setMachines(response.data.data)
-                console.log(response.data);
+                console.log("Machines => ", response.data);
                 setLoading(false);
             })
-
     }
 
     useEffect(() => {
@@ -82,8 +85,14 @@ const MachineList = ({ handleOpenModal, setData, setMode, methods, loading, setL
                 Cell: ({ cell }) => <div style={{ textAlign: 'right' }}>{cell.getValue()}</div>
             },
             {
-                accessorKey: 'machine_title',
-                header: 'عنوان ماشین',
+                accessorKey: 'machine_status',
+                header: 'وضعیت',
+                size: 150,
+                Cell: ({ cell }) => <div style={{ textAlign: 'right' }}>{cell.getValue()}</div>
+            },
+            {
+                accessorKey: 'actions',
+                header: 'عملیات',
                 size: 150,
                 Cell: ({ row }) => <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
                     <IconButton
@@ -146,6 +155,11 @@ const MachineList = ({ handleOpenModal, setData, setMode, methods, loading, setL
         ),
         initialState: {
             density: 'compact',
+        },
+        rowCount: machines.length,
+        state: {
+            isLoading: loading, // نشان دادن لودینگ پیش‌فرض
+            showProgressBars: loading, // نمایش Progress Bars در هنگام بارگذاری
         },  // تنظیم تراکم به صورت پیش‌فرض روی compact
         muiSkeletonProps: {
             animation: 'wave', // تنظیم انیمیشن Skeletons

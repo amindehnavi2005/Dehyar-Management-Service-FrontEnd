@@ -72,8 +72,8 @@ const MachineInformation = ({ setData, setStep }) => {
                     onChange={date => {
                         // const newDate = `${date.year}/${date.month}/${date.day}`
                         setTimeout(() => {
-                            setData(prevValues => ({ ...prevValues, [name]: `${date.toUnix()}` }));
-                            onChange(date ? `${date.toUnix()}` : '');
+                            setData(prevValues => ({ ...prevValues, [name]: date.toUnix() }));
+                            onChange(date ? date.toUnix() : '');
                         }, 0);
                     }
                     }
@@ -137,9 +137,6 @@ const MachineInformation = ({ setData, setStep }) => {
 
     return (
         <Grid container spacing={2} mt={1}>
-            <Grid item xs={12} mb={5}>
-                <DividerSimple title={'اطلاعات مورد نظر خودتان را انتخاب کنید'} />
-            </Grid>
             <form className='w-full' onSubmit={handleSubmit(onSubmit)}>
                 <Grid container gap={5}>
                     <div className='grid md:grid-cols-3 w-full gap-5'>
