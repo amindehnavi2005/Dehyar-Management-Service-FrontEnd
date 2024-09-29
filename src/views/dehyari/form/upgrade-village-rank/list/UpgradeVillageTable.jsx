@@ -17,8 +17,6 @@ const UpgradeVillageTable = ({ loading, setLoading, handleAddEventSidebarToggle,
     ]);
     const [anchorEl, setAnchorEl] = useState(null);
     const [selectedRow, setSelectedRow] = useState(null);
-    const [page, setPage] = useState(0);
-    const [perPage, setPerPage] = useState(10);
     const open = Boolean(anchorEl);
 
     const fetchVillageRank = async () => {
@@ -150,10 +148,6 @@ const UpgradeVillageTable = ({ loading, setLoading, handleAddEventSidebarToggle,
         enableTopToolbar: false,
         initialState: {
             density: 'compact',
-            pagination: {
-                pageIndex: page,
-                pageSize: perPage,
-            }
         },  // تنظیم تراکم به صورت پیش‌فرض روی compact
         rowCount: upgradeVillageRanks.length,
         state: {
