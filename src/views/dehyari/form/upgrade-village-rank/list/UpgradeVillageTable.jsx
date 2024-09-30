@@ -11,8 +11,8 @@ const UpgradeVillageTable = ({ loading, setLoading, handleAddEventSidebarToggle,
     // States
     const [upgradeVillageRanks, setUpgradeVillageRanks] = useState([
         { id: 1, parameter: 'جمعیت', year: 1397, value: 12000, score: 5 },
-        { id: 2, parameter: 'وسعت (هکتار)', year: '-', value: 12000, score: 8 },
-        { id: 3, parameter: 'درآمد (میلیون ریال)', year: 1397, value: 12000, score: 3 },
+        { id: 2, parameter: 'وسعت (هکتار)', year: '-', value: 12000, score: 8, isValueEditing: false },
+        { id: 3, parameter: 'درآمد (میلیون ریال)', year: 1397, value: 12000, score: 3, isYearEditing: false, isValueEditing: false },
         { id: 4, parameter: 'هدف گردشگری', year: '-', value: false, score: 6 },
         { id: 5, parameter: 'مرکز دهستان', year: '-', value: true, score: 2 },
         { id: 6, parameter: 'مرکز بخش', year: '-', value: false, score: 5 },
@@ -36,14 +36,14 @@ const UpgradeVillageTable = ({ loading, setLoading, handleAddEventSidebarToggle,
         setUpgradeVillageRanks((prev) =>
             prev.map((row) => (row.id === rowId ? { ...row, [key]: value } : row))
         );
-
+        console.log("Upgrade Village Ranks => ", upgradeVillageRanks);
+        
         setEditedVillageRate((prev) => ({
             ...prev,
             [rowId]: true,
         }));
-    };
 
-    const tableData = useMemo(() => upgradeVillageRanks, [upgradeVillageRanks]); // Memoize table data
+    };
 
     // Handlers
     const handleClick = (event, row) => {
@@ -54,28 +54,6 @@ const UpgradeVillageTable = ({ loading, setLoading, handleAddEventSidebarToggle,
     const handleClose = () => {
         setAnchorEl(null);
     };
-
-    const handleEditVillageRank = (row) => {
-        console.log("User : ", row);
-        setAnchorEl(null);
-        handleAddEventSidebarToggle();
-    }
-
-    const handleDeleteUser = (row) => {
-        // api.delete(`${user()}/${row.original.id}`, { requiresAuth: true })
-        //     .then(() => {
-        //         toast.success("کاربر با موفقیت حذف شد", {
-        //             position: "top-center"
-        //         });
-        //         setLoading(true);
-        //     }).catch((error) => error)
-        toast.warning("این قابلیت به زودی افزوده میشود!",
-            {
-                position: "top-center",
-                duration: 3000
-            }
-        );
-    }
 
     const handleSidebarToggleSidebar = () => {
         handleAddEventSidebarToggle();
@@ -106,19 +84,14 @@ const UpgradeVillageTable = ({ loading, setLoading, handleAddEventSidebarToggle,
                 accessorKey: 'year',
                 header: 'سال',
                 size: 150,
-                Cell: ({ cell }) => <div>{cell.getValue()}</div>,
-            },
-            {
-                accessorKey: 'value',
-                header: 'مقدار',
-                size: 150,
                 Cell: ({ cell, row }) => {
-                    const isEditing = row.original.isEditing;
-                    return isEditing && (row.original.parameter === 'وسعت (هکتار)' || row.original.parameter === 'درآمد (میلیون ریال)') ? (
+                    const isYearEditing = row.original.isYearEditing;
+                    console.log(`Is Editing ${row.original.id} => ${row.original.isYearEditing} Year `);
+                    return isYearEditing && (row.original.id === 3) ? (
                         <TextField
                             value={cell.getValue()}
-                            onChange={(e) => handleEditCell(row.original.id, 'value', e.target.value)}
-                            onBlur={() => handleEditCell(row.original.id, 'isEditing', false)}
+                            onChange={(e) => handleEditCell(row.original.id, 'year', e.target.value)}
+                            onBlur={() => handleEditCell(row.original.id, 'isYearEditing', false)}
                             autoFocus
                             inputProps={{
                                 style: { height: 1 }
@@ -126,8 +99,37 @@ const UpgradeVillageTable = ({ loading, setLoading, handleAddEventSidebarToggle,
                         />
                     ) : (
                         <div style={{ textAlign: 'center' }} onClick={() => {
-                            if (row.original.parameter === 'وسعت (هکتار)' || row.original.parameter === 'درآمد (میلیون ریال)') {
-                                handleEditCell(row.original.id, 'isEditing', true);
+                            if (row.original.id === 3) {
+                                handleEditCell(row.original.id, 'isYearEditing', true);
+                            }
+                        }}>
+                            {cell.getValue()}
+                        </div>
+                    );
+                },
+            },
+            {
+                accessorKey: 'value',
+                header: 'مقدار',
+                size: 150,
+                Cell: ({ cell, row }) => {
+                    const isValueEditing = row.original.isValueEditing;
+                    console.log(`Is Editing ${row.original.id} => ${row.original.isValueEditing} Value `);
+
+                    return isValueEditing && (row.original.id === 2 || row.original.id === 3) ? (
+                        <TextField
+                            value={cell.getValue()}
+                            onChange={(e) => handleEditCell(row.original.id, 'value', e.target.value)}
+                            onBlur={() => handleEditCell(row.original.id, 'isValueEditing', false)}
+                            autoFocus
+                            inputProps={{
+                                style: { height: 1 }
+                            }}
+                        />
+                    ) : (
+                        <div style={{ textAlign: 'center' }} onClick={() => {
+                            if (row.original.id === 2 || row.original.id === 3) {
+                                handleEditCell(row.original.id, 'isValueEditing', true);
                             }
                         }}>
                             {cell.getValue() === true ? (
@@ -153,7 +155,7 @@ const UpgradeVillageTable = ({ loading, setLoading, handleAddEventSidebarToggle,
 
     const table = useMaterialReactTable({
         columns,
-        data: tableData,
+        data: upgradeVillageRanks,
         enablePagination: false,
         enableTopToolbar: false,
         initialState: {
