@@ -37,7 +37,7 @@ const UpgradeVillageTable = ({ loading, setLoading, handleAddEventSidebarToggle,
             prev.map((row) => (row.id === rowId ? { ...row, [key]: value } : row))
         );
         console.log("Upgrade Village Ranks => ", upgradeVillageRanks);
-        
+
         setEditedVillageRate((prev) => ({
             ...prev,
             [rowId]: true,
@@ -118,8 +118,8 @@ const UpgradeVillageTable = ({ loading, setLoading, handleAddEventSidebarToggle,
 
                     return isValueEditing && (row.original.id === 2 || row.original.id === 3) ? (
                         <TextField
-                            value={cell.getValue()}
-                            onChange={(e) => handleEditCell(row.original.id, 'value', e.target.value)}
+                            value={cell.getValue().toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                            onChange={(e) => handleEditCell(row.original.id, 'value', e.target.value.replace(/,/g, ''))}
                             onBlur={() => handleEditCell(row.original.id, 'isValueEditing', false)}
                             autoFocus
                             inputProps={{
@@ -137,7 +137,7 @@ const UpgradeVillageTable = ({ loading, setLoading, handleAddEventSidebarToggle,
                             ) : cell.getValue() === false ? (
                                 <i className='ri-close-circle-line h-5'></i>
                             ) : (
-                                cell.getValue().toLocaleString() // جداسازی سه رقم
+                                cell.getValue().toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") // جداسازی سه رقم
                             )}
                         </div>
                     );
