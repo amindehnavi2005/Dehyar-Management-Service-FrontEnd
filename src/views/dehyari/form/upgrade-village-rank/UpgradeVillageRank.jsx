@@ -1,5 +1,5 @@
 'use client'
-import { Divider, Grid } from '@mui/material'
+import { Divider, Grid, Typography } from '@mui/material'
 import React, { useState } from 'react'
 import UpgradeVillageTable from './list/UpgradeVillageTable';
 import UpgradeVillageInformation from './list/UpgradeVillageInformation';
@@ -16,13 +16,16 @@ const UpgradeVillageRank = () => {
         <Grid container p={5} borderRadius={2} boxShadow={2} className='bg-backgroundPaper'>
             <div className='w-full h-full md:flex justify-around'>
                 <UpgradeVillageInformation />
-                <Divider className='bg-secondary md:w-[2px] sm:w-full md:ml-5' />
-                <UpgradeVillageTable
-                    loading={loading}
-                    setLoading={setLoading}
-                    handleAddEventSidebarToggle={handleAddEventSidebarToggle}
-                    addEventSidebarOpen={addEventSidebarOpen}
-                />
+                <Divider className='bg-backgroundDefault md:w-[3px] sm:w-full md:ml-5' />
+                <div className=''>
+                    <Typography my={5} variant='h5'>جزئیات محاسبه درجه بندی دهیاری</Typography>
+                    <UpgradeVillageTable
+                        loading={loading}
+                        setLoading={setLoading}
+                        handleAddEventSidebarToggle={handleAddEventSidebarToggle}
+                        addEventSidebarOpen={addEventSidebarOpen}
+                    />
+                </div>
             </div>
         </Grid >
     );
