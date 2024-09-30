@@ -98,7 +98,7 @@ const UpgradeVillageTable = ({ loading, setLoading, handleAddEventSidebarToggle,
                             }}
                         />
                     ) : (
-                        <div style={{ textAlign: 'center' }} onClick={() => {
+                        <div onClick={() => {
                             if (row.original.id === 3) {
                                 handleEditCell(row.original.id, 'isYearEditing', true);
                             }
@@ -115,7 +115,6 @@ const UpgradeVillageTable = ({ loading, setLoading, handleAddEventSidebarToggle,
                 Cell: ({ cell, row }) => {
                     const isValueEditing = row.original.isValueEditing;
                     console.log(`Is Editing ${row.original.id} => ${row.original.isValueEditing} Value `);
-
                     return isValueEditing && (row.original.id === 2 || row.original.id === 3) ? (
                         <TextField
                             value={cell.getValue().toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
@@ -127,7 +126,7 @@ const UpgradeVillageTable = ({ loading, setLoading, handleAddEventSidebarToggle,
                             }}
                         />
                     ) : (
-                        <div style={{ textAlign: 'center' }} onClick={() => {
+                        <div onClick={() => {
                             if (row.original.id === 2 || row.original.id === 3) {
                                 handleEditCell(row.original.id, 'isValueEditing', true);
                             }
@@ -147,7 +146,7 @@ const UpgradeVillageTable = ({ loading, setLoading, handleAddEventSidebarToggle,
                 accessorKey: 'score',
                 header: 'امتیاز',
                 size: 150,
-                Cell: ({ cell }) => <div>{cell.getValue()}</div>,
+                Cell: ({ cell }) => <div >{cell.getValue()}</div>,
             },
         ],
         [anchorEl, selectedRow]
@@ -167,7 +166,7 @@ const UpgradeVillageTable = ({ loading, setLoading, handleAddEventSidebarToggle,
                 verticalAlign: 'middle', // عمودی وسط‌چین کردن
                 whiteSpace: 'nowrap', // جلوگیری از شکستن متن
                 fontWeight: 'bold', // اختیاری: بولد کردن متن سرستون
-                padding: '2% 5%'
+                padding: '2% 6%'
             },
         },
         muiTableBodyCellProps: {
