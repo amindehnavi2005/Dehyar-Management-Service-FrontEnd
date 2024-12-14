@@ -255,6 +255,32 @@ function BakhshdarTable(props) {
         />
         <FilterChip
           avatarValue={data
+            .filter((item) => item.contract_state === "pending_governor")
+            .length.toString()}
+          ref={(el) => (buttonRefs.current[2] = el)}
+          label="منتظر تایید استانداری"
+          onClick={() => handleFilterChange("pending_governor", 2)}
+          clickable
+          variant={filterStatus === "pending_governor" ? "outlined" : "filled"}
+        />
+        <FilterChip
+          avatarValue={data
+            .filter(
+              (item) => item.contract_state === "rejected_to_financial_officer"
+            )
+            .length.toString()}
+          ref={(el) => (buttonRefs.current[3] = el)}
+          label="نیازمند اصلاح مجدد مسئول مالی"
+          onClick={() => handleFilterChange("rejected_to_financial_officer", 3)}
+          clickable
+          variant={
+            filterStatus === "rejected_to_financial_officer"
+              ? "outlined"
+              : "filled"
+          }
+        />
+        <FilterChip
+          avatarValue={data
             .filter((item) => item.contract_state === "approved")
             .length.toString()}
           ref={(el) => (buttonRefs.current[2] = el)}
