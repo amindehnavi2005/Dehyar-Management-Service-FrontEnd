@@ -187,7 +187,7 @@ function GovernorTable(props) {
                 color={"secondary"}
                 onClick={() => {
                   router.push(
-                    `/dehyari/form?mode=edit&id=${row.original.human_resource_id}`
+                    `/dehyari/form/edit?param=${row.original.nid}&id=${row.original.human_resource_id}&salary_id=${row.original.salary_id}`
                   );
                 }}
                 className={"rounded-full"}
