@@ -186,7 +186,7 @@ function BakhshdarTable(props) {
                 color={"secondary"}
                 onClick={() => {
                   router.push(
-                    `/dehyari/form/edit?param=${row.original.nid}&id=${row.original.human_resource_id}&salary_id=${row.original.salary_id}`
+                    `/dehyari/form/edit?param=${row.original.nid}&id=${row.original.human_resource_id}&salary_id=${row.original.salary_id}&isReadOnly=true`
                   );
                 }}
                 className={"rounded-full"}

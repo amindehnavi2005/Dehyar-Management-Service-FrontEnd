@@ -19,8 +19,9 @@ function EditFromComponent() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
     const queryParams = new URLSearchParams(window.location.search);
+    
+    const isReadOnly = queryParams.get('isReadOnly');    
     const param = queryParams.get('param');
-    console.log("Param => ", param);
 
     const methods = useForm({
         defaultValues: {},
@@ -97,7 +98,7 @@ function EditFromComponent() {
                         </Grid>
                         <Grid item xs={12}>
                             <EditButtonGroup onSubmit={methods.handleSubmit(onSubmit)} onSwitch={handleSwitch}
-                                showTable={showTable} />
+                                showTable={showTable} isReadOnly={isReadOnly} />
                         </Grid>
                     </Grid>
                 </Grid>

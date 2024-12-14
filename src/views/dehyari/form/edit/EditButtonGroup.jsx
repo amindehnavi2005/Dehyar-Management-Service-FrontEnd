@@ -6,7 +6,7 @@ import GroupIcon from "@mui/icons-material/Group";
 import KeyboardReturnIcon from "@mui/icons-material/KeyboardReturn";
 import { AnimatePresence, motion } from "framer-motion";
 
-const EditButtonGroup = ({ onSubmit, onSwitch, showTable }) => {
+const EditButtonGroup = ({ onSubmit, onSwitch, showTable, isReadOnly }) => {
   const handleReturn = () => {
     window.history.back();
   };
@@ -72,7 +72,7 @@ const EditButtonGroup = ({ onSubmit, onSwitch, showTable }) => {
           </AnimatePresence>
         </Box>
 
-        {!showTable && (
+        {!showTable && !isReadOnly && (
           <AnimatePresence>
             <motion.div whileHover={{ scale: 0.95 }} whileTap={{ scale: 0.9 }}>
               <Button
