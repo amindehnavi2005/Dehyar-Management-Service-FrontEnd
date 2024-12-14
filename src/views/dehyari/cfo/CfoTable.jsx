@@ -51,7 +51,6 @@ function CfoTable(props) {
   const buttonRefs = useRef([]);
   const [tableLoading, setTableLoading] = useState(true);
 
-
   useEffect(() => {
     // Set initial highlight on the "همه" button
     if (buttonRefs.current[0]) {
@@ -102,7 +101,6 @@ function CfoTable(props) {
       setData(response.data);
       setLoading(false);
       setTableLoading(false);
-      
     } catch (error) {
       console.error(error);
       setLoading(false);
