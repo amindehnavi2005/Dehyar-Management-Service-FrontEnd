@@ -182,9 +182,9 @@ const UpgradeVillageTable = ({
               }}
             >
               {cell.getValue() === true ? (
-                <i className="ri-checkbox-circle-line h-5 text-primary"></i>
+                <i className="ri-checkbox-circle-line h-5 text-success"></i>
               ) : cell.getValue() === false ? (
-                <i className="ri-close-circle-line h-5"></i>
+                <i className="ri-close-circle-line text-error h-5"></i>
               ) : (
                 cell
                   .getValue()
@@ -210,43 +210,48 @@ const UpgradeVillageTable = ({
     data: upgradeVillageRanks,
     enablePagination: false,
     enableTopToolbar: false,
+    enableFilters: false,
+    enableSorting: false,
+    enablePagination: false,
+    enableTopToolbar: false,
+    enableColumnActions: false,
     initialState: {
       density: "compact",
-    }, // تنظیم تراکم به صورت پیش‌فرض روی compact
+    },
     muiTableHeadCellProps: {
       style: {
-        textAlign: "center", // وسط‌چین کردن سرستون‌ها
-        verticalAlign: "middle", // عمودی وسط‌چین کردن
-        whiteSpace: "nowrap", // جلوگیری از شکستن متن
-        fontWeight: "bold", // اختیاری: بولد کردن متن سرستون
+        textAlign: "center",
+        verticalAlign: "middle",
+        whiteSpace: "nowrap",
+        fontWeight: "bold",
         padding: "2% 6%",
       },
     },
     muiTableBodyCellProps: {
       style: {
-        textAlign: "center", // وسط‌چین کردن سلول‌های بدنه
-        verticalAlign: "middle", // عمودی وسط‌چین کردن
-        whiteSpace: "nowrap", // جلوگیری از شکستن متن
+        textAlign: "center",
+        verticalAlign: "middle",
+        whiteSpace: "nowrap",
       },
     },
 
     rowCount: upgradeVillageRanks.length,
     state: {
-      isLoading: loading, // نشان دادن لودینگ پیش‌فرض
-      showProgressBars: loading, // نمایش Progress Bars در هنگام بارگذاری
+      isLoading: loading,
+      showProgressBars: loading,
     },
     muiSkeletonProps: {
-      animation: "wave", // تنظیم انیمیشن Skeletons
-      height: 28, // ارتفاع Skeletons
+      animation: "wave",
+      height: 28,
     },
     muiLinearProgressProps: {
-      color: "primary", // رنگ Progress Bars
+      color: "primary",
     },
     muiCircularProgressProps: {
-      color: "secondary", // رنگ Circular Progress (در صورت استفاده)
+      color: "secondary",
     },
     muiTableBodyRowProps: () => ({
-      style: { height: "10px" }, // تنظیم ارتفاع هر سطر با استفاده از استایل‌های inline
+      style: { height: "10px" },
     }),
     renderBottomToolbarCustomActions: () => {
       const totalScore = upgradeVillageRanks.reduce((accumulator, current) => {
