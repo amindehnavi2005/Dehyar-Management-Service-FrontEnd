@@ -123,7 +123,7 @@ const EditStepEducation = ({ validation }) => {
   ];
 
   return (
-    <Grid container spacing={2} mt={1}>
+    <Grid container spacing={2} mt={1} position={"relative"}>
       <Grid item xs={12}>
         <DividerSimple title="سوابق تحصیلی" />
       </Grid>
@@ -227,6 +227,7 @@ const EditStepEducation = ({ validation }) => {
                               defaultValue={item.graduationDate}
                               render={({ field }) => (
                                 <DatePicker
+                                  portal={true}
                                   value={
                                     field.value
                                       ? new Date(field.value * 1000)
@@ -254,6 +255,7 @@ const EditStepEducation = ({ validation }) => {
                                   }
                                 />
                               )}
+                              style={{ position: "absolute", zIndex: 9999 }}
                             />
                           </FormControl>
                         </Grid>

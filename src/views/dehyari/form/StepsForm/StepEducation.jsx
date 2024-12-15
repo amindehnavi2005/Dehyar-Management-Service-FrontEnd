@@ -227,6 +227,7 @@ const StepEducation = ({ validation }) => {
                               defaultValue={item.graduationDate}
                               render={({ field }) => (
                                 <DatePicker
+                                  portal={true}
                                   value={
                                     field.value
                                       ? new Date(field.value * 1000)
