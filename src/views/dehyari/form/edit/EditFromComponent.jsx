@@ -56,7 +56,7 @@ function EditFromComponent() {
     const [showTable, setShowTable] = useState(false);
 
     const onSubmit = async (formData) => {
-        const apiData = EditHumanResourceFormDTO.fromForm(formData);
+        const apiData = EditHumanResourceFormDTO.fromForm(formData);        
         try {
             const response = await api.put(`${humanResources()}/update/${formData.id}`, apiData, { requiresAuth: true });
             toast.success('اطلاعات با موفقیت ذخیره شد');

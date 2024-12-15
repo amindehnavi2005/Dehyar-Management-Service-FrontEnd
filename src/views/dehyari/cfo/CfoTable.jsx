@@ -96,8 +96,6 @@ function CfoTable(props) {
       const response = await api.get(`${GetHumanResourcesForCfo()}`, {
         requiresAuth: true,
       });
-      console.log("Response => ", response);
-
       setData(response.data);
       setLoading(false);
       setTableLoading(false);

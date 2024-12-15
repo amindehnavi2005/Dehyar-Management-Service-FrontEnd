@@ -52,7 +52,6 @@ class HumanResourceDTO {
     }
 
     static fromForm(formData) {
-        console.log("Form Data => ", formData);
         return {
             first_name: formData.firstName, // افزودن فیلد نام
             last_name: formData.lastName, // افزودن فیلد نام خانوادگی
