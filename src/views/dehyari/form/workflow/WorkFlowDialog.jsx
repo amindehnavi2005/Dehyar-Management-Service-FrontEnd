@@ -66,7 +66,14 @@ const WorkFlowDrawer = ({
     setLoading(true);
     try {
       await changeStateWorkflow(details.salary_id, nextState, description);
-      toast.success("عملیات با موفقیت انجام شد");
+      const fullName = `${details.first_name || ""} ${details.last_name || ""}`;
+
+      if (rejectApprovalLevel === 2) {
+        toast.success(`حکم کارگزینی ${fullName} تایید نهایی شد.`);
+      } else {
+        toast.success(`عملیات با موفقیت انجام شد`);
+      }
+
       handleClose();
     } catch (err) {
       toast.error(err.message || "خطا در انجام عملیات");
@@ -84,6 +91,7 @@ const WorkFlowDrawer = ({
     setLoading(true);
     try {
       const result = await submitWorkflow(details.salary_id, true);
+      const fullName = `${details.first_name || ""} ${details.last_name || ""}`;
       if (result.success) {
         const rejectState =
           rejectApprovalLevel === 2
@@ -94,7 +102,17 @@ const WorkFlowDrawer = ({
           rejectState,
           result.description
         );
-        toast.success("عملیات با موفقیت انجام شد");
+
+        if (rejectState === "rejected_to_supervisor") {
+          toast.success(
+            `حکم کارگزینی ${fullName} به بخشدار مربوطه جهت اصلاح بازگشت داده شد.`
+          );
+        } else if (rejectState === "rejected_to_financial_officer") {
+          toast.success(
+            `حکم کارگزینی ${fullName} به مسئول امور مالی مربوطه جهت اصلاح بازگشت داده شد.`
+          );
+        }
+
         handleClose();
       }
     } catch (err) {
