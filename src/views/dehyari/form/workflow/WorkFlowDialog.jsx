@@ -97,7 +97,7 @@ const WorkFlowDrawer = ({
         handleClose();
       }
     } catch (err) {
-      toast.error(err.message || "خطا در انجام عملیات");
+      toast.error("توضیحات را وارد نمایید" || "خطا در انجام عملیات");
     } finally {
       setLoading(false);
     }
