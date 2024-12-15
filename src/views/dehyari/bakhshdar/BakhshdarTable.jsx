@@ -302,6 +302,7 @@ function BakhshdarTable(props) {
         setDialogOpen={setPopupOpen}
         details={selectedRow}
         rejectApprovalLevel={1}
+        loading={loading}
         setLoading={setLoading}
         nextState={"pending_governor"}
         readOnly={

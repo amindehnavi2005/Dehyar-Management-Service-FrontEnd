@@ -35,6 +35,7 @@ const WorkFlowDrawer = ({
   setDialogOpen,
   details,
   rejectApprovalLevel = 0,
+  loading,
   setLoading,
   nextState,
   readOnly = false,
@@ -303,6 +304,7 @@ const WorkFlowDrawer = ({
                   variant="contained"
                   color="success"
                   onClick={handleApprove}
+                  disabled={loading}
                 >
                   {getApprovalButtonText()}
                 </Button>
@@ -321,6 +323,7 @@ const WorkFlowDrawer = ({
                       handleStateChange("rejected", true);
                     }
                   }}
+                  disabled={loading}
                 >
                   {getRejectionButtonText()}
                 </Button>

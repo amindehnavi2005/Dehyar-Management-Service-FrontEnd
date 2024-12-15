@@ -330,6 +330,7 @@ function CfoTable(props) {
         setDialogOpen={setPopupOpen}
         details={currentRow}
         rejectApprovalLevel={0}
+        loading={loading}
         setLoading={setLoading}
         nextState={"pending_supervisor"}
         readOnly={

@@ -288,6 +288,7 @@ function GovernorTable(props) {
         setDialogOpen={setPopupOpen}
         details={selectedRow}
         rejectApprovalLevel={2}
+        loading={loading}
         setLoading={setLoading}
         nextState={"approved"}
         readOnly={!(selectedRow?.contract_state === "pending_governor")}
