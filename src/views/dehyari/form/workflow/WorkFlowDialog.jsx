@@ -297,16 +297,18 @@ const WorkFlowDrawer = ({
       <DialogActions sx={{ justifyContent: "space-between", px: 5, pb: 3 }}>
         {!readOnly && (
           <>
-            {(!showRejectOptions || rejectApprovalLevel !== 2) && (
-              <Button
-                variant="contained"
-                color="success"
-                onClick={handleApprove}
-              >
-                {getApprovalButtonText()}
-              </Button>
-            )}
             {(!showRejectOptions || rejectApprovalLevel !== 2) &&
+              activeTab == "review" && (
+                <Button
+                  variant="contained"
+                  color="success"
+                  onClick={handleApprove}
+                >
+                  {getApprovalButtonText()}
+                </Button>
+              )}
+            {(!showRejectOptions || rejectApprovalLevel !== 2) &&
+              activeTab == "review" &&
               getRejectionButtonText() && (
                 <Button
                   variant="contained"
