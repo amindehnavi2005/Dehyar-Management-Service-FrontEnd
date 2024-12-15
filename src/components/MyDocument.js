@@ -20,7 +20,6 @@ const styles = StyleSheet.create({
         fontWeight: '100',
         fontFamily: 'iranSans',
         textAlign: 'right',
-
     },
     container: {
         display: 'flex',

@@ -261,6 +261,8 @@ const HistoryTable = () => {
       <MaterialReactTable table={table} />
       <HistoryTableModal
         open={openModal}
+        loading={loading}
+        setLoading={setLoading}
         handleClose={() => setOpenModal(false)}
         refreshData={fetchData}
         mode={editMode ? "edit" : "create"}

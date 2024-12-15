@@ -71,13 +71,14 @@ const steps = ["ساختار تشکیلاتی", "اطلاعات قرارداد"]
 
 const HistoryTableModal = ({
   open,
+  loading,
+  setLoading,
   handleClose,
   refreshData,
   mode,
   editId,
 }) => {
   const [activeStep, setActiveStep] = useState(0); // Initialize step state
-  const [loading, setLoading] = useState(false);
   const today = new DateObject({ calendar: persian, locale: persian_fa });
   const firstDayOfYear = new DateObject({
     calendar: persian,
@@ -160,8 +161,6 @@ const HistoryTableModal = ({
   const queryParams = new URLSearchParams(window.location.search);
   const param = queryParams.get("param");
   const handleSubmit = async (formData) => {
-    console.log("Form Data => ", formData);
-
     setLoading(true);
     const dto = HumanContractDTO.fromForm(formData, param);
     try {

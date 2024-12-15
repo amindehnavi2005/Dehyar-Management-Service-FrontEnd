@@ -16,7 +16,7 @@ export const downloadHumanResourcePdf = async (
     );
 
     const humanResourceData = response.data;
-    const data = new HumanResourceDTO(humanResourceData);
+    const data = new HumanResourceDTO(humanResourceData);    
     const doc = <MyDocument data={data} />;
     const asPdf = pdf([]);
     asPdf.updateContainer(doc);

@@ -55,7 +55,7 @@ function EditFromComponent() {
 
     const [showTable, setShowTable] = useState(false);
 
-    const onSubmit = async (formData) => {
+    const onSubmit = async (formData) => {        
         const apiData = EditHumanResourceFormDTO.fromForm(formData);        
         try {
             const response = await api.put(`${humanResources()}/update/${formData.id}`, apiData, { requiresAuth: true });
