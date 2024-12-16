@@ -56,23 +56,35 @@ const UpgradeVillageTable = ({
   const [selectedRow, setSelectedRow] = useState(null);
   const open = Boolean(anchorEl);
 
+  const totalScore = useMemo(() => {
+    return upgradeVillageRanks.reduce((accumulator, current) => {
+      return accumulator + current.score;
+    }, 0);
+  }, [upgradeVillageRanks]);
+
+  const [currentDegree, setCurrentDegree] = useState(totalScore);
+  console.log("Current Degree => ", currentDegree);
+  console.log("Total Score => ", totalScore);
+
   const fetchVillageRank = async () => {};
 
   useEffect(() => {
     loading ? fetchVillageRank() : null;
   }, [loading]);
 
-  // Handlers
   const handleEditCell = (rowId, key, value) => {
     setUpgradeVillageRanks((prev) =>
       prev.map((row) => (row.id === rowId ? { ...row, [key]: value } : row))
     );
-    console.log("Upgrade Village Ranks => ", upgradeVillageRanks);
 
-    setEditedVillageRate((prev) => ({
-      ...prev,
-      [rowId]: true,
-    }));
+    if (key === "value" || key === "year") {
+      const newDegree = calculateNewDegree(upgradeVillageRanks);
+      setCurrentDegree(newDegree);
+    }
+  };
+
+  const calculateNewDegree = (villageRanks) => {
+    return villageRanks.reduce((acc, curr) => acc + curr.score, 0);
   };
 
   // Handlers
@@ -113,9 +125,6 @@ const UpgradeVillageTable = ({
         size: 150,
         Cell: ({ cell, row }) => {
           const isYearEditing = row.original.isYearEditing;
-          console.log(
-            `Is Editing ${row.original.id} => ${row.original.isYearEditing} Year `
-          );
           return isYearEditing && row.original.id === 3 ? (
             <TextField
               value={cell.getValue()}
@@ -149,9 +158,6 @@ const UpgradeVillageTable = ({
         size: 150,
         Cell: ({ cell, row }) => {
           const isValueEditing = row.original.isValueEditing;
-          console.log(
-            `Is Editing ${row.original.id} => ${row.original.isValueEditing} Value `
-          );
           return isValueEditing &&
             (row.original.id === 2 || row.original.id === 3) ? (
             <TextField
@@ -225,20 +231,25 @@ const UpgradeVillageTable = ({
       },
     },
     renderBottomToolbarCustomActions: () => {
-      const totalScore = upgradeVillageRanks.reduce((accumulator, current) => {
-        return accumulator + current.score;
-      }, 0);
       return (
         <Box
           className={`grid grid-cols-4 gap-2 items-center justify-between mt-1 w-full`}
         >
-          <Box className="col-span-2">نتیجه بررسی امتیازات محاسبه شده :</Box>
+          <Box className="col-span-2">
+            {currentDegree == totalScore && (
+              <Button variant="contained" color="primary">
+                ذخیره و ارسال درخواست ارتقاء درجه
+              </Button>
+            )}
+          </Box>
           {Object.values(validationErrors).some((error) => !!error) && (
             <Typography color="error">
               لطفا خطاها را قبل از ارسال اصلاح کنید
             </Typography>
           )}
-          <div></div>
+          <Typography textAlign={"center"}>
+            درجه نهایی<p className="text-primary font-bold">{totalScore}</p>
+          </Typography>
           <Typography textAlign={"center"}>
             امتیاز<p className="text-primary font-bold">{totalScore}</p>
           </Typography>
