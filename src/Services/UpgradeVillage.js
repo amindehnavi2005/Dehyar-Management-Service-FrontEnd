@@ -1,14 +1,14 @@
 const BaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-getVillageGradeUpgrades = () => {
+const getVillageGradeUpgrades = () => {
   return `${BaseUrl}/village_grade_upgrades`;
 };
 
-getPopulationVillageInformation = () => {
+const getPopulationVillageInformation = () => {
   return `${BaseUrl}/population_village_information`;
 };
 
-getDivisionInformation = () => {
+const getDivisionInformation = () => {
   return `${BaseUrl}/division_informations`;
 };
 
