@@ -1,15 +1,21 @@
 import DividerSimple from "@/components/common/Divider/DividerSimple";
 import { Box, Button, Grid, Typography } from "@mui/material";
 import KeyboardReturnIcon from "@mui/icons-material/KeyboardReturn";
-import React from "react";
+import React, { useEffect } from "react";
 import DocumentUpload from "@/Services/UploadDocument";
 import { FormProvider, useForm } from "react-hook-form";
+import api from "@/utils/axiosInstance";
+import { getDivisionInformation, getPopulationVillageInformation, getVillageGradeUpgrades } from "@/Services/UpgradeVillage";
 
 const UpgradeVillageInformation = () => {
   const methods = useForm();
   const onSubmit = (data) => {
-    console.log(data);
+    // console.log(data);
   };
+  useEffect(() => {
+    const response = api.get(getDivisionInformation(), { requiresAuth: true });
+    // console.log("Response => ", response);
+  }, []);
   return (
     <FormProvider {...methods}>
       {" "}
