@@ -1,5 +1,6 @@
 import DividerSimple from "@/components/common/Divider/DividerSimple";
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Button, Grid, Typography } from "@mui/material";
+import KeyboardReturnIcon from "@mui/icons-material/KeyboardReturn";
 import React from "react";
 
 const UpgradeVillageInformation = () => {
@@ -87,12 +88,25 @@ const UpgradeVillageInformation = () => {
         <i class="ri-verified-badge-line h-4"></i>درجه نهایی :{" "}
         <span className="font-medium text-secondary"></span>
       </Typography>
-      <Box
-        textAlign={"center"}
-        className="bg-primary text-backgroundPaper rounded-xl my-5 p-2"
-      >
-        265 روز
-      </Box>
+      <div className="flex justify-between gap-5">
+        <Button variant="contained" color="primary">
+          ذخیره و ارسال درخواست ارتقاء رتبه
+        </Button>
+        <Button
+          variant="contained"
+          color="inherit"
+          startIcon={<KeyboardReturnIcon />}
+          sx={{
+            backgroundColor: "secondary.main",
+            color: "secondary.contrastText",
+            "&:hover": {
+              color: "black",
+            },
+          }}
+        >
+          بازگشت به کارتابل
+        </Button>
+      </div>
     </Grid>
   );
 };

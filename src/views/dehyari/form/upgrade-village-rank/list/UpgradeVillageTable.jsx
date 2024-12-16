@@ -17,6 +17,7 @@ import {
   MaterialReactTable,
   useMaterialReactTable,
 } from "material-react-table";
+import useCustomTable from "@/hooks/useCustomTable";
 
 const UpgradeVillageTable = ({
   loading,
@@ -205,9 +206,7 @@ const UpgradeVillageTable = ({
     [anchorEl, selectedRow]
   );
 
-  const table = useMaterialReactTable({
-    columns,
-    data: upgradeVillageRanks,
+  const table = useCustomTable(columns, upgradeVillageRanks, {
     enablePagination: false,
     enableTopToolbar: false,
     enableFilters: false,
@@ -218,15 +217,6 @@ const UpgradeVillageTable = ({
     initialState: {
       density: "compact",
     },
-    muiTableHeadCellProps: {
-      style: {
-        textAlign: "center",
-        verticalAlign: "middle",
-        whiteSpace: "nowrap",
-        fontWeight: "bold",
-        padding: "2% 6%",
-      },
-    },
     muiTableBodyCellProps: {
       style: {
         textAlign: "center",
@@ -234,25 +224,6 @@ const UpgradeVillageTable = ({
         whiteSpace: "nowrap",
       },
     },
-
-    rowCount: upgradeVillageRanks.length,
-    state: {
-      isLoading: loading,
-      showProgressBars: loading,
-    },
-    muiSkeletonProps: {
-      animation: "wave",
-      height: 28,
-    },
-    muiLinearProgressProps: {
-      color: "primary",
-    },
-    muiCircularProgressProps: {
-      color: "secondary",
-    },
-    muiTableBodyRowProps: () => ({
-      style: { height: "10px" },
-    }),
     renderBottomToolbarCustomActions: () => {
       const totalScore = upgradeVillageRanks.reduce((accumulator, current) => {
         return accumulator + current.score;
@@ -261,22 +232,7 @@ const UpgradeVillageTable = ({
         <Box
           className={`grid grid-cols-4 gap-2 items-center justify-between mt-1 w-full`}
         >
-          <Button
-            className="col-span-2"
-            color="primary"
-            variant="contained"
-            onClick={handleSaveVillageInformation}
-            disabled={
-              Object.keys(editedVillageRate).length === 0 ||
-              Object.values(validationErrors).some((error) => !!error)
-            }
-          >
-            {isUpdatingVillageRate ? (
-              <CircularProgress size={25} />
-            ) : (
-              "ذخیره و ارسال درخواست ارتقاء رتبه"
-            )}
-          </Button>
+          <Box className="col-span-2">نتیجه بررسی امتیازات محاسبه شده :</Box>
           {Object.values(validationErrors).some((error) => !!error) && (
             <Typography color="error">
               لطفا خطاها را قبل از ارسال اصلاح کنید
