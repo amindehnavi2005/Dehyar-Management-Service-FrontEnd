@@ -44,7 +44,7 @@ const accessControl = {
     {
       label: "درجه بندی دهیاری",
       icon: <i className="ri-arrow-up-wide-fill" />,
-      href: "/dehyari/form/upgrade-village-rank",
+      href: "/dehyari/dehyar",
     },
   ],
   [WORK_GROUPS.CFO]: [
@@ -83,7 +83,7 @@ const accessControl = {
     {
       label: "درجه بندی دهیاری",
       icon: <i className="ri-arrow-up-wide-fill" />,
-      href: "/dehyari/form/upgrade-village-rank",
+      href: "/dehyari/dehyar",
     },
     {
       label: "تشکیلات دهیاری",

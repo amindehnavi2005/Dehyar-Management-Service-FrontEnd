@@ -5,7 +5,7 @@ import React, { useEffect } from "react";
 import DocumentUpload from "@/Services/UploadDocument";
 import { FormProvider, useForm } from "react-hook-form";
 import api from "@/utils/axiosInstance";
-import { getDivisionInformation, getPopulationVillageInformation, getVillageGradeUpgrades } from "@/Services/UpgradeVillage";
+import { getVillageGradeUpgrades } from "@/Services/UpgradeVillage";
 
 const UpgradeVillageInformation = () => {
   const methods = useForm();
@@ -13,7 +13,7 @@ const UpgradeVillageInformation = () => {
     // console.log(data);
   };
   useEffect(() => {
-    const response = api.get(getDivisionInformation(), { requiresAuth: true });
+    const response = api.get(getVillageGradeUpgrades(), { requiresAuth: true });
     // console.log("Response => ", response);
   }, []);
   return (
