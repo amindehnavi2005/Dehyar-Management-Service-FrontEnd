@@ -1,3 +1,4 @@
+"use client";
 import DividerSimple from "@/components/common/Divider/DividerSimple";
 import { Box, Button, Grid, Typography } from "@mui/material";
 import KeyboardReturnIcon from "@mui/icons-material/KeyboardReturn";
@@ -6,22 +7,27 @@ import DocumentUpload from "@/Services/UploadDocument";
 import { FormProvider, useForm } from "react-hook-form";
 import api from "@/utils/axiosInstance";
 import { getVillageGradeUpgrades } from "@/Services/UpgradeVillage";
+import { useRouter } from "next/navigation";
 
 const UpgradeVillageInformation = () => {
   const methods = useForm();
+  const router = useRouter();
+
+  const handleBack = () => {
+    router.back();
+  };
+
   const onSubmit = (data) => {
     // console.log(data);
   };
-
-  // const handleBack = () => {
-  //   window.history.back();
-  // };
-
-  useEffect(async () => {
-    const response = await api.get(getVillageGradeUpgrades(), {
-      requiresAuth: true,
-    });
-    console.log("Response => ", response);
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await api.get(getVillageGradeUpgrades(), {
+        requiresAuth: true,
+      });
+      console.log("Response => ", response);
+    };
+    fetchData();
   }, []);
 
   return (
@@ -131,7 +137,7 @@ const UpgradeVillageInformation = () => {
                 color: "black",
               },
             }}
-            // onClick={handleBack}
+            onClick={handleBack}
           >
             بازگشت به کارتابل
           </Button>
