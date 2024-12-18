@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { MaterialReactTable } from "material-react-table";
 import { Box, Button, Tooltip, Typography } from "@mui/material";
@@ -8,6 +8,7 @@ import useCustomTable from "@/hooks/useCustomTable";
 import TitleDehyariPanel from "@/components/common/TitleDehyariPanel";
 import { getVillageGradeUpgrades } from "@/Services/UpgradeVillage";
 import api from "@/utils/axiosInstance";
+import FilterChip from "@/@core/components/mui/FilterButton";
 
 function GradingVillageForGovernor() {
   const [data, setData] = useState([]);
@@ -17,6 +18,25 @@ function GradingVillageForGovernor() {
   const open = Boolean(anchorEl);
   const router = useRouter();
   const [tableLoading, setTableLoading] = useState(true);
+  const [highlightStyle, setHighlightStyle] = useState({ width: 0, left: 0 });
+  const [filterStatus, setFilterStatus] = useState("");
+  const buttonRefs = useRef([]);
+
+  useEffect(() => {
+    if (buttonRefs.current[0]) {
+      const { offsetWidth, offsetLeft } = buttonRefs.current[0];
+      setHighlightStyle({ width: offsetWidth, right: offsetLeft });
+    }
+  }, []);
+
+  const handleFilterChange = (status, index) => {
+    setFilterStatus(status);
+    const button = buttonRefs.current[index];
+    if (button) {
+      const { offsetWidth, offsetLeft } = button;
+      setHighlightStyle({ width: offsetWidth, right: offsetLeft });
+    }
+  };
 
   const handleClick = (event, row) => {
     setAnchorEl(event.currentTarget);
@@ -50,8 +70,13 @@ function GradingVillageForGovernor() {
   }, [loading]);
 
   const tableData = useMemo(() => {
-    return data;
-  }, [data]);
+    if (!filterStatus) {
+      return data;
+    }
+    return (
+      data.length && data.filter((item) => item.contract_state === filterStatus)
+    );
+  }, [data, filterStatus]);
 
   const columns = useMemo(
     () => [
@@ -165,6 +190,83 @@ function GradingVillageForGovernor() {
         >
           <i className="ri-add-line" />
         </Button>
+        <Box
+          className={"bg-backgroundPaper rounded-full"}
+          sx={{
+            position: "absolute",
+            height: "90%",
+            transition: "width 0.3s, right 0.3s",
+            ...highlightStyle,
+          }}
+        />
+        <FilterChip
+          avatarValue={data?.length?.toString() || 0}
+          ref={(el) => (buttonRefs.current[0] = el)}
+          label="همه"
+          onClick={() => handleFilterChange("", 0)}
+          clickable
+          variant={filterStatus === "" ? "outlined" : "filled"}
+        />
+        <FilterChip
+          avatarValue={
+            (data.length &&
+              data
+                .filter(
+                  (item) =>
+                    item.contract_state === "draft" ||
+                    item.contract_state === "rejected_to_financial_officer"
+                )
+                .length.toString()) ||
+            0
+          }
+          ref={(el) => (buttonRefs.current[1] = el)}
+          label="کارتابل من"
+          onClick={() => handleFilterChange("my_inbox", 1)}
+          clickable
+          variant={filterStatus === "my_inbox" ? "outlined" : "filled"}
+        />
+        <FilterChip
+          avatarValue={
+            (data.length &&
+              data
+                .filter((item) => item.contract_state === "approved")
+                .length.toString()) ||
+            0
+          }
+          ref={(el) => (buttonRefs.current[2] = el)}
+          label="تایید شده"
+          onClick={() => handleFilterChange("approved", 2)}
+          clickable
+          variant={filterStatus === "approved" ? "outlined" : "filled"}
+        />
+        <FilterChip
+          avatarValue={
+            (data.length &&
+              data
+                .filter((item) => item.contract_state === "rejected")
+                .length.toString()) ||
+            0
+          }
+          ref={(el) => (buttonRefs.current[3] = el)}
+          label="رد شده"
+          onClick={() => handleFilterChange("rejected", 3)}
+          clickable
+          variant={filterStatus === "rejected" ? "outlined" : "filled"}
+        />
+        <FilterChip
+          avatarValue={
+            (data.length &&
+              data
+                .filter((item) => item.contract_state === "rejected")
+                .length.toString()) ||
+            0
+          }
+          ref={(el) => (buttonRefs.current[4] = el)}
+          label="در حال بررسی"
+          onClick={() => handleFilterChange("rejected", 4)}
+          clickable
+          variant={filterStatus === "rejected" ? "outlined" : "filled"}
+        />
       </Box>
     ),
   });
