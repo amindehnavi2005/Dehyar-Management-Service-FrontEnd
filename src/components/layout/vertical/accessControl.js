@@ -90,11 +90,11 @@ const accessControl = {
       icon: <i className="ri-organization-chart" />,
       href: "/dehyari",
     },
-    // {
-    //     label: "ثبت اطلاعات پرسنلی",
-    //     icon: < i className="ri-upload-line" />,
-    //     href: '/dehyari/form'
-    // },
+    {
+      label: "درجه بندی دهیاری",
+      icon: <i className="ri-arrow-up-wide-fill" />,
+      href: "/dehyari/dehyar",
+    },
     {
       label: "ویرایش اطلاعات پرسنلی",
       href: "/dehyari/form/edit",
@@ -132,12 +132,22 @@ const accessControl = {
       icon: <i className="ri-team-line" />,
       href: "/dehyari/governor/list",
     },
+    {
+      label: "درجه بندی دهیاری",
+      icon: <i className="ri-arrow-up-wide-fill" />,
+      href: "/dehyari/dehyar",
+    },
   ],
   [WORK_GROUPS.BAKHSHDAR]: [
     {
       label: "پرسنل دهیاری ها",
       icon: <i className="ri-group-line" />,
       href: "/dehyari/bakhshdar/table",
+    },
+    {
+      label: "درجه بندی دهیاری",  
+      icon: <i className="ri-arrow-up-wide-fill" />,
+      href: "/dehyari/bakhshdar/upgrade-village-rank",
     },
   ],
   [WORK_GROUPS.PUBLIC]: [

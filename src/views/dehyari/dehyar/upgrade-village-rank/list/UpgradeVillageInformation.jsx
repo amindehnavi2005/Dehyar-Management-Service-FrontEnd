@@ -12,10 +12,18 @@ const UpgradeVillageInformation = () => {
   const onSubmit = (data) => {
     // console.log(data);
   };
-  useEffect(() => {
-    const response = api.get(getVillageGradeUpgrades(), { requiresAuth: true });
-    // console.log("Response => ", response);
+
+  // const handleBack = () => {
+  //   window.history.back();
+  // };
+
+  useEffect(async () => {
+    const response = await api.get(getVillageGradeUpgrades(), {
+      requiresAuth: true,
+    });
+    console.log("Response => ", response);
   }, []);
+
   return (
     <FormProvider {...methods}>
       {" "}
@@ -123,6 +131,7 @@ const UpgradeVillageInformation = () => {
                 color: "black",
               },
             }}
+            // onClick={handleBack}
           >
             بازگشت به کارتابل
           </Button>

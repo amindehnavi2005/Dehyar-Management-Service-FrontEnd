@@ -30,7 +30,7 @@ import useCustomTable from "@/hooks/useCustomTable";
 import FilterChip from "@/@core/components/mui/FilterButton";
 import TitleDehyariPanel from "@/components/common/TitleDehyariPanel";
 
-function GradingVillage(props) {
+function GradingVillageForBakhshdar(props) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -117,6 +117,30 @@ function GradingVillage(props) {
   const columns = useMemo(
     () => [
       {
+        accessorKey: "geo_dehestan",
+        header: "دهستان",
+        size: 150,
+        Cell: ({ cell }) => {
+          return (
+            <div style={{ textAlign: "right" }}>
+              {(cell.getValue() && cell.getValue().approved_name) || "-"}
+            </div>
+          );
+        },
+      },
+      {
+        accessorKey: "village",
+        header: "دهیاری",
+        size: 150,
+        Cell: ({ cell }) => {
+          return (
+            <div style={{ textAlign: "right" }}>
+              {(cell.getValue() && cell.getValue().approved_name) || "-"}
+            </div>
+          );
+        },
+      },
+      {
         accessorKey: "previous_degree",
         header: "درجه قبلی",
         size: 150,
@@ -127,14 +151,6 @@ function GradingVillage(props) {
       {
         accessorKey: "date",
         header: "تاریخ",
-        size: 150,
-        Cell: ({ cell }) => (
-          <div style={{ textAlign: "right" }}>{cell.getValue()}</div>
-        ),
-      },
-      {
-        accessorKey: "sum_score",
-        header: "مجموع امتیاز",
         size: 150,
         Cell: ({ cell }) => (
           <div style={{ textAlign: "right" }}>{cell.getValue()}</div>
@@ -235,4 +251,4 @@ function GradingVillage(props) {
   );
 }
 
-export default GradingVillage;
+export default GradingVillageForBakhshdar;
