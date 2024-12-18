@@ -217,7 +217,6 @@ const EditStepEducation = ({ validation }) => {
                           />
                         </Grid>
                       )}
-
                       {degree > 42 && (
                         <Grid item xs={12} sm={4}>
                           <FormControl fullWidth size="small">
@@ -250,7 +249,6 @@ const EditStepEducation = ({ validation }) => {
                                           zIndex: 13000000,
                                         },
                                       }}
-                                      disabled={disableGraduationDate}
                                     />
                                   }
                                 />

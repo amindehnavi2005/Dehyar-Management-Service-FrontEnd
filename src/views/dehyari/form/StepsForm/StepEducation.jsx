@@ -152,8 +152,6 @@ const StepEducation = ({ validation }) => {
           <AccordionDetails>
             {fields.map((item, index) => {
               const degree = watch(`educations[${index}].degree`);
-              const { disableFieldOfStudy, disableGraduationDate } =
-                handleFieldDisabling(degree);
               return (
                 <Card key={item.id} sx={{ mb: 2 }}>
                   <CardContent>
@@ -180,45 +178,8 @@ const StepEducation = ({ validation }) => {
                           )}
                         />
                       </Grid>
-                      {degree > 42 && (
-                        <Grid item xs={12} sm={8}>
-                          <Controller
-                            name={`educations[${index}].fieldOfStudy`}
-                            control={control}
-                            defaultValue={item.fieldOfStudy}
-                            render={({ field }) => (
-                              <Autocomplete
-                                {...field}
-                                options={educationFields}
-                                disableClearable={disableFieldOfStudy}
-                                open={autocompleteOpenStates[index] || false}
-                                onOpen={() => handleAutocompleteOpen(index)}
-                                onClose={() => handleAutocompleteClose(index)}
-                                getOptionLabel={(option) => option.name || ""}
-                                value={
-                                  educationFields.find(
-                                    (option) => option.code === field.value
-                                  ) || null
-                                }
-                                onChange={(_, value) =>
-                                  field.onChange(value ? value.code : "")
-                                }
-                                renderInput={(params) => (
-                                  <TextField
-                                    {...params}
-                                    label="رشته تحصیلی"
-                                    fullWidth
-                                    size="small"
-                                    disabled={disableFieldOfStudy}
-                                  />
-                                )}
-                              />
-                            )}
-                          />
-                        </Grid>
-                      )}
 
-                      {degree > 43 && (
+                      {degree > 42 && (
                         <Grid item xs={12} sm={4}>
                           <FormControl fullWidth size="small">
                             <Controller
@@ -250,13 +211,47 @@ const StepEducation = ({ validation }) => {
                                           zIndex: 13000000,
                                         },
                                       }}
-                                      disabled={disableGraduationDate}
                                     />
                                   }
                                 />
                               )}
                             />
                           </FormControl>
+                        </Grid>
+                      )}
+                      {degree > 43 && (
+                        <Grid item xs={12} sm={8}>
+                          <Controller
+                            name={`educations[${index}].fieldOfStudy`}
+                            control={control}
+                            defaultValue={item.fieldOfStudy}
+                            render={({ field }) => (
+                              <Autocomplete
+                                {...field}
+                                options={educationFields}
+                                open={autocompleteOpenStates[index] || false}
+                                onOpen={() => handleAutocompleteOpen(index)}
+                                onClose={() => handleAutocompleteClose(index)}
+                                getOptionLabel={(option) => option.name || ""}
+                                value={
+                                  educationFields.find(
+                                    (option) => option.code === field.value
+                                  ) || null
+                                }
+                                onChange={(_, value) =>
+                                  field.onChange(value ? value.code : "")
+                                }
+                                renderInput={(params) => (
+                                  <TextField
+                                    {...params}
+                                    label="رشته تحصیلی"
+                                    fullWidth
+                                    size="small"
+                                  />
+                                )}
+                              />
+                            )}
+                          />
                         </Grid>
                       )}
                       <Grid item xs={12} sm={2}>
