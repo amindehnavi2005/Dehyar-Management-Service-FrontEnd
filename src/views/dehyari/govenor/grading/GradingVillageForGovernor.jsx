@@ -56,14 +56,22 @@ function GradingVillageForGovernor() {
   const columns = useMemo(
     () => [
       {
-        accessorKey: "geo_dehestan",
-        header: "دهستان",
+        accessorKey: "geo_city",
+        header: "شهرستان",
         size: 150,
         Cell: ({ cell }) => {
           return (
-            <div style={{ textAlign: "right" }}>
-              {(cell.getValue() && cell.getValue().approved_name) || "-"}
-            </div>
+            <div style={{ textAlign: "right" }}>{cell.getValue() || "-"}</div>
+          );
+        },
+      },
+      {
+        accessorKey: "geo_region",
+        header: "بخش",
+        size: 150,
+        Cell: ({ cell }) => {
+          return (
+            <div style={{ textAlign: "right" }}>{cell.getValue() || "-"}</div>
           );
         },
       },
