@@ -135,7 +135,7 @@ const accessControl = {
     {
       label: "درجه بندی دهیاری",
       icon: <i className="ri-arrow-up-wide-fill" />,
-      href: "/dehyari/dehyar",
+      href: "/dehyari/governor/upgrade-village-rank",
     },
   ],
   [WORK_GROUPS.BAKHSHDAR]: [
@@ -145,7 +145,7 @@ const accessControl = {
       href: "/dehyari/bakhshdar/table",
     },
     {
-      label: "درجه بندی دهیاری",  
+      label: "درجه بندی دهیاری",
       icon: <i className="ri-arrow-up-wide-fill" />,
       href: "/dehyari/bakhshdar/upgrade-village-rank",
     },
