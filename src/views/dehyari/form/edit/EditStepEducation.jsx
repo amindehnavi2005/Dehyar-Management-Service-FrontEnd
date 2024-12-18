@@ -180,7 +180,7 @@ const EditStepEducation = ({ validation }) => {
                           )}
                         />
                       </Grid>
-                      {degree > 42 && (
+                      {degree > 43 && (
                         <Grid item xs={12} sm={8}>
                           <Controller
                             name={`educations[${index}].fieldOfStudy`}
@@ -218,7 +218,7 @@ const EditStepEducation = ({ validation }) => {
                         </Grid>
                       )}
 
-                      {degree > 43 && (
+                      {degree > 42 && (
                         <Grid item xs={12} sm={4}>
                           <FormControl fullWidth size="small">
                             <Controller
