@@ -2,7 +2,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { MaterialReactTable } from "material-react-table";
-import { Box, Button, Tooltip } from "@mui/material";
+import { Box, Button, Tooltip, Typography } from "@mui/material";
 import CustomIconButton from "@core/components/mui/IconButton";
 import useCustomTable from "@/hooks/useCustomTable";
 import TitleDehyariPanel from "@/components/common/TitleDehyariPanel";
@@ -171,7 +171,26 @@ function GradingVillageForGovernor() {
 
   return (
     <div>
-      <TitleDehyariPanel />
+      <Typography display={"flex"} variant={"h5"} mb={5} gap={1}>
+        <span>درخواست</span>
+        <span className={"text-error font-bold relative inline-block"}>
+          درجه بندی
+          <img
+            src="/images/icons/Line-2.png"
+            alt="زیرخط"
+            style={{
+              display: "block",
+              margin: "0 auto",
+              width: "100%",
+              height: "4px",
+              position: "absolute",
+              bottom: "-2px",
+              objectFit: "contain",
+            }}
+          />
+        </span>
+        دهیاری ها
+      </Typography>
       <MaterialReactTable table={table} />
     </div>
   );

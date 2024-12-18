@@ -1,55 +1,22 @@
 "use client";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import {
-  MaterialReactTable,
-  useMaterialReactTable,
-} from "material-react-table";
-import Chip from "@mui/material/Chip";
-import {
-  Box,
-  Button,
-  IconButton,
-  Menu,
-  MenuItem,
-  Tooltip,
-} from "@mui/material";
-import { GetHumanResourcesForCfo } from "@/Services/humanResources";
-import contractType from "@data/contractType.json";
-import PersonalOption from "@data/PersonalOption.json";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import Link from "next/link";
-import { toast } from "react-toastify";
-import { getJobTitleLabel } from "@data/jobTitles";
-import api from "@/utils/axiosInstance";
-import Loading from "@/@core/components/loading/Loading";
+import { MaterialReactTable } from "material-react-table";
+import { Box, Button, Tooltip, Typography } from "@mui/material";
 import CustomIconButton from "@core/components/mui/IconButton";
-import Typography from "@mui/material/Typography";
-import { translateContractState } from "@utils/contractStateTranslator";
 import useCustomTable from "@/hooks/useCustomTable";
-import FilterChip from "@/@core/components/mui/FilterButton";
 import TitleDehyariPanel from "@/components/common/TitleDehyariPanel";
+import { getVillageGradeUpgrades } from "@/Services/UpgradeVillage";
+import api from "@/utils/axiosInstance";
 
-function GradingVillage(props) {
+function GradingVillage() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [anchorEl, setAnchorEl] = useState(null);
   const [currentRow, setCurrentRow] = useState(null);
   const open = Boolean(anchorEl);
   const router = useRouter();
-  const [popupOpen, setPopupOpen] = useState(false);
-  const [popupWorkflow, setPopupWorkflow] = useState(false);
-  const [highlightStyle, setHighlightStyle] = useState({ width: 0, left: 0 });
-  const [filterStatus, setFilterStatus] = useState("my_inbox");
-  const buttonRefs = useRef([]);
   const [tableLoading, setTableLoading] = useState(true);
-
-  useEffect(() => {
-    if (buttonRefs.current[0]) {
-      const { offsetWidth, offsetLeft } = buttonRefs.current[0];
-      setHighlightStyle({ width: offsetWidth, right: offsetLeft });
-    }
-  }, []);
 
   const handleClick = (event, row) => {
     setAnchorEl(event.currentTarget);
@@ -61,27 +28,9 @@ function GradingVillage(props) {
     setCurrentRow(null);
   };
 
-  const handleFilterChange = (status, index) => {
-    setFilterStatus(status);
-    const button = buttonRefs.current[index];
-    if (button) {
-      const { offsetWidth, offsetLeft } = button;
-      setHighlightStyle({ width: offsetWidth, right: offsetLeft });
-    }
-  };
-
-  const handleWorkflowHistory = (row) => {
-    if (row?.salary_id) {
-      setCurrentRow(row); // مقداردهی صحیح به currentRow
-      setPopupWorkflow(true); // باز کردن پنجره تاریخچه
-    } else {
-      toast.error("اطلاعات تاریخچه موجود نیست.");
-    }
-  };
-
   const fetchData = async () => {
     try {
-      const response = await api.get(`${GetHumanResourcesForCfo()}`, {
+      const response = await api.get(`${getVillageGradeUpgrades()}`, {
         requiresAuth: true,
       });
       setData(response.data);
@@ -101,18 +50,8 @@ function GradingVillage(props) {
   }, [loading]);
 
   const tableData = useMemo(() => {
-    if (!filterStatus) {
-      return data;
-    }
-    if (filterStatus === "my_inbox") {
-      return data.filter(
-        (item) =>
-          item.contract_state === "draft" ||
-          item.contract_state === "rejected_to_financial_officer"
-      );
-    }
-    return data.filter((item) => item.contract_state === filterStatus);
-  }, [data, filterStatus]);
+    return data;
+  }, [data]);
 
   const columns = useMemo(
     () => [
@@ -203,7 +142,9 @@ function GradingVillage(props) {
       <Box sx={{ display: "flex", gap: 1, position: "relative" }}>
         <Button
           variant="contained"
-          onClick={() => router.push("/dehyari/dehyar/upgrade-village-rank")}
+          onClick={() => {
+            router.push(`/dehyari/dehyar/upgrade-village-rank`);
+          }}
           className={"rounded-full h-8"}
         >
           <i className="ri-add-line" />
@@ -214,23 +155,27 @@ function GradingVillage(props) {
 
   return (
     <div>
-      <TitleDehyariPanel />
+      <Typography display={"flex"} variant={"h5"} mb={5} gap={1}>
+        <span>درخواست</span>
+        <span className={"text-error font-bold relative inline-block"}>
+          درجه بندی
+          <img
+            src="/images/icons/Line-2.png"
+            alt="زیرخط"
+            style={{
+              display: "block",
+              margin: "0 auto",
+              width: "100%",
+              height: "4px",
+              position: "absolute",
+              bottom: "-2px",
+              objectFit: "contain",
+            }}
+          />
+        </span>
+            دهیاری ها
+      </Typography>
       <MaterialReactTable table={table} />
-      {/* <WorkFlowDrawer
-        open={popupOpen}
-        setDialogOpen={setPopupOpen}
-        details={currentRow}
-        rejectApprovalLevel={0}
-        loading={loading}
-        setLoading={setLoading}
-        nextState={"pending_supervisor"}
-        readOnly={
-          !(
-            currentRow?.contract_state == "draft" ||
-            currentRow?.contract_state == "rejected_to_financial_officer"
-          )
-        }
-      /> */}
     </div>
   );
 }
