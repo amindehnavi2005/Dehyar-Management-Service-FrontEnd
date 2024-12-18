@@ -1,12 +1,12 @@
 "use client";
 import DividerSimple from "@/components/common/Divider/DividerSimple";
-import { Box, Button, Grid, Typography } from "@mui/material";
+import { Button, Grid, Typography } from "@mui/material";
 import KeyboardReturnIcon from "@mui/icons-material/KeyboardReturn";
 import React, { useEffect } from "react";
 import DocumentUpload from "@/Services/UploadDocument";
 import { FormProvider, useForm } from "react-hook-form";
 import api from "@/utils/axiosInstance";
-import { getVillageGradeUpgrades } from "@/Services/UpgradeVillage";
+import { getDivisionInformation } from "@/Services/UpgradeVillage";
 import { useRouter } from "next/navigation";
 
 const UpgradeVillageInformation = () => {
@@ -22,10 +22,11 @@ const UpgradeVillageInformation = () => {
   };
   useEffect(() => {
     const fetchData = async () => {
-      const response = await api.get(getVillageGradeUpgrades(), {
+      const response = await api.get(getDivisionInformation(), {
         requiresAuth: true,
       });
-      console.log("Response => ", response);
+      console.log("response => ", response);
+      
     };
     fetchData();
   }, []);

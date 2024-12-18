@@ -1,23 +1,12 @@
 "use client";
 import api from "@/utils/axiosInstance";
-import {
-  Box,
-  Button,
-  CircularProgress,
-  IconButton,
-  Menu,
-  MenuItem,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Button, TextField, Typography } from "@mui/material";
 import React, { useEffect, useMemo, useState } from "react";
 import { toast } from "react-toastify";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import {
-  MaterialReactTable,
-  useMaterialReactTable,
-} from "material-react-table";
+import { MaterialReactTable } from "material-react-table";
 import useCustomTable from "@/hooks/useCustomTable";
+import { getDivisionInformation } from "@/Services/UpgradeVillage";
+import { me } from "@/Services/Auth/AuthService";
 
 const UpgradeVillageTable = ({
   loading,
@@ -25,7 +14,6 @@ const UpgradeVillageTable = ({
   handleAddEventSidebarToggle,
   addEventSidebarOpen,
 }) => {
-  // States
   const [upgradeVillageRanks, setUpgradeVillageRanks] = useState([
     { id: 1, parameter: "جمعیت", year: 1397, value: 12000, score: 5 },
     {
@@ -65,12 +53,24 @@ const UpgradeVillageTable = ({
   const [currentDegree, setCurrentDegree] = useState(totalScore);
   console.log("Current Degree => ", currentDegree);
   console.log("Total Score => ", totalScore);
-
-  const fetchVillageRank = async () => {};
+  const [userDetails, setUserDetails] = useState();
 
   useEffect(() => {
-    loading ? fetchVillageRank() : null;
-  }, [loading]);
+    const fetchData = async () => {
+      const response = await api.get(getDivisionInformation(), {
+        requiresAuth: true,
+      });
+      const userResponse = await api.get(me(), {
+        requiresAuth: true,
+      });
+      console.log(
+        "UserResponse => ",
+        userResponse.data.data.user.original.geo_village
+      );
+      console.log("response => ", response.data.data);
+    };
+    fetchData();
+  }, []);
 
   const handleEditCell = (rowId, key, value) => {
     setUpgradeVillageRanks((prev) =>
