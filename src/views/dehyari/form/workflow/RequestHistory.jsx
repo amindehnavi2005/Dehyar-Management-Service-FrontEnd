@@ -62,7 +62,7 @@ const RequestHistory = ({ details, history }) => {
                       justifyContent="space-between"
                       sx={{ flexWrap: "nowrap", gap: 1 }}
                     >
-                      <Typography variant="subtitle2">
+                      <Typography variant="subtitle2" className="mb-1">
                         {translateContractStateForHistory(item.state).title}
                       </Typography>
                       <Typography

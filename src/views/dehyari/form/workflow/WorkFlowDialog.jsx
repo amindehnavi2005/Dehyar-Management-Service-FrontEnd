@@ -130,7 +130,7 @@ const WorkFlowDrawer = ({
             getHistoryWorkflow(details.salary_id),
             { requiresAuth: true }
           );
-
+          
           // Sort data from newest to oldest
           const sortedData = response.data.sort(
             (firstDate, lastDate) =>

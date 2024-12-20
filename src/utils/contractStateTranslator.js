@@ -82,12 +82,12 @@ export const translateContractStateForHistory = (state) => {
       };
     case "rejected_to_supervisor":
       return {
-        title: "بازگشت حکم به بخشدار جهت اصلاح",
+        title: "بازگشت به بخشدار جهت اصلاح",
         color: "error",
       };
     case "rejected_to_financial_officer":
       return {
-        title: "بازگشت حکم به مسئول مالی جهت اصلاح",
+        title: "بازگشت به مسئول مالی جهت اصلاح",
         color: "error",
       };
     default:
