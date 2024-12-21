@@ -8,6 +8,7 @@ import useCustomTable from "@/hooks/useCustomTable";
 import TitleDehyariPanel from "@/components/common/TitleDehyariPanel";
 import { getVillageGradeUpgrades } from "@/Services/UpgradeVillage";
 import api from "@/utils/axiosInstance";
+import WorkFlowDrawer from "../../form/workflow/WorkFlowDialog";
 
 function GradingVillage() {
   const [data, setData] = useState([]);
@@ -17,6 +18,7 @@ function GradingVillage() {
   const open = Boolean(anchorEl);
   const router = useRouter();
   const [tableLoading, setTableLoading] = useState(true);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   const handleClick = (event, row) => {
     setAnchorEl(event.currentTarget);
@@ -116,19 +118,26 @@ function GradingVillage() {
               height: "100%",
             }}
           >
-            <Tooltip title={"درجه بندی"}>
-              <CustomIconButton
-                color={"secondary"}
-                onClick={() => {
-                  router.push(
-                    `/dehyari/form/edit?param=${row.original.nid}&id=${row.original.human_resource_id}&salary_id=${row.original.salary_id}`
-                  );
-                }}
-                className={"rounded-full"}
-              >
-                <i className="ri-edit-box-line" />
-              </CustomIconButton>
-            </Tooltip>
+            {row.original.current_degree && (
+              <Tooltip title={"مشاهده/تغییر وضعیت درجه بندی"}>
+                <CustomIconButton
+                  color={"secondary"}
+                  onClick={() => {
+                    setCurrentRow(row.original);
+                    setDialogOpen(true);
+                  }}
+                  className={"rounded-full animate-pulse"}
+                >
+                  {row.original.current_degree == "draft" ||
+                  row.original.current_degree ==
+                    "rejected_to_financial_officer" ? (
+                    <i className="ri-mail-send-line" />
+                  ) : (
+                    <i className="ri-history-line" />
+                  )}
+                </CustomIconButton>
+              </Tooltip>
+            )}
           </div>
         ),
       },
@@ -173,9 +182,24 @@ function GradingVillage() {
             }}
           />
         </span>
-            دهیاری ها
+        دهیاری ها
       </Typography>
       <MaterialReactTable table={table} />
+      <WorkFlowDrawer
+        open={dialogOpen}
+        setDialogOpen={setDialogOpen}
+        details={currentRow}
+        rejectApprovalLevel={0}
+        loading={loading}
+        setLoading={setLoading}
+        nextState={"pending_supervisor"}
+        readOnly={
+          !(
+            currentRow?.contract_state == "draft" ||
+            currentRow?.contract_state == "rejected_to_financial_officer"
+          )
+        }
+      />
     </div>
   );
 }

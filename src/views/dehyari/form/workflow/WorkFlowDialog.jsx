@@ -68,12 +68,21 @@ const WorkFlowDrawer = ({
       await changeStateWorkflow(details.salary_id, nextState, description);
       const fullName = `${details.first_name || ""} ${details.last_name || ""}`;
 
-      if (rejectApprovalLevel === 2) {
-        toast.success(`حکم کارگزینی ${fullName} تایید نهایی شد.`);
-      } else {
-        toast.success(`عملیات با موفقیت انجام شد`);
+      switch (rejectApprovalLevel) {
+        case 0:
+          toast.success(
+            `حکم کارگزینی ${fullName} به بخشدار مربوطه ارجاع داده شد.`
+          );
+          break;
+        case 1:
+          toast.success(
+            `حکم کارگزینی ${fullName} به کارشناس استان مربوطه ارجاع داده شد.`
+          );
+          break;
+        case 2:
+          toast.success(`حکم کارگزینی ${fullName} تایید نهایی شد.`);
+          break;
       }
-
       handleClose();
     } catch (err) {
       toast.error(err.message || "خطا در انجام عملیات");
@@ -103,16 +112,18 @@ const WorkFlowDrawer = ({
           result.description
         );
 
-        if (rejectState === "rejected_to_supervisor") {
-          toast.success(
-            `حکم کارگزینی ${fullName} به بخشدار مربوطه جهت اصلاح بازگشت داده شد.`
-          );
-        } else if (rejectState === "rejected_to_financial_officer") {
-          toast.success(
-            `حکم کارگزینی ${fullName} به مسئول امور مالی مربوطه جهت اصلاح بازگشت داده شد.`
-          );
+        switch (rejectState) {
+          case "rejected_to_financial_officer":
+            toast.success(
+              `حکم کارگزینی ${fullName} به مسئول امور مالی مربوطه جهت اصلاح بازگشت داده شد.`
+            );
+            break;
+          case "rejected_to_supervisor":
+            toast.success(
+              `حکم کارگزینی ${fullName} به بخشدار مربوطه جهت اصلاح بازگشت داده شد.`
+            );
+            break;
         }
-
         handleClose();
       }
     } catch (err) {
@@ -130,7 +141,7 @@ const WorkFlowDrawer = ({
             getHistoryWorkflow(details.salary_id),
             { requiresAuth: true }
           );
-          
+
           // Sort data from newest to oldest
           const sortedData = response.data.sort(
             (firstDate, lastDate) =>
