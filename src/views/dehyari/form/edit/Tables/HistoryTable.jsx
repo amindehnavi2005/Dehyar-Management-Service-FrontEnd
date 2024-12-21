@@ -13,7 +13,6 @@ import { convertUnixToJalali } from "@utils/dateConverter";
 import CustomIconButton from "@core/components/mui/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import WorkFlowDialog from "@views/dehyari/form/workflow/WorkFlowDialog";
-import WorkFlowPopup from "@views/dehyari/form/workflow/WorkFlowPopup";
 import { translateContractState } from "@utils/contractStateTranslator";
 import ContractStateChip from "@components/badges/ContractStateChip";
 import { HumanContract } from "@/Services/humanResources";
@@ -268,7 +267,6 @@ const HistoryTable = () => {
         mode={editMode ? "edit" : "create"}
         editId={editId}
       />
-      <WorkFlowPopup open={dialogOpen} setOpen={setDialogOpen} id={salaryId} />
     </div>
   );
 };

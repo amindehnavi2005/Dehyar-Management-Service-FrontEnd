@@ -149,7 +149,6 @@ const WorkFlowDrawer = ({
     )
       return null;
 
-    // در اینجا فقط گزینه‌ها را نمایش می‌دهیم و منطق ارسال درخواست را به handleReject می‌سپاریم
     return (
       <Box sx={{ mt: 2 }}>
         <Grid container spacing={2}>
