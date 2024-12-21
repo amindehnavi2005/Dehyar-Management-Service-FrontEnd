@@ -18,7 +18,7 @@ import { getHistoryWorkflow } from "@/Services/Salary";
 import api from "@/utils/axiosInstance";
 import moment from "moment-jalaali";
 
-const WorkFlowDialogForUpgradeVillageRank = ({
+const WorkFlowDrawerForUpdateVillageRank = ({
   open,
   setDialogOpen,
   details,
@@ -27,7 +27,6 @@ const WorkFlowDialogForUpgradeVillageRank = ({
   setLoading,
   nextState,
   readOnly = false,
-  workflowType = "کارگزینی",
 }) => {
   const [showRejectOptions, setShowRejectOptions] = useState(false);
   const [selectedRejectType, setSelectedRejectType] = useState(null);
@@ -57,18 +56,11 @@ const WorkFlowDialogForUpgradeVillageRank = ({
       const fullName = `${details.first_name || ""} ${details.last_name || ""}`;
       await changeStateWorkflow(details.salary_id, nextState, description);
       const approvalMessages = {
-        کارگزینی: {
-          0: `حکم کارگزینی ${fullName} به بخشدار مربوطه ارجاع داده شد.`,
-          1: `حکم کارگزینی ${fullName} به کارشناس استان مربوطه ارجاع داده شد.`,
-          2: `حکم کارگزینی ${fullName} تایید نهایی شد.`,
-        },
-        "درجه بندی": {
-          0: `درخواست ارتقاء درجه بندی به بخشدار مربوطه ارجاع داده شد`,
-          1: `درخواست ارتقاء درجه بندی به کارشناس استان مربوطه ارجاع داده شد`,
-          2: `درخواست ارتقاء درجه بندی به مدیریت توسعه روستایی ارجاع داده شد`,
-        },
+        0: `حکم کارگزینی ${fullName} به بخشدار مربوطه ارجاع داده شد.`,
+        1: `حکم کارگزینی ${fullName} به کارشناس استان مربوطه ارجاع داده شد.`,
+        2: `حکم کارگزینی ${fullName} تایید نهایی شد.`,
       };
-      toast.success(approvalMessages[workflowType][rejectApprovalLevel]);
+      toast.success(approvalMessages[rejectApprovalLevel]);
       handleClose();
     } catch (err) {
       toast.error("خطا در انجام عملیات");
@@ -98,16 +90,11 @@ const WorkFlowDialogForUpgradeVillageRank = ({
           result.description
         );
         const rejectMessages = {
-          کارگزینی: {
-            rejected_to_financial_officer: `حکم کارگزینی ${fullName} به مسئول امور مالی مربوطه جهت اصلاح بازگشت داده شد.`,
-            rejected_to_supervisor: `حکم کارگزینی ${fullName} به بخشدار مربوطه جهت اصلاح بازگشت داده شد.`,
-          },
-          "درجه بندی": {
-            1: "عدم تایید و بازگشت به دهیار",
-            2: "عدم تایید و بازگشت به بخشدار",
-          },
+          rejected_to_financial_officer: `حکم کارگزینی ${fullName} به مسئول امور مالی مربوطه جهت اصلاح بازگشت داده شد.`,
+          rejected_to_supervisor: `حکم کارگزینی ${fullName} به بخشدار مربوطه جهت اصلاح بازگشت داده شد.`,
         };
-        toast.success(rejectMessages[workflowType][rejectState]);
+
+        toast.success(rejectMessages[rejectState]);
         handleClose();
       }
     } catch (err) {
@@ -116,6 +103,12 @@ const WorkFlowDialogForUpgradeVillageRank = ({
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (selectedRejectType) {
+      handleReject();
+    }
+  }, [selectedRejectType]);
 
   useEffect(() => {
     if (details) {
@@ -160,7 +153,6 @@ const WorkFlowDialogForUpgradeVillageRank = ({
               color="error"
               onClick={() => {
                 setSelectedRejectType("rejected_to_financial_officer");
-                handleReject();
               }}
             >
               عدم تایید و بازگشت به مسئول مالی
@@ -174,7 +166,6 @@ const WorkFlowDialogForUpgradeVillageRank = ({
               color="error"
               onClick={() => {
                 setSelectedRejectType("rejected_to_supervisor");
-                handleReject();
               }}
             >
               عدم تایید و بازگشت به بخشداری
@@ -317,4 +308,4 @@ const WorkFlowDialogForUpgradeVillageRank = ({
   );
 };
 
-export default WorkFlowDialogForUpgradeVillageRank;
+export default WorkFlowDrawerForUpdateVillageRank;

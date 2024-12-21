@@ -1,5 +1,8 @@
 import api from "@utils/axiosInstance";
-import { ChangeStateSalaries } from "@/Services/humanResources";
+import {
+  ChangeStateSalaries,
+  ChangeStateWorkflowForUpgradeVillage,
+} from "@/Services/humanResources";
 
 export const changeStateWorkflow = (humanResourceId, state, message) => {
   const data = {
@@ -11,10 +14,16 @@ export const changeStateWorkflow = (humanResourceId, state, message) => {
   });
 };
 
-// export const rejectWorkflow = (humanResourceId,state, message) => {
-//     const data = {
-//         state: state,
-//         message: message,
-//     };
-//     return api.post(ChangeStateSalaries(humanResourceId), data, { requiresAuth: true });
-// };
+export const changeStateWorkflowForUpgradeVillageRank = (
+  id,
+  state,
+  message
+) => {
+  const data = {
+    state: state,
+    comments: message,
+  };
+  return api.post(ChangeStateWorkflowForUpgradeVillage(id), data, {
+    requiresAuth: true,
+  });
+};
