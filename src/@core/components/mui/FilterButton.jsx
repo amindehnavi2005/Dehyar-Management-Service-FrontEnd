@@ -17,7 +17,7 @@ const FilterChip = forwardRef(
   ) => {
     return (
       <Chip
-        avatar={<Avatar>{avatarValue}</Avatar>}
+        avatar={<Avatar className="p-1 pt-2 w-7 h-7">{avatarValue}</Avatar>}
         label={label}
         onClick={onClick}
         clickable
