@@ -107,7 +107,7 @@ const WorkFlowDrawer = ({
             2: "عدم تایید و بازگشت به بخشدار",
           },
         };
-        const message = rejectMessages[workflowType][rejectState];
+        toast.success(rejectMessages[workflowType][rejectState]);
         handleClose();
       }
     } catch (err) {
