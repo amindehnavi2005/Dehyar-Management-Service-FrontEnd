@@ -24,8 +24,6 @@ const MachineBasicInformation = ({ data, setData }) => {
         await api.get(getMachineBasicInformation(), { requiresAuth: true })
             .then((response) => {
                 setBasicInformation(response.data.data)
-                console.log(response.data);
-                console.log("Response => ", response.data.data);
             })
     }
 

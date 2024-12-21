@@ -22,11 +22,7 @@ const ViewMachineInformation = ({ onClose, data }) => {
 
                     return item.id == data.machine_basic_id
                 })
-                console.log("New Response => ", newResponse);
                 setBasicInformation(newResponse);
-                console.log("Basic Information => ", basicInformation);
-                console.log(response.data);
-                console.log("Response => ", response.data.data);
             })
     }
 

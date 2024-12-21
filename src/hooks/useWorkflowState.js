@@ -1,32 +1,31 @@
-import { useState } from 'react';
-import { toast } from 'react-toastify';
+import { useState } from "react";
+import { toast } from "react-toastify";
 
-const useWorkflow = (initialState = '', rejectApprovalLevel = false) => {
+const useWorkflow = (initialState = "", rejectApprovalLevel = false) => {
   const [state, setState] = useState(initialState);
-  const [description, setDescription] = useState('');
-  const [error, setError] = useState('');
+  const [description, setDescription] = useState("");
+  const [error, setError] = useState("");
 
   const handleStateChange = (newState, requiresMessage = false) => {
     setState(newState);
-    setError('');
+    setError("");
 
     // Reset description if not required
     if (!requiresMessage) {
-      setDescription('');
+      setDescription("");
     }
   };
 
   const handleDescriptionChange = (value) => {
     setDescription(value);
-    if (error && value.trim() !== '') {
-      setError('');
+    if (error && value.trim() !== "") {
+      setError("");
     }
   };
 
   const validate = (isRejection) => {
-    if (isRejection && description.trim() === '') {
-      setError('توضیحات در صورت رد کردن الزامی است');
-      toast.error('لطفا توضیحات را وارد کنید');
+    if (isRejection && description.trim() === "") {
+      setError("توضیحات در صورت رد کردن الزامی است");
       return false;
     }
     return true;
@@ -43,11 +42,11 @@ const useWorkflow = (initialState = '', rejectApprovalLevel = false) => {
       // Return the state and description for the parent component to handle
       return {
         state,
-        description: isRejection ? description : '',
-        success: true
+        description: isRejection ? description : "",
+        success: true,
       };
     } catch (error) {
-      toast.error(error.message || 'خطا در انجام عملیات');
+      toast.error(error.message || "خطا در انجام عملیات");
       return { success: false, error };
     }
   };
@@ -59,7 +58,7 @@ const useWorkflow = (initialState = '', rejectApprovalLevel = false) => {
     canReject,
     handleStateChange,
     handleDescriptionChange,
-    submitWorkflow
+    submitWorkflow,
   };
 };
 

@@ -86,7 +86,7 @@ const WorkFlowDrawer = ({
     setLoading(true);
     try {
       const result = await submitWorkflow(details.salary_id, true);
-      const fullName = `${details.first_name || ""} ${details.last_name || ""}`;
+      const fullName = `${details?.first_name} ${details?.last_name}`;
       if (result.success) {
         const rejectState =
           rejectApprovalLevel === 2
@@ -142,12 +142,14 @@ const WorkFlowDrawer = ({
   }, [details]);
 
   const renderRejectOptions = () => {
-    if (!showRejectOptions) return null;
+    if (
+      !showRejectOptions ||
+      rejectApprovalLevel === 0 ||
+      rejectApprovalLevel === 1
+    )
+      return null;
 
-    // For rejectedLevel 0, we don't show any rejection options
-    if (rejectApprovalLevel === 0 || rejectApprovalLevel === 1) return null;
-
-    // For rejectedLevel 2, keep the current implementation with both options
+    // در اینجا فقط گزینه‌ها را نمایش می‌دهیم و منطق ارسال درخواست را به handleReject می‌سپاریم
     return (
       <Box sx={{ mt: 2 }}>
         <Grid container spacing={2}>
@@ -157,25 +159,9 @@ const WorkFlowDrawer = ({
               fullWidth
               variant="contained"
               color="error"
-              onClick={async () => {
-                if (!description) {
-                  toast.error("لطفا توضیحات را وارد کنید");
-                  return;
-                }
-                setLoading(true);
-                try {
-                  await changeStateWorkflow(
-                    details.salary_id,
-                    "rejected_to_financial_officer",
-                    description
-                  );
-                  toast.success("عملیات با موفقیت انجام شد");
-                  handleClose();
-                } catch (err) {
-                  toast.error(err.message || "خطا در انجام عملیات");
-                } finally {
-                  setLoading(false);
-                }
+              onClick={() => {
+                setSelectedRejectType("rejected_to_financial_officer");
+                handleReject();
               }}
             >
               عدم تایید و بازگشت به مسئول مالی
@@ -187,25 +173,9 @@ const WorkFlowDrawer = ({
               fullWidth
               variant="contained"
               color="error"
-              onClick={async () => {
-                if (!description) {
-                  toast.error("لطفا توضیحات را وارد کنید");
-                  return;
-                }
-                setLoading(true);
-                try {
-                  await changeStateWorkflow(
-                    details.salary_id,
-                    "rejected_to_supervisor",
-                    description
-                  );
-                  toast.success("عملیات با موفقیت انجام شد");
-                  handleClose();
-                } catch (err) {
-                  toast.error(err.message || "خطا در انجام عملیات");
-                } finally {
-                  setLoading(false);
-                }
+              onClick={() => {
+                setSelectedRejectType("rejected_to_supervisor");
+                handleReject();
               }}
             >
               عدم تایید و بازگشت به بخشداری
@@ -232,7 +202,7 @@ const WorkFlowDrawer = ({
   const getRejectionButtonText = () => {
     switch (rejectApprovalLevel) {
       case 0:
-        return null; // No rejection button for level 0
+        return null;
       case 1:
         return "عدم تایید حکم";
       default:
