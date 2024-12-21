@@ -12,11 +12,9 @@ import CustomIconButton from "@core/components/mui/IconButton";
 import Box from "@mui/material/Box";
 import { translateContractState } from "@utils/contractStateTranslator";
 import ContractStateChip from "@components/badges/ContractStateChip";
-import WorkFlowPopup from "@views/dehyari/form/workflow/WorkFlowPopup";
 import WorkFlowDrawer from "../form/workflow/WorkFlowDialog";
 import useCustomTable from "@/hooks/useCustomTable";
 import FilterChip from "@/@core/components/mui/FilterButton";
-import HistoryWorkflowPopup from "../form/workflow/HistoryWorkflow";
 import TitleDehyariPanel from "@/components/common/TitleDehyariPanel";
 import { Tooltip } from "@mui/material";
 

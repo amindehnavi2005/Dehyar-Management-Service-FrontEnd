@@ -90,15 +90,10 @@ const WorkFlowDrawer = ({
           result.description
         );
         const rejectMessages = {
-          کارگزینی: {
-            rejected_to_financial_officer: `حکم کارگزینی ${fullName} به مسئول امور مالی مربوطه جهت اصلاح بازگشت داده شد.`,
-            rejected_to_supervisor: `حکم کارگزینی ${fullName} به بخشدار مربوطه جهت اصلاح بازگشت داده شد.`,
-          },
-          "درجه بندی": {
-            1: "عدم تایید و بازگشت به دهیار",
-            2: "عدم تایید و بازگشت به بخشدار",
-          },
+          rejected_to_financial_officer: `حکم کارگزینی ${fullName} به مسئول امور مالی مربوطه جهت اصلاح بازگشت داده شد.`,
+          rejected_to_supervisor: `حکم کارگزینی ${fullName} به بخشدار مربوطه جهت اصلاح بازگشت داده شد.`,
         };
+
         toast.success(rejectMessages[rejectState]);
         handleClose();
       }
@@ -108,6 +103,12 @@ const WorkFlowDrawer = ({
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (selectedRejectType) {
+      handleReject();
+    }
+  }, [selectedRejectType]);
 
   useEffect(() => {
     if (details) {
@@ -152,7 +153,6 @@ const WorkFlowDrawer = ({
               color="error"
               onClick={() => {
                 setSelectedRejectType("rejected_to_financial_officer");
-                handleReject();
               }}
             >
               عدم تایید و بازگشت به مسئول مالی
@@ -166,7 +166,6 @@ const WorkFlowDrawer = ({
               color="error"
               onClick={() => {
                 setSelectedRejectType("rejected_to_supervisor");
-                handleReject();
               }}
             >
               عدم تایید و بازگشت به بخشداری
