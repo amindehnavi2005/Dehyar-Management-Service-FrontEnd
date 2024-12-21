@@ -27,7 +27,6 @@ const WorkFlowDrawer = ({
   setLoading,
   nextState,
   readOnly = false,
-  workflowType = "کارگزینی",
 }) => {
   const [showRejectOptions, setShowRejectOptions] = useState(false);
   const [selectedRejectType, setSelectedRejectType] = useState(null);
@@ -57,18 +56,11 @@ const WorkFlowDrawer = ({
       const fullName = `${details.first_name || ""} ${details.last_name || ""}`;
       await changeStateWorkflow(details.salary_id, nextState, description);
       const approvalMessages = {
-        کارگزینی: {
-          0: `حکم کارگزینی ${fullName} به بخشدار مربوطه ارجاع داده شد.`,
-          1: `حکم کارگزینی ${fullName} به کارشناس استان مربوطه ارجاع داده شد.`,
-          2: `حکم کارگزینی ${fullName} تایید نهایی شد.`,
-        },
-        "درجه بندی": {
-          0: `درخواست ارتقاء درجه بندی به بخشدار مربوطه ارجاع داده شد`,
-          1: `درخواست ارتقاء درجه بندی به کارشناس استان مربوطه ارجاع داده شد`,
-          2: `درخواست ارتقاء درجه بندی به مدیریت توسعه روستایی ارجاع داده شد`,
-        },
+        0: `حکم کارگزینی ${fullName} به بخشدار مربوطه ارجاع داده شد.`,
+        1: `حکم کارگزینی ${fullName} به کارشناس استان مربوطه ارجاع داده شد.`,
+        2: `حکم کارگزینی ${fullName} تایید نهایی شد.`,
       };
-      toast.success(approvalMessages[workflowType][rejectApprovalLevel]);
+      toast.success(approvalMessages[rejectApprovalLevel]);
       handleClose();
     } catch (err) {
       toast.error("خطا در انجام عملیات");
@@ -107,7 +99,7 @@ const WorkFlowDrawer = ({
             2: "عدم تایید و بازگشت به بخشدار",
           },
         };
-        toast.success(rejectMessages[workflowType][rejectState]);
+        toast.success(rejectMessages[rejectState]);
         handleClose();
       }
     } catch (err) {
