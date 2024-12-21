@@ -1,25 +1,13 @@
 "use client";
-import {
-  Button,
-  Drawer,
-  DialogActions,
-  DialogContent,
-  Collapse,
-  TextField,
-} from "@mui/material";
+import { Button, Drawer, DialogActions, DialogContent } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import CustomIconButton from "@core/components/mui/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import DividerSimple from "@components/common/Divider/DividerSimple";
 import Grid from "@mui/material/Grid";
-import Chip from "@mui/material/Chip";
 import Box from "@mui/material/Box";
-import UserInfoItem from "../edit/Tables/UserInfoItem";
 import { changeStateWorkflow } from "@/utils/workflowService";
 import { toast } from "react-toastify";
-import CustomTextField from "@/@core/components/custom-inputs/CustomTextField";
-import { useForm } from "react-hook-form";
-import { convertUnixToJalali } from "@/utils/dateConverter";
 import useWorkflow from "@/hooks/useWorkflowState";
 import RequestHistory from "./RequestHistory";
 import ReviewDecree from "./ReviewDecree";
@@ -39,6 +27,7 @@ const WorkFlowDrawer = ({
   setLoading,
   nextState,
   readOnly = false,
+  workflowType = "کارگزینی",
 }) => {
   const [showRejectOptions, setShowRejectOptions] = useState(false);
   const [selectedRejectType, setSelectedRejectType] = useState(null);
@@ -65,27 +54,24 @@ const WorkFlowDrawer = ({
   const handleApprove = async () => {
     setLoading(true);
     try {
-      await changeStateWorkflow(details.salary_id, nextState, description);
       const fullName = `${details.first_name || ""} ${details.last_name || ""}`;
-
-      switch (rejectApprovalLevel) {
-        case 0:
-          toast.success(
-            `حکم کارگزینی ${fullName} به بخشدار مربوطه ارجاع داده شد.`
-          );
-          break;
-        case 1:
-          toast.success(
-            `حکم کارگزینی ${fullName} به کارشناس استان مربوطه ارجاع داده شد.`
-          );
-          break;
-        case 2:
-          toast.success(`حکم کارگزینی ${fullName} تایید نهایی شد.`);
-          break;
-      }
+      await changeStateWorkflow(details.salary_id, nextState, description);
+      const approvalMessages = {
+        کارگزینی: {
+          0: `حکم کارگزینی ${fullName} به بخشدار مربوطه ارجاع داده شد.`,
+          1: `حکم کارگزینی ${fullName} به کارشناس استان مربوطه ارجاع داده شد.`,
+          2: `حکم کارگزینی ${fullName} تایید نهایی شد.`,
+        },
+        "درجه بندی": {
+          0: `درخواست ارتقاء درجه بندی به بخشدار مربوطه ارجاع داده شد`,
+          1: `درخواست ارتقاء درجه بندی به کارشناس استان مربوطه ارجاع داده شد`,
+          2: `درخواست ارتقاء درجه بندی به مدیریت توسعه روستایی ارجاع داده شد`,
+        },
+      };
+      toast.success(approvalMessages[workflowType][rejectApprovalLevel]);
       handleClose();
     } catch (err) {
-      toast.error(err.message || "خطا در انجام عملیات");
+      toast.error("خطا در انجام عملیات");
     } finally {
       setLoading(false);
     }
@@ -111,19 +97,17 @@ const WorkFlowDrawer = ({
           rejectState,
           result.description
         );
-
-        switch (rejectState) {
-          case "rejected_to_financial_officer":
-            toast.success(
-              `حکم کارگزینی ${fullName} به مسئول امور مالی مربوطه جهت اصلاح بازگشت داده شد.`
-            );
-            break;
-          case "rejected_to_supervisor":
-            toast.success(
-              `حکم کارگزینی ${fullName} به بخشدار مربوطه جهت اصلاح بازگشت داده شد.`
-            );
-            break;
-        }
+        const rejectMessages = {
+          کارگزینی: {
+            rejected_to_financial_officer: `حکم کارگزینی ${fullName} به مسئول امور مالی مربوطه جهت اصلاح بازگشت داده شد.`,
+            rejected_to_supervisor: `حکم کارگزینی ${fullName} به بخشدار مربوطه جهت اصلاح بازگشت داده شد.`,
+          },
+          "درجه بندی": {
+            1: "عدم تایید و بازگشت به دهیار",
+            2: "عدم تایید و بازگشت به بخشدار",
+          },
+        };
+        const message = rejectMessages[workflowType][rejectState];
         handleClose();
       }
     } catch (err) {
