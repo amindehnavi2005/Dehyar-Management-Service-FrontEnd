@@ -6,7 +6,7 @@ import Tooltip from "@mui/material/Tooltip";
 import DividerSimple from "@components/common/Divider/DividerSimple";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import { changeStateWorkflow } from "@/utils/workflowService";
+import { changeStateWorkflowForUpgradeVillageRank } from "@/utils/workflowService";
 import { toast } from "react-toastify";
 import useWorkflow from "@/hooks/useWorkflowState";
 import RequestHistory from "./RequestHistory";
@@ -14,7 +14,6 @@ import ReviewDecree from "./ReviewDecree";
 import TabContent from "@/components/common/Tabs/TabContent";
 import AnimatedTabs from "@/components/common/Tabs/AnimatedTabs";
 import Typography from "@mui/material/Typography";
-import { getHistoryWorkflow } from "@/Services/Salary";
 import api from "@/utils/axiosInstance";
 import moment from "moment-jalaali";
 
@@ -54,7 +53,11 @@ const WorkFlowDrawerForUpdateVillageRank = ({
     setLoading(true);
     try {
       const fullName = `${details.first_name || ""} ${details.last_name || ""}`;
-      await changeStateWorkflow(details.id, nextState, description);
+      await changeStateWorkflowForUpgradeVillageRank(
+        details.id,
+        nextState,
+        description
+      );
       const approvalMessages = {
         0: `درخواست ارتقاء درجه به بخشدار مربوطه ارجاع داده شد.`,
         1: `درخواست ارتقاء درجه به کارشناس استان مربوطه ارجاع داده شد.`,
@@ -82,7 +85,11 @@ const WorkFlowDrawerForUpdateVillageRank = ({
       if (result.success) {
         const rejectState =
           rejectApprovalLevel === 2 ? selectedRejectType : "rejected_to_dehyar";
-        await changeStateWorkflow(details.id, rejectState, result.description);
+        await changeStateWorkflowForUpgradeVillageRank(
+          details.id,
+          rejectState,
+          result.description
+        );
         const rejectMessages = {
           rejected_to_dehyar: `درخواست ارتقاء درجه به دهیار مربوطه جهت اصلاح بازگشت داده شد.`,
           rejected_to_supervisor: `درخواست ارتقاء درجه به بخشدار مربوطه جهت اصلاح بازگشت داده شد.`,
