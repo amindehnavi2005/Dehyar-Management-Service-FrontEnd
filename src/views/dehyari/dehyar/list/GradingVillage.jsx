@@ -9,6 +9,7 @@ import TitleDehyariPanel from "@/components/common/TitleDehyariPanel";
 import { getVillageGradeUpgrades } from "@/Services/UpgradeVillage";
 import api from "@/utils/axiosInstance";
 import WorkFlowDrawer from "../../form/workflow/WorkFlowDialog";
+import WorkFlowDrawerForUpdateVillageRank from "../../form/workflow/WorkFlowDrawerForUpgradeVillageRank";
 
 function GradingVillage() {
   const [data, setData] = useState([]);
@@ -35,7 +36,7 @@ function GradingVillage() {
       const response = await api.get(`${getVillageGradeUpgrades()}`, {
         requiresAuth: true,
       });
-      setData(response.data);
+      setData(response.data.data);
       setLoading(false);
       setTableLoading(false);
     } catch (error) {
@@ -118,7 +119,7 @@ function GradingVillage() {
               height: "100%",
             }}
           >
-            {row.original.current_degree && (
+            {row.original.state && (
               <Tooltip title={"مشاهده/تغییر وضعیت درجه بندی"}>
                 <CustomIconButton
                   color={"secondary"}
@@ -128,9 +129,8 @@ function GradingVillage() {
                   }}
                   className={"rounded-full animate-pulse"}
                 >
-                  {row.original.current_degree == "draft" ||
-                  row.original.current_degree ==
-                    "rejected_to_financial_officer" ? (
+                  {row.original.state == "draft" ||
+                  row.original.state == "rejected_to_dehyar" ? (
                     <i className="ri-mail-send-line" />
                   ) : (
                     <i className="ri-history-line" />
@@ -185,7 +185,7 @@ function GradingVillage() {
         دهیاری ها
       </Typography>
       <MaterialReactTable table={table} />
-      <WorkFlowDrawer
+      <WorkFlowDrawerForUpdateVillageRank
         open={dialogOpen}
         setDialogOpen={setDialogOpen}
         details={currentRow}
@@ -195,8 +195,8 @@ function GradingVillage() {
         nextState={"pending_supervisor"}
         readOnly={
           !(
-            currentRow?.contract_state == "draft" ||
-            currentRow?.contract_state == "rejected_to_financial_officer"
+            currentRow?.state == "draft" ||
+            currentRow?.state == "rejected_to_dehyar"
           )
         }
       />

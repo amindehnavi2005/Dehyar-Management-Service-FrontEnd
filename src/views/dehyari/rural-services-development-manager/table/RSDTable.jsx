@@ -9,7 +9,6 @@ import api from "@/utils/axiosInstance";
 import CustomIconButton from "@core/components/mui/IconButton";
 import { translateContractState } from "@utils/contractStateTranslator";
 import ContractStateChip from "@components/badges/ContractStateChip";
-import WorkFlowDrawer from "../form/workflow/WorkFlowDialog";
 import useCustomTable from "@/hooks/useCustomTable";
 import FilterChip from "@/@core/components/mui/FilterButton";
 import { downloadHumanResourcePdf } from "@/utils/humanResourcePdfUtils";
@@ -62,8 +61,8 @@ function RSDTable(props) {
 
   const handleWorkflowHistory = (row) => {
     if (row?.salary_id) {
-      setCurrentRow(row); // مقداردهی صحیح به currentRow
-      setPopupWorkflow(true); // باز کردن پنجره تاریخچه
+      setCurrentRow(row);
+      setPopupWorkflow(true);
     } else {
       toast.error("اطلاعات تاریخچه موجود نیست.");
     }
@@ -303,21 +302,6 @@ function RSDTable(props) {
     <div>
       <TitleDehyariPanel />
       <MaterialReactTable table={table} />
-      <WorkFlowDrawer
-        open={popupOpen}
-        setDialogOpen={setPopupOpen}
-        details={currentRow}
-        rejectApprovalLevel={0}
-        loading={loading}
-        setLoading={setLoading}
-        nextState={"pending_supervisor"}
-        readOnly={
-          !(
-            currentRow?.contract_state == "draft" ||
-            currentRow?.contract_state == "rejected_to_financial_officer"
-          )
-        }
-      />
     </div>
   );
 }

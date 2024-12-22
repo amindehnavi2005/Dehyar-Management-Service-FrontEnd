@@ -53,7 +53,7 @@ function GradingVillageForRSD() {
       const response = await api.get(`${getVillageGradeUpgrades()}`, {
         requiresAuth: true,
       });
-      setData(response.data);
+      setData(response.data.data);
       setLoading(false);
       setTableLoading(false);
     } catch (error) {
@@ -134,19 +134,26 @@ function GradingVillageForRSD() {
               height: "100%",
             }}
           >
-            <Tooltip title={"درجه بندی"}>
+            {/* {row.original.contract_state && ( */}
+            <Tooltip title={"مشاهده/تغییر درجه بندی"}>
               <CustomIconButton
                 color={"secondary"}
                 onClick={() => {
-                  router.push(
-                    `/dehyari/form/edit?param=${row.original.nid}&id=${row.original.human_resource_id}&salary_id=${row.original.salary_id}`
-                  );
+                  setCurrentRow(row.original);
+                  setPopupOpen(true);
                 }}
-                className={"rounded-full"}
+                className={"rounded-full animate-pulse"}
               >
-                <i className="ri-edit-box-line" />
+                {row.original.contract_state == "draft" ||
+                row.original.contract_state ==
+                  "rejected_to_financial_officer" ? (
+                  <i className="ri-mail-send-line" />
+                ) : (
+                  <i className="ri-history-line" />
+                )}
               </CustomIconButton>
             </Tooltip>
+            {/* )} */}
           </div>
         ),
       },
