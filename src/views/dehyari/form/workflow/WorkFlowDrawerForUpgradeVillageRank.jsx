@@ -107,16 +107,16 @@ const WorkFlowDrawerForUpdateVillageRank = ({
     if (details) {
       const fetchData = async () => {
         try {
-          const response = await api.get(getHistoryWorkflow(details.id), {
-            requiresAuth: true,
-          });
-          // Sort data from newest to oldest
-          const sortedData = response.data.sort(
-            (firstDate, lastDate) =>
-              moment(lastDate.started_at).valueOf() -
-              moment(firstDate.started_at).valueOf()
-          );
-          setHistoryData(sortedData);
+          // const response = await api.get(getHistoryWorkflow(details.id), {
+          //   requiresAuth: true,
+          // });
+          // // Sort data from newest to oldest
+          // const sortedData = response.data.sort(
+          //   (firstDate, lastDate) =>
+          //     moment(lastDate.started_at).valueOf() -
+          //     moment(firstDate.started_at).valueOf()
+          // );
+          // setHistoryData(sortedData);
         } catch (error) {
           console.error("Error fetching data:", error);
         }
@@ -192,7 +192,7 @@ const WorkFlowDrawerForUpdateVillageRank = ({
   };
 
   const tabs = [
-    { label: "بررسی حکم", value: "review" },
+    { label: " بررسی ارتقاء درجه", value: "review" },
     {
       avatar: historyData?.length || 0,
       label: "سوابق درخواست",
@@ -225,7 +225,7 @@ const WorkFlowDrawerForUpdateVillageRank = ({
       <DividerSimple
         title={
           <Typography component="span">
-            حکم کارگزینی{" "}
+            ارتقاء درجه{" "}
             <Typography
               component="span"
               sx={{ fontWeight: 700 }}
@@ -253,6 +253,7 @@ const WorkFlowDrawerForUpdateVillageRank = ({
             handleDescriptionChange={handleDescriptionChange}
             renderRejectOptions={renderRejectOptions}
             readOnly={readOnly}
+            workflowType={"ارتقاء درجه"}
           />
         </TabContent>
         <TabContent active={activeTab === "history"}>
