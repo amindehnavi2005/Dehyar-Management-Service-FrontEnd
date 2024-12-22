@@ -5,7 +5,7 @@ const getVillageGradeUpgrades = () => {
 };
 
 const getPopulationVillageInformation = () => {
-  return `${BaseUrl}/population-village-information`;
+  return `${BaseUrl}/village-information/population`;
 };
 
 const getDivisionInformation = () => {

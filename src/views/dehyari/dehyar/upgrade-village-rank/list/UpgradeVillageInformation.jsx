@@ -8,10 +8,18 @@ import { FormProvider, useForm } from "react-hook-form";
 import api from "@/utils/axiosInstance";
 import { getDivisionInformation } from "@/Services/UpgradeVillage";
 import { useRouter } from "next/navigation";
+import { getGeoDetails } from "@/Services/CountryDivision";
 
-const UpgradeVillageInformation = () => {
+const UpgradeVillageInformation = ({ details, userInfo }) => {
+  console.log("Details => ", details);
   const methods = useForm();
   const router = useRouter();
+  const [geoNames, setGeoNames] = React.useState({
+    stateName: "",
+    cityName: "",
+    regionNames: [],
+    dehestanName: "",
+  });
 
   const handleBack = () => {
     router.back();
@@ -20,16 +28,79 @@ const UpgradeVillageInformation = () => {
   const onSubmit = (data) => {
     // console.log(data);
   };
+
   useEffect(() => {
-    const fetchData = async () => {
-      const response = await api.get(getDivisionInformation(), {
-        requiresAuth: true,
-      });
-      console.log("response => ", response);
-      
+    const fetchGeoDetails = async () => {
+      if (!userInfo.geo_state && !userInfo.geo_city && !userInfo.geo_region)
+        return;
+      try {
+        const geoDetails = [
+          { geo_type: "state", geo_code: `${userInfo.geo_state}` },
+          { geo_type: "city", geo_code: `${userInfo.geo_city}` },
+          { geo_type: "dehestan", geo_code: `${userInfo.geo_dehestan}` },
+          ...(Array.isArray(userInfo.geo_region)
+            ? userInfo.geo_region.map((region) => ({
+                geo_type: "region",
+                geo_code: region.toString(),
+              }))
+            : userInfo.geo_region
+              ? [
+                  {
+                    geo_type: "region",
+                    geo_code: userInfo.geo_region.toString(),
+                  },
+                ]
+              : []),
+        ].filter((item) => item.geo_code !== "undefined");
+
+        const geoResponse = await api.post(
+          getGeoDetails(),
+          { geo_data: geoDetails },
+          { requiresAuth: true }
+        );
+        const geoData = geoResponse.data;
+        const geoState = userInfo.geo_state;
+        const geoCity = userInfo.geo_city;
+        const geoRegion = userInfo.geo_region;
+        const geoDehestan = userInfo.geo_dehestan;
+        const stateInfo = geoData.find(
+          (geo) => geo.info.length && geo.info[0].hierarchy_code === geoState
+        );
+        const cityInfo = geoData.find(
+          (geo) => geo.info.length && geo.info[0].hierarchy_code === geoCity
+        );
+        const regionInfos = Array.isArray(geoRegion)
+          ? geoRegion.map((region) => {
+              const info = geoData.find(
+                (geo) => geo.info.length && geo.info[0].hierarchy_code == region
+              );
+              return info?.info[0]?.approved_name || region;
+            })
+          : geoRegion
+            ? [
+                geoData.find(
+                  (geo) =>
+                    geo.info.length && geo.info[0].hierarchy_code == geoRegion
+                )?.info[0]?.approved_name || geoRegion,
+              ]
+            : [];
+        const dehestanInfo = geoData.find(
+          (geo) => geo.info.length && geo.info[0].hierarchy_code === geoDehestan
+        );
+
+        setGeoNames({
+          stateName: stateInfo?.info[0]?.approved_name || "",
+          cityName: cityInfo?.info[0]?.approved_name || "",
+          regionNames: regionInfos,
+          dehestanName: dehestanInfo?.info[0]?.approved_name || "",
+        });
+      } catch (error) {
+        console.error("Error fetching geo details:", error);
+      }
     };
-    fetchData();
-  }, []);
+
+    fetchGeoDetails();
+  }, [userInfo]);
 
   return (
     <FormProvider {...methods}>
@@ -67,7 +138,9 @@ const UpgradeVillageInformation = () => {
           my={2}
         >
           <i className="ri-building-4-line h-4"></i>استان :{" "}
-          <span className="font-medium text-secondary">ایلام</span>
+          <span className="font-medium text-secondary">
+            {geoNames.stateName}
+          </span>
         </Typography>
         <Typography
           fontWeight={"medium"}
@@ -77,7 +150,9 @@ const UpgradeVillageInformation = () => {
           my={2}
         >
           <i className="ri-building-2-line h-4"></i>شهرستان :{" "}
-          <span className="font-medium text-secondary"></span>
+          <span className="font-medium text-secondary">
+            {geoNames.cityName}
+          </span>
         </Typography>
         <Typography
           fontWeight={"medium"}
@@ -87,7 +162,9 @@ const UpgradeVillageInformation = () => {
           my={2}
         >
           <i className="ri-building-line h-4"></i>بخش :{" "}
-          <span className="font-medium text-secondary"></span>
+          <span className="font-medium text-secondary">
+            {geoNames.regionNames.join(", ")}
+          </span>
         </Typography>
         <Typography
           fontWeight={"medium"}
@@ -97,7 +174,9 @@ const UpgradeVillageInformation = () => {
           my={2}
         >
           <i className="ri-hotel-line h-4"></i>دهستان :{" "}
-          <span className="font-medium text-secondary"></span>
+          <span className="font-medium text-secondary">
+            {geoNames.dehestanName}
+          </span>
         </Typography>
         <div className="my-5">
           <DividerSimple title={"درجه دهیاری"} />
