@@ -15,54 +15,45 @@ const UpgradeVillageTable = ({
   handleAddEventSidebarToggle,
   addEventSidebarOpen,
 }) => {
-  console.log("Details => ", details);
-
   useEffect(() => {
     if (details) {
-      const updatedRanks = upgradeVillageRanks.map((rank) => {
-        switch (rank.id) {
-          case 2:
-            return { ...rank, value: details.area_hectares || 0 };
-          case 3:
-            return { ...rank, value: details.income || rank.value };
-          default:
-            return rank;
-        }
-      });
-
-      setUpgradeVillageRanks(updatedRanks);
+      setUpgradeVillageRanks(rebuildVillageRanks(details));
     }
   }, [details]);
 
-  const [upgradeVillageRanks, setUpgradeVillageRanks] = useState([
-    {
-      id: 1,
-      parameter: "جمعیت",
-      year: (details?.populations && details?.populations[0]?.year) || 0,
-      value: (details?.populations && details?.populations[0]?.population) || 0,
-      score: 5,
-    },
-    {
-      id: 2,
-      parameter: "وسعت (هکتار)",
-      year: "-",
-      value: details?.area_hectares || 0,
-      score: 8,
-      isValueEditing: false,
-    },
-    {
-      id: 3,
-      parameter: "درآمد (میلیون ریال)",
-      year: 1397,
-      value: 12000,
-      score: 3,
-      isYearEditing: false,
-      isValueEditing: false,
-    },
-    { id: 4, parameter: "هدف گردشگری", year: "-", value: false, score: 6 },
-    { id: 5, parameter: "مرکز دهستان", year: "-", value: true, score: 2 },
-    { id: 6, parameter: "مرکز بخش", year: "-", value: false, score: 5 },
-  ]);
+  const [upgradeVillageRanks, setUpgradeVillageRanks] = useState([]);
+  const rebuildVillageRanks = (details) => {
+    return [
+      {
+        id: 1,
+        parameter: "جمعیت",
+        year: (details?.populations && details?.populations[0]?.year) || "-",
+        value:
+          (details?.populations && details?.populations[0]?.population) || 0,
+        score: 5,
+      },
+      {
+        id: 2,
+        parameter: "وسعت (هکتار)",
+        year: "-",
+        value: details?.area_hectares || 0,
+        score: 8,
+        isValueEditing: false,
+      },
+      {
+        id: 3,
+        parameter: "درآمد (میلیون ریال)",
+        year: details?.income_year || 1397,
+        value: details?.income || 12000,
+        score: 3,
+        isYearEditing: false,
+        isValueEditing: false,
+      },
+      { id: 4, parameter: "هدف گردشگری", year: "-", value: false, score: 6 },
+      { id: 5, parameter: "مرکز دهستان", year: "-", value: true, score: 2 },
+      { id: 6, parameter: "مرکز بخش", year: "-", value: false, score: 5 },
+    ];
+  };
   const [editedVillageRate, setEditedVillageRate] = useState({});
   const [validationErrors, setValidationErrors] = useState({});
   const [isUpdatingVillageRate, setIsUpdatingVillageRate] = useState(false);
