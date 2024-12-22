@@ -11,7 +11,7 @@ const accessControl = {
     },
     {
       label: "درجه بندی دهیاری",
-      icon: <i className="ri-survey-line" />,
+      icon: <i className="ri-arrow-up-wide-fill" />,
       href: "/dehyari/rsd/upgrade-village-rank",
     },
   ],
