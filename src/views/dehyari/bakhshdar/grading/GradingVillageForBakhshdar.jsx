@@ -5,12 +5,14 @@ import { MaterialReactTable } from "material-react-table";
 import { Box, Button, Tooltip, Typography } from "@mui/material";
 import CustomIconButton from "@core/components/mui/IconButton";
 import useCustomTable from "@/hooks/useCustomTable";
-import TitleDehyariPanel from "@/components/common/TitleDehyariPanel";
 import { getVillageGradeUpgrades } from "@/Services/UpgradeVillage";
 import api from "@/utils/axiosInstance";
 import FilterChip from "@/@core/components/mui/FilterButton";
+import { translateContractState } from "@/utils/contractStateTranslator";
+import ContractStateChip from "@/components/badges/ContractStateChip";
+import WorkFlowDrawerForUpdateVillageRank from "../../form/workflow/WorkFlowDrawerForUpgradeVillageRank";
 
-function GradingVillageForGovernor() {
+function GradingVillageForBakhshdar() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -21,6 +23,7 @@ function GradingVillageForGovernor() {
   const [highlightStyle, setHighlightStyle] = useState({ width: 0, left: 0 });
   const [filterStatus, setFilterStatus] = useState("");
   const buttonRefs = useRef([]);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   useEffect(() => {
     if (buttonRefs.current[0]) {
@@ -53,7 +56,7 @@ function GradingVillageForGovernor() {
       const response = await api.get(`${getVillageGradeUpgrades()}`, {
         requiresAuth: true,
       });
-      setData(response.data);
+      setData(response.data.data);
       setLoading(false);
       setTableLoading(false);
     } catch (error) {
@@ -137,12 +140,20 @@ function GradingVillageForGovernor() {
         ),
       },
       {
-        accessorKey: "status",
+        accessorKey: "state",
         header: "وضعیت",
         size: 150,
-        Cell: ({ cell }) => (
-          <div style={{ textAlign: "right" }}>{cell.getValue()}</div>
-        ),
+        Cell: ({ cell, row }) => {
+          const contractStateValue = translateContractState(cell.getValue());
+          return (
+            <div style={{ textAlign: "right" }}>
+              <ContractStateChip
+                label={contractStateValue.title}
+                color={contractStateValue.color}
+              />
+            </div>
+          );
+        },
       },
       {
         accessorKey: "actions",
@@ -157,19 +168,25 @@ function GradingVillageForGovernor() {
               height: "100%",
             }}
           >
-            <Tooltip title={"درجه بندی"}>
-              <CustomIconButton
-                color={"secondary"}
-                onClick={() => {
-                  router.push(
-                    `/dehyari/form/edit?param=${row.original.nid}&id=${row.original.human_resource_id}&salary_id=${row.original.salary_id}`
-                  );
-                }}
-                className={"rounded-full"}
-              >
-                <i className="ri-edit-box-line" />
-              </CustomIconButton>
-            </Tooltip>
+            {row.original.state && (
+              <Tooltip title={"مشاهده/تغییر وضعیت درجه بندی"}>
+                <CustomIconButton
+                  color={"secondary"}
+                  onClick={() => {
+                    setCurrentRow(row.original);
+                    setDialogOpen(true);
+                  }}
+                  className={"rounded-full animate-pulse"}
+                >
+                  {row.original.state == "pending_supervisor" ||
+                  row.original.state == "rejected_to_supervisor" ? (
+                    <i className="ri-mail-send-line" />
+                  ) : (
+                    <i className="ri-history-line" />
+                  )}
+                </CustomIconButton>
+              </Tooltip>
+            )}
           </div>
         ),
       },
@@ -294,8 +311,23 @@ function GradingVillageForGovernor() {
         دهیاری ها
       </Typography>
       <MaterialReactTable table={table} />
+      <WorkFlowDrawerForUpdateVillageRank
+        open={dialogOpen}
+        setDialogOpen={setDialogOpen}
+        details={currentRow}
+        rejectApprovalLevel={0}
+        loading={loading}
+        setLoading={setLoading}
+        nextState={"pending_supervisor"}
+        readOnly={
+          !(
+            currentRow?.state == "pending_supervisor" ||
+            currentRow?.state == "rejected_to_supervisor"
+          )
+        }
+      />
     </div>
   );
 }
 
-export default GradingVillageForGovernor;
+export default GradingVillageForBakhshdar;
