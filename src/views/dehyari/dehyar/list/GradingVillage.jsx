@@ -10,6 +10,8 @@ import { getVillageGradeUpgrades } from "@/Services/UpgradeVillage";
 import api from "@/utils/axiosInstance";
 import WorkFlowDrawer from "../../form/workflow/WorkFlowDialog";
 import WorkFlowDrawerForUpdateVillageRank from "../../form/workflow/WorkFlowDrawerForUpgradeVillageRank";
+import { translateContractState } from "@/utils/contractStateTranslator";
+import ContractStateChip from "@/components/badges/ContractStateChip";
 
 function GradingVillage() {
   const [data, setData] = useState([]);
@@ -99,12 +101,20 @@ function GradingVillage() {
         ),
       },
       {
-        accessorKey: "status",
+        accessorKey: "state",
         header: "وضعیت",
         size: 150,
-        Cell: ({ cell }) => (
-          <div style={{ textAlign: "right" }}>{cell.getValue()}</div>
-        ),
+        Cell: ({ cell, row }) => {
+          const contractStateValue = translateContractState(cell.getValue());
+          return (
+            <div style={{ textAlign: "right" }}>
+              <ContractStateChip
+                label={contractStateValue.title}
+                color={contractStateValue.color}
+              />
+            </div>
+          );
+        },
       },
       {
         accessorKey: "actions",
