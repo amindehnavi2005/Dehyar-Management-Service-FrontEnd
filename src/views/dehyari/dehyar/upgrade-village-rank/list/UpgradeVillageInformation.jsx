@@ -11,7 +11,6 @@ import { useRouter } from "next/navigation";
 import { getGeoDetails } from "@/Services/CountryDivision";
 
 const UpgradeVillageInformation = ({ details, userInfo }) => {
-  console.log("Details => ", details);
   const methods = useForm();
   const router = useRouter();
   const [geoNames, setGeoNames] = React.useState({

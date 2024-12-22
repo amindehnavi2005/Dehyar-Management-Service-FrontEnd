@@ -21,7 +21,7 @@ const UpgradeVillageRank = () => {
       const response = await api.get(getDivisionInformation(), {
         requiresAuth: true,
       });
-      setDivisionInformation(response.data);
+      setDivisionInformation(response.data.data[0]);
     };
     const userDetails = async () => {
       const response = await api.get(`${me()}`, { requiresAuth: true });
@@ -50,6 +50,7 @@ const UpgradeVillageRank = () => {
             جزئیات محاسبه درجه بندی دهیاری
           </Typography>
           <UpgradeVillageTable
+            details={divisionInformation}
             loading={loading}
             setLoading={setLoading}
             handleAddEventSidebarToggle={handleAddEventSidebarToggle}

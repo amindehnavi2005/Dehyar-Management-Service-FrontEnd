@@ -9,18 +9,44 @@ import { getDivisionInformation } from "@/Services/UpgradeVillage";
 import { me } from "@/Services/Auth/AuthService";
 
 const UpgradeVillageTable = ({
+  details,
   loading,
   setLoading,
   handleAddEventSidebarToggle,
   addEventSidebarOpen,
 }) => {
+  console.log("Details => ", details);
+
+  useEffect(() => {
+    if (details) {
+      const updatedRanks = upgradeVillageRanks.map((rank) => {
+        switch (rank.id) {
+          case 2:
+            return { ...rank, value: details.area_hectares || 0 };
+          case 3:
+            return { ...rank, value: details.income || rank.value };
+          default:
+            return rank;
+        }
+      });
+
+      setUpgradeVillageRanks(updatedRanks);
+    }
+  }, [details]);
+
   const [upgradeVillageRanks, setUpgradeVillageRanks] = useState([
-    { id: 1, parameter: "جمعیت", year: 1397, value: 12000, score: 5 },
+    {
+      id: 1,
+      parameter: "جمعیت",
+      year: (details?.populations && details?.populations[0]?.year) || 0,
+      value: (details?.populations && details?.populations[0]?.population) || 0,
+      score: 5,
+    },
     {
       id: 2,
       parameter: "وسعت (هکتار)",
       year: "-",
-      value: 12000,
+      value: details?.area_hectares || 0,
       score: 8,
       isValueEditing: false,
     },
@@ -51,26 +77,7 @@ const UpgradeVillageTable = ({
   }, [upgradeVillageRanks]);
 
   const [currentDegree, setCurrentDegree] = useState(totalScore);
-  console.log("Current Degree => ", currentDegree);
-  console.log("Total Score => ", totalScore);
   const [userDetails, setUserDetails] = useState();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await api.get(getDivisionInformation(), {
-        requiresAuth: true,
-      });
-      const userResponse = await api.get(me(), {
-        requiresAuth: true,
-      });
-      console.log(
-        "UserResponse => ",
-        userResponse.data.data.user.original.geo_village
-      );
-      console.log("response => ", response.data.data);
-    };
-    fetchData();
-  }, []);
 
   const handleEditCell = (rowId, key, value) => {
     setUpgradeVillageRanks((prev) =>
