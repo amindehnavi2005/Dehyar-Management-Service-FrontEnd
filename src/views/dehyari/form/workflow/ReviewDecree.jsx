@@ -23,7 +23,6 @@ const ReviewDecree = ({
       details.human_contract_id
     );
   };
-  console.log("WorkFlowType => ", details);
 
   const renderFields = () => {
     if (workflowType === "حکم کارگزینی") {
@@ -107,7 +106,7 @@ const ReviewDecree = ({
             label="نوع درخواست"
             value={
               details ? (
-                <span className="text-xl">
+                <span className="text-xl font-bold">
                   {details.new_grade} → {details.current_grade}
                 </span>
               ) : (
