@@ -9,6 +9,9 @@ import useCustomTable from "@/hooks/useCustomTable";
 import { getVillageGradeUpgrades } from "@/Services/UpgradeVillage";
 import api from "@/utils/axiosInstance";
 import FilterChip from "@/@core/components/mui/FilterButton";
+import { translateContractState } from "@/utils/contractStateTranslator";
+import ContractStateChip from "@/components/badges/ContractStateChip";
+import WorkFlowDrawerForUpdateVillageRank from "../../form/workflow/WorkFlowDrawerForUpgradeVillageRank";
 
 function GradingVillageForRSD() {
   const [data, setData] = useState([]);
@@ -21,6 +24,7 @@ function GradingVillageForRSD() {
   const [highlightStyle, setHighlightStyle] = useState({ width: 0, left: 0 });
   const [filterStatus, setFilterStatus] = useState("");
   const buttonRefs = useRef([]);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   useEffect(() => {
     if (buttonRefs.current[0]) {
@@ -122,6 +126,22 @@ function GradingVillageForRSD() {
         },
       },
       {
+        accessorKey: "state",
+        header: "وضعیت",
+        size: 150,
+        Cell: ({ cell, row }) => {
+          const contractStateValue = translateContractState(cell.getValue());
+          return (
+            <div style={{ textAlign: "right" }}>
+              <ContractStateChip
+                label={contractStateValue.title}
+                color={contractStateValue.color}
+              />
+            </div>
+          );
+        },
+      },
+      {
         accessorKey: "actions",
         header: "عملیات",
         size: 150,
@@ -134,26 +154,25 @@ function GradingVillageForRSD() {
               height: "100%",
             }}
           >
-            {/* {row.original.contract_state && ( */}
-            <Tooltip title={"مشاهده/تغییر درجه بندی"}>
-              <CustomIconButton
-                color={"secondary"}
-                onClick={() => {
-                  setCurrentRow(row.original);
-                  setPopupOpen(true);
-                }}
-                className={"rounded-full animate-pulse"}
-              >
-                {row.original.contract_state == "draft" ||
-                row.original.contract_state ==
-                  "rejected_to_financial_officer" ? (
-                  <i className="ri-mail-send-line" />
-                ) : (
-                  <i className="ri-history-line" />
-                )}
-              </CustomIconButton>
-            </Tooltip>
-            {/* )} */}
+            {row.original.state && (
+              <Tooltip title={"مشاهده/تغییر وضعیت درجه بندی"}>
+                <CustomIconButton
+                  color={"secondary"}
+                  onClick={() => {
+                    setCurrentRow(row.original);
+                    setDialogOpen(true);
+                  }}
+                  className={"rounded-full animate-pulse"}
+                >
+                  {row.original.state == "pending_governor" ||
+                  row.original.state == "rejected_to_governor" ? (
+                    <i className="ri-mail-send-line" />
+                  ) : (
+                    <i className="ri-history-line" />
+                  )}
+                </CustomIconButton>
+              </Tooltip>
+            )}
           </div>
         ),
       },
@@ -165,15 +184,6 @@ function GradingVillageForRSD() {
     isLoading: tableLoading,
     renderTopToolbarCustomActions: () => (
       <Box sx={{ display: "flex", gap: 1, position: "relative" }}>
-        <Button
-          variant="contained"
-          onClick={() => {
-            router.push(`/dehyari/dehyar/upgrade-village-rank`);
-          }}
-          className={"rounded-full h-8"}
-        >
-          <i className="ri-add-line" />
-        </Button>
         <Box
           className={"bg-backgroundPaper rounded-full"}
           sx={{
@@ -278,6 +288,16 @@ function GradingVillageForRSD() {
         دهیاری ها
       </Typography>
       <MaterialReactTable table={table} />
+      <WorkFlowDrawerForUpdateVillageRank
+        open={dialogOpen}
+        setDialogOpen={setDialogOpen}
+        details={currentRow}
+        rejectApprovalLevel={0}
+        loading={loading}
+        setLoading={setLoading}
+        nextState={"approved"}
+        readOnly={!(currentRow?.state == "pending_rsd")}
+      />
     </div>
   );
 }
