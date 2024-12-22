@@ -54,11 +54,11 @@ const WorkFlowDrawerForUpdateVillageRank = ({
     setLoading(true);
     try {
       const fullName = `${details.first_name || ""} ${details.last_name || ""}`;
-      await changeStateWorkflow(details.salary_id, nextState, description);
+      await changeStateWorkflow(details.id, nextState, description);
       const approvalMessages = {
-        0: `حکم کارگزینی ${fullName} به بخشدار مربوطه ارجاع داده شد.`,
-        1: `حکم کارگزینی ${fullName} به کارشناس استان مربوطه ارجاع داده شد.`,
-        2: `حکم کارگزینی ${fullName} تایید نهایی شد.`,
+        0: `درخواست ارتقاء درجه به بخشدار مربوطه ارجاع داده شد.`,
+        1: `درخواست ارتقاء درجه به کارشناس استان مربوطه ارجاع داده شد.`,
+        2: `درخواست ارتقاء درجه به مدیریت توسعه روستایی ارجاع داده شد.`,
       };
       toast.success(approvalMessages[rejectApprovalLevel]);
       handleClose();
@@ -77,23 +77,16 @@ const WorkFlowDrawerForUpdateVillageRank = ({
 
     setLoading(true);
     try {
-      const result = await submitWorkflow(details.salary_id, true);
+      const result = await submitWorkflow(details.id, true);
       const fullName = `${details?.first_name} ${details?.last_name}`;
       if (result.success) {
         const rejectState =
-          rejectApprovalLevel === 2
-            ? selectedRejectType
-            : "rejected_to_financial_officer";
-        await changeStateWorkflow(
-          details.salary_id,
-          rejectState,
-          result.description
-        );
+          rejectApprovalLevel === 2 ? selectedRejectType : "rejected_to_dehyar";
+        await changeStateWorkflow(details.id, rejectState, result.description);
         const rejectMessages = {
-          rejected_to_financial_officer: `حکم کارگزینی ${fullName} به مسئول امور مالی مربوطه جهت اصلاح بازگشت داده شد.`,
-          rejected_to_supervisor: `حکم کارگزینی ${fullName} به بخشدار مربوطه جهت اصلاح بازگشت داده شد.`,
+          rejected_to_dehyar: `درخواست ارتقاء درجه به دهیار مربوطه جهت اصلاح بازگشت داده شد.`,
+          rejected_to_supervisor: `درخواست ارتقاء درجه به بخشدار مربوطه جهت اصلاح بازگشت داده شد.`,
         };
-
         toast.success(rejectMessages[rejectState]);
         handleClose();
       }
@@ -114,11 +107,9 @@ const WorkFlowDrawerForUpdateVillageRank = ({
     if (details) {
       const fetchData = async () => {
         try {
-          const response = await api.get(
-            getHistoryWorkflow(details.salary_id),
-            { requiresAuth: true }
-          );
-
+          const response = await api.get(getHistoryWorkflow(details.id), {
+            requiresAuth: true,
+          });
           // Sort data from newest to oldest
           const sortedData = response.data.sort(
             (firstDate, lastDate) =>
@@ -152,7 +143,7 @@ const WorkFlowDrawerForUpdateVillageRank = ({
               variant="contained"
               color="error"
               onClick={() => {
-                setSelectedRejectType("rejected_to_financial_officer");
+                setSelectedRejectType("rejected_to_dehyar");
               }}
             >
               عدم تایید و بازگشت به مسئول مالی
@@ -183,7 +174,7 @@ const WorkFlowDrawerForUpdateVillageRank = ({
       case 1:
         return "تایید اطلاعات و ارسال به استانداری";
       case 2:
-        return "تایید نهایی";
+        return "تایید و ارسال به مدیریت توسعه روستایی";
       default:
         return "تایید";
     }
@@ -194,7 +185,7 @@ const WorkFlowDrawerForUpdateVillageRank = ({
       case 0:
         return null;
       case 1:
-        return "عدم تایید حکم";
+        return "عدم تایید درخواست";
       default:
         return "رد درخواست";
     }
