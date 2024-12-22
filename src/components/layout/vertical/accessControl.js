@@ -3,6 +3,18 @@
 import WORK_GROUPS from "./workGroups";
 
 const accessControl = {
+  [WORK_GROUPS.RSD]: [
+    {
+      label: "پرسنل دهیاری ها",
+      icon: <i className="ri-survey-line" />,
+      href: "/dehyari/rsd",
+    },
+    {
+      label: "درجه بندی دهیاری",
+      icon: <i className="ri-survey-line" />,
+      href: "/dehyari/rsd/upgrade-village-rank",
+    },
+  ],
   [WORK_GROUPS.Dehyar]: [
     {
       label: "مرخصی",
