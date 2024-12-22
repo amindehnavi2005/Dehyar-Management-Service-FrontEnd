@@ -246,13 +246,6 @@ function RSDTable(props) {
     isLoading: tableLoading,
     renderTopToolbarCustomActions: () => (
       <Box sx={{ display: "flex", gap: 1, position: "relative" }}>
-        <Button
-          variant="contained"
-          onClick={() => router.push("/dehyari/form")}
-          className={"rounded-full h-8"}
-        >
-          <i className="ri-add-line" />
-        </Button>
         <Box
           className={"bg-backgroundPaper rounded-full"}
           sx={{
@@ -283,6 +276,32 @@ function RSDTable(props) {
           onClick={() => handleFilterChange("my_inbox", 1)}
           clickable
           variant={filterStatus === "my_inbox" ? "outlined" : "filled"}
+        />
+        <FilterChip
+          avatarValue={data
+            .filter((item) => item.contract_state === "pending_governor")
+            .length.toString()}
+          ref={(el) => (buttonRefs.current[2] = el)}
+          label="منتظر تایید استانداری"
+          onClick={() => handleFilterChange("pending_governor", 2)}
+          clickable
+          variant={filterStatus === "pending_governor" ? "outlined" : "filled"}
+        />
+        <FilterChip
+          avatarValue={data
+            .filter(
+              (item) => item.contract_state === "rejected_to_financial_officer"
+            )
+            .length.toString()}
+          ref={(el) => (buttonRefs.current[3] = el)}
+          label="نیازمند اصلاح مجدد مسئول مالی"
+          onClick={() => handleFilterChange("rejected_to_financial_officer", 3)}
+          clickable
+          variant={
+            filterStatus === "rejected_to_financial_officer"
+              ? "outlined"
+              : "filled"
+          }
         />
         <FilterChip
           avatarValue={data
