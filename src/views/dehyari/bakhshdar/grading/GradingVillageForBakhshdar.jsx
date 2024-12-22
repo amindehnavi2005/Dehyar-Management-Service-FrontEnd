@@ -198,15 +198,6 @@ function GradingVillageForBakhshdar() {
     isLoading: tableLoading,
     renderTopToolbarCustomActions: () => (
       <Box sx={{ display: "flex", gap: 1, position: "relative" }}>
-        <Button
-          variant="contained"
-          onClick={() => {
-            router.push(`/dehyari/dehyar/upgrade-village-rank`);
-          }}
-          className={"rounded-full h-8"}
-        >
-          <i className="ri-add-line" />
-        </Button>
         <Box
           className={"bg-backgroundPaper rounded-full"}
           sx={{
