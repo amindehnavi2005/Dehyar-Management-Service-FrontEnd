@@ -26,6 +26,8 @@ const ReviewDecree = ({
 
   const renderFields = () => {
     if (workflowType === "حکم کارگزینی") {
+      console.log("Details => ", details);
+
       return (
         <>
           <UserInfoItem
@@ -61,20 +63,20 @@ const ReviewDecree = ({
             icon="ri-calendar-line"
             label="تاریخ شروع قرارداد"
             value={
-              details ? convertUnixToJalali(details.contract_end) : "نامشخص"
+              details ? convertUnixToJalali(details.execute_start) : "نامشخص"
             }
           />
           <UserInfoItem
             icon="ri-calendar-line"
             label="تاریخ اجرای قرارداد"
             value={
-              details ? convertUnixToJalali(details.execute_start) : "نامشخص"
+              details ? convertUnixToJalali(details.contract_end) : "نامشخص"
             }
           />
           <UserInfoItem
             icon="ri-wallet-2-line"
             label="مبلغ حکم کارگزینی"
-            value="-"
+            value={details.base_salary || "-"}
           />
         </>
       );
