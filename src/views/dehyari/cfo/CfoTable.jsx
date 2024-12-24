@@ -36,6 +36,7 @@ import MyDocument from "@components/MyDocument";
 import { pdf } from "@react-pdf/renderer";
 import TitleDehyariPanel from "@/components/common/TitleDehyariPanel";
 import accessControl from "@/components/layout/vertical/accessControl";
+import WORK_GROUPS from "@/components/layout/vertical/workGroups";
 
 function CfoTable(props) {
   const [data, setData] = useState([]);
@@ -60,8 +61,16 @@ function CfoTable(props) {
     ).length;
     setMyInboxCount(count);
 
-    accessControl[13].badge = count;
-    console.log("Count => ", accessControl[13].badge);
+    accessControl[WORK_GROUPS.CFO] = accessControl[WORK_GROUPS.CFO].map(
+      (item) => {
+        if (item.badge !== undefined) {
+          return { ...item, badge: count };
+        }
+        return item;
+      }
+    );
+
+    console.log(accessControl[WORK_GROUPS.CFO]);
   }, [data]);
 
   useEffect(() => {

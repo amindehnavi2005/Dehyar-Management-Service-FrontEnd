@@ -43,7 +43,7 @@ const accessControl = {
       label: "پرسنل دهیاری ها",
       icon: <i className="ri-group-line" />,
       href: "/dehyari/cfo/table",
-      badge: "0",
+      badge: 0,
     },
     {
       label: "تشکیلات دهیاری",

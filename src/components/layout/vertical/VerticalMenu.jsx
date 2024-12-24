@@ -85,6 +85,11 @@ const VerticalMenu = ({ scrollMenu }) => {
       );
     }
 
+    console.log(
+      "Current badge values:",
+      filteredItems.map((item) => item.badge)
+    );
+
     return filteredItems.map((item) => (
       <MenuItem
         icon={item.icon}
