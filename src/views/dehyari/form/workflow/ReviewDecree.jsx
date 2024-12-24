@@ -74,7 +74,10 @@ const ReviewDecree = ({
           <UserInfoItem
             icon="ri-wallet-2-line"
             label="مبلغ حکم کارگزینی"
-            value={details.base_salary || "نامشخص"}
+            value={
+              `${details ? details.base_salary.toLocaleString("fa-IR") : "نامشخص"} تومان` ||
+              "نامشخص"
+            }
           />
         </>
       );
