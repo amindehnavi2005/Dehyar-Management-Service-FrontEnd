@@ -23,6 +23,8 @@ const UpgradeVillageTable = ({
 
   const [upgradeVillageRanks, setUpgradeVillageRanks] = useState([]);
   const rebuildVillageRanks = (details) => {
+    console.log("Details => ", details);
+
     return [
       {
         id: 1,
@@ -49,9 +51,27 @@ const UpgradeVillageTable = ({
         isYearEditing: false,
         isValueEditing: false,
       },
-      { id: 4, parameter: "هدف گردشگری", year: "-", value: false, score: 6 },
-      { id: 5, parameter: "مرکز دهستان", year: "-", value: true, score: 2 },
-      { id: 6, parameter: "مرکز بخش", year: "-", value: false, score: 5 },
+      {
+        id: 4,
+        parameter: "هدف گردشگری",
+        year: "-",
+        value: details?.tourism_goal === 1,
+        score: 6,
+      },
+      {
+        id: 5,
+        parameter: "مرکز دهستان",
+        year: "-",
+        value: details?.centralization === 1,
+        score: 2,
+      },
+      {
+        id: 6,
+        parameter: "مرکز بخش",
+        year: "-",
+        value: details?.city_grade === 1,
+        score: 5,
+      },
     ];
   };
   const [editedVillageRate, setEditedVillageRate] = useState({});

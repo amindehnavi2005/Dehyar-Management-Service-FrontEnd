@@ -122,7 +122,7 @@ const UpgradeVillageInformation = ({ details, userInfo }) => {
                 objectFit: "contain",
               }}
             />
-            عباس آباد
+            {details ? details.village_code : "نامشخص"}
           </span>
           <span></span>
         </Typography>
@@ -189,7 +189,9 @@ const UpgradeVillageInformation = ({ details, userInfo }) => {
             my={2}
           >
             <i className="ri-medal-line h-4"></i>درجه فعلی :{" "}
-            <span className="font-medium text-secondary">ایلام</span>
+            <span className="font-medium text-secondary">
+              {details ? details.grade : "نامشخص"}
+            </span>
           </Typography>
           <Typography
             fontWeight={"medium"}

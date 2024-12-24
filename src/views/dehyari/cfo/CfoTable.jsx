@@ -69,8 +69,6 @@ function CfoTable(props) {
         return item;
       }
     );
-
-    console.log(accessControl[WORK_GROUPS.CFO]);
   }, [data]);
 
   useEffect(() => {
