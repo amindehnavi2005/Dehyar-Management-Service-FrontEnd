@@ -122,7 +122,7 @@ const UpgradeVillageInformation = ({ details, userInfo }) => {
                 objectFit: "contain",
               }}
             />
-            {details ? details.village_code : "نامشخص"}
+            {details ? details.hierarchy_code : "نامشخص"}
           </span>
           <span></span>
         </Typography>
