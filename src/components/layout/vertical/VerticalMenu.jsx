@@ -90,7 +90,7 @@ const VerticalMenu = ({ scrollMenu }) => {
         icon={item.icon}
         key={item.href}
         href={item.href}
-        badge={item.badge}
+        badge={item.badge >= "0" ? item.badge : null}
       >
         {item.label}
       </MenuItem>

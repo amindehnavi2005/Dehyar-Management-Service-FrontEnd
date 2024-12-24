@@ -35,6 +35,7 @@ import { downloadHumanResourcePdf } from "@/utils/humanResourcePdfUtils";
 import MyDocument from "@components/MyDocument";
 import { pdf } from "@react-pdf/renderer";
 import TitleDehyariPanel from "@/components/common/TitleDehyariPanel";
+import accessControl from "@/components/layout/vertical/accessControl";
 
 function CfoTable(props) {
   const [data, setData] = useState([]);
@@ -49,6 +50,19 @@ function CfoTable(props) {
   const [filterStatus, setFilterStatus] = useState("my_inbox");
   const buttonRefs = useRef([]);
   const [tableLoading, setTableLoading] = useState(true);
+  const [myInboxCount, setMyInboxCount] = useState(0);
+
+  useEffect(() => {
+    const count = data.filter(
+      (item) =>
+        item.contract_state === "draft" ||
+        item.contract_state === "rejected_to_financial_officer"
+    ).length;
+    setMyInboxCount(count);
+
+    accessControl[13].badge = count;
+    console.log("Count => ", accessControl[13].badge);
+  }, [data]);
 
   useEffect(() => {
     // Set initial highlight on the "همه" button
