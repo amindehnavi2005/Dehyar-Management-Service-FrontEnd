@@ -75,8 +75,9 @@ const ReviewDecree = ({
             icon="ri-wallet-2-line"
             label="مبلغ حکم کارگزینی"
             value={
-              `${details ? details.base_salary.toLocaleString("fa-IR") : "نامشخص"} تومان` ||
-              "نامشخص"
+              `${
+                details ? details.base_salary.toLocaleString("fa-IR") : "نامشخص"
+              } تومان` || "نامشخص"
             }
           />
         </>
@@ -142,12 +143,16 @@ const ReviewDecree = ({
           disabled={readOnly}
           sx={{
             mt: 2,
-            direction: "rtl",
+            direction: "ltr",
+            textAlign: "left",
             "& .MuiInputBase-input": {
-              textAlign: "right",
+              textAlign: "left",
             },
             "& .MuiFormHelperText-root": {
-              textAlign: "right",
+              textAlign: "left",
+            },
+            "& .MuiInputLabel-root": {
+              direction: "rtl",
             },
           }}
         />
