@@ -23,7 +23,6 @@ export const changeStateWorkflowForUpgradeVillageRank = (
     state: state,
     comments: message,
   };
-  console.log("Data => ", data);
   return api.post(ChangeStateWorkflowForUpgradeVillage(id), data, {
     requiresAuth: true,
   });

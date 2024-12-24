@@ -26,8 +26,6 @@ const ReviewDecree = ({
 
   const renderFields = () => {
     if (workflowType === "حکم کارگزینی") {
-      console.log("Details => ", details);
-
       return (
         <>
           <UserInfoItem

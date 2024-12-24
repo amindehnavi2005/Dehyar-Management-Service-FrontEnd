@@ -29,10 +29,8 @@ const RequestHistory = ({ details, history }) => {
     }
     return moment(date).fromNow();
   };
-
   return (
     <Box className={"flex flex-col gap-3"}>
-      {/* تاریخچه درخواست */}
       <Box>
         <Timeline
           position="right"
@@ -87,8 +85,8 @@ const RequestHistory = ({ details, history }) => {
                     >
                       {item.full_name} - {roles[item.work_group]}
                     </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      {item.comment}
+                    <Typography variant="caption" color="text.secondary">
+                      {item.comments}
                     </Typography>
                   </Box>
                 </TimelineContent>
