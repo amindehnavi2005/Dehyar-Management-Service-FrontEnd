@@ -180,7 +180,7 @@ const UpgradeVillageInformation = ({ details, userInfo }) => {
         <div className="my-5">
           <DividerSimple title={"درجه دهیاری"} />
         </div>
-        <div className="gap-5">
+        <div className="grid grid-cols-2">
           <Typography
             fontWeight={"medium"}
             className="text-textPrimary"

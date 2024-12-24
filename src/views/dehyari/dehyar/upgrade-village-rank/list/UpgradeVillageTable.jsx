@@ -45,8 +45,8 @@ const UpgradeVillageTable = ({
       {
         id: 3,
         parameter: "درآمد (میلیون ریال)",
-        year: details?.income_year || 1397,
-        value: details?.income || 12000,
+        year: details?.incomes.length || "-",
+        value: details?.incomes.length || "-",
         score: 3,
         isYearEditing: false,
         isValueEditing: false,
