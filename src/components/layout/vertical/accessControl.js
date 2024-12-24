@@ -34,28 +34,6 @@ const accessControl = {
     {
       label: "درجه بندی دهیاری",
       icon: <i className="ri-arrow-up-wide-fill" />,
-      href: "/dehyari/form/upgrade-village-rank",
-    },
-  ],
-  [WORK_GROUPS.Dehyar]: [
-    {
-      label: "مرخصی",
-      icon: <i className="ri-survey-line" />,
-      href: "/dehyari/form/time-off",
-    },
-    {
-      label: "ماموریت",
-      icon: <i className="ri-sticky-note-add-line" />,
-      href: "/dehyari/form/mission",
-    },
-    {
-      label: "ماشین آلات",
-      icon: <i className="ri-car-line" />,
-      href: "/dehyari/form/machinery",
-    },
-    {
-      label: "درجه بندی دهیاری",
-      icon: <i className="ri-arrow-up-wide-fill" />,
       href: "/dehyari/dehyar",
     },
   ],
@@ -64,6 +42,7 @@ const accessControl = {
       label: "پرسنل دهیاری ها",
       icon: <i className="ri-group-line" />,
       href: "/dehyari/cfo/table",
+      badge: "26",
     },
     {
       label: "تشکیلات دهیاری",
@@ -91,16 +70,6 @@ const accessControl = {
       label: "ماشین آلات",
       icon: <i className="ri-car-line" />,
       href: "/dehyari/form/machinery",
-    },
-    {
-      label: "درجه بندی دهیاری",
-      icon: <i className="ri-arrow-up-wide-fill" />,
-      href: "/dehyari/dehyar",
-    },
-    {
-      label: "تشکیلات دهیاری",
-      icon: <i className="ri-organization-chart" />,
-      href: "/dehyari",
     },
     {
       label: "درجه بندی دهیاری",
@@ -145,6 +114,11 @@ const accessControl = {
       href: "/dehyari/governor/list",
     },
     {
+      label: "تشکیلات دهیاری",
+      icon: <i className="ri-organization-chart" />,
+      href: "/dehyari",
+    },
+    {
       label: "درجه بندی دهیاری",
       icon: <i className="ri-arrow-up-wide-fill" />,
       href: "/dehyari/governor/upgrade-village-rank",
@@ -155,6 +129,11 @@ const accessControl = {
       label: "پرسنل دهیاری ها",
       icon: <i className="ri-group-line" />,
       href: "/dehyari/bakhshdar/table",
+    },
+    {
+      label: "تشکیلات دهیاری",
+      icon: <i className="ri-organization-chart" />,
+      href: "/dehyari",
     },
     {
       label: "درجه بندی دهیاری",

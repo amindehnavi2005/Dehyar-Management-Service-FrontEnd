@@ -76,7 +76,7 @@ const ReviewDecree = ({
           <UserInfoItem
             icon="ri-wallet-2-line"
             label="مبلغ حکم کارگزینی"
-            value={details.base_salary || "-"}
+            value={details.base_salary || "نامشخص"}
           />
         </>
       );
