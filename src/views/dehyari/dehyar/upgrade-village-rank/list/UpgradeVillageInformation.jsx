@@ -136,8 +136,8 @@ const UpgradeVillageInformation = ({ details, userInfo }) => {
           alignItems={"center"}
           my={2}
         >
-          <i className="ri-building-4-line h-4"></i>استان :{" "}
-          <span className="font-medium text-secondary">
+          <i className="ri-building-4-line h-4"></i>استان :
+          <span className="mr-1 font-medium text-secondary">
             {geoNames.stateName}
           </span>
         </Typography>
@@ -149,7 +149,7 @@ const UpgradeVillageInformation = ({ details, userInfo }) => {
           my={2}
         >
           <i className="ri-building-2-line h-4"></i>شهرستان :{" "}
-          <span className="font-medium text-secondary">
+          <span className="mr-1 font-medium text-secondary">
             {geoNames.cityName}
           </span>
         </Typography>
@@ -161,7 +161,7 @@ const UpgradeVillageInformation = ({ details, userInfo }) => {
           my={2}
         >
           <i className="ri-building-line h-4"></i>بخش :{" "}
-          <span className="font-medium text-secondary">
+          <span className="mr-1 font-medium text-secondary">
             {geoNames.regionNames.join(", ")}
           </span>
         </Typography>
@@ -173,7 +173,7 @@ const UpgradeVillageInformation = ({ details, userInfo }) => {
           my={2}
         >
           <i className="ri-hotel-line h-4"></i>دهستان :{" "}
-          <span className="font-medium text-secondary">
+          <span className="mr-1 font-medium text-secondary">
             {geoNames.dehestanName}
           </span>
         </Typography>
@@ -189,7 +189,7 @@ const UpgradeVillageInformation = ({ details, userInfo }) => {
             my={2}
           >
             <i className="ri-medal-line h-4"></i>درجه فعلی :{" "}
-            <span className="font-medium text-secondary">
+            <span className="mr-1 font-medium text-secondary">
               {details ? details.grade : "نامشخص"}
             </span>
           </Typography>
@@ -201,7 +201,7 @@ const UpgradeVillageInformation = ({ details, userInfo }) => {
             my={2}
           >
             <i className="ri-calendar-line h-4"></i>تاریخ :{" "}
-            <span className="font-medium text-secondary"></span>
+            <span className="mr-1 font-medium text-secondary"></span>
           </Typography>
         </div>
         <DocumentUpload />
