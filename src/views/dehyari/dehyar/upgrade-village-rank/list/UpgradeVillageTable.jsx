@@ -234,13 +234,15 @@ const UpgradeVillageTable = ({
           className={`grid grid-cols-4 gap-2 items-center justify-between mt-1 w-full`}
         >
           <Box className="col-span-2">
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleSaveVillageInformation}
-            >
-              ذخیره و ارسال درخواست ارتقاء درجه
-            </Button>
+            {details?.new_grade > details.grade && (
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleSaveVillageInformation}
+              >
+                ذخیره و ارسال درخواست ارتقاء درجه
+              </Button>
+            )}
           </Box>
           {Object.values(validationErrors).some((error) => !!error) && (
             <Typography color="error">
