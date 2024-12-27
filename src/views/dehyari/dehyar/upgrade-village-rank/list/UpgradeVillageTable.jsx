@@ -46,6 +46,10 @@ const UpgradeVillageTable = ({
       prev.map((row) => (row.id === rowId ? { ...row, [key]: value } : row))
     );
 
+    handleUpgradeVillageRate();
+  };
+
+  const handleUpgradeVillageRate = async () => {
     try {
       setLoading(true);
 
@@ -99,7 +103,6 @@ const UpgradeVillageTable = ({
   const handleSaveVillageInformation = () => {
     setIsUpdatingVillageRate(true);
     console.log("Saving changes: ", upgradeVillageRanks);
-    toast.success("تغییرات با موفقیت ذخیره شد");
     setIsUpdatingVillageRate(false);
   };
 
@@ -220,7 +223,7 @@ const UpgradeVillageTable = ({
     },
     muiTableBodyCellProps: {
       style: {
-        textAlign: "center",
+        textAlign: "right",
         verticalAlign: "middle",
         whiteSpace: "nowrap",
       },
