@@ -9,6 +9,8 @@ import api from "@/utils/axiosInstance";
 import { getDivisionInformation } from "@/Services/UpgradeVillage";
 import { useRouter } from "next/navigation";
 import { getGeoDetails } from "@/Services/CountryDivision";
+import ContentLoader from "react-content-loader";
+import LineContentLoader from "@/components/common/LineContentLoader";
 
 const UpgradeVillageInformation = ({ details, userInfo }) => {
   const methods = useForm();
@@ -138,7 +140,7 @@ const UpgradeVillageInformation = ({ details, userInfo }) => {
         >
           <i className="ri-building-4-line h-4"></i>استان :
           <span className="mr-1 font-medium text-secondary">
-            {geoNames.stateName}
+            {geoNames.stateName || <LineContentLoader />}
           </span>
         </Typography>
         <Typography
@@ -150,7 +152,7 @@ const UpgradeVillageInformation = ({ details, userInfo }) => {
         >
           <i className="ri-building-2-line h-4"></i>شهرستان :{" "}
           <span className="mr-1 font-medium text-secondary">
-            {geoNames.cityName}
+            {geoNames.cityName || <LineContentLoader />}
           </span>
         </Typography>
         <Typography
@@ -162,7 +164,7 @@ const UpgradeVillageInformation = ({ details, userInfo }) => {
         >
           <i className="ri-building-line h-4"></i>بخش :{" "}
           <span className="mr-1 font-medium text-secondary">
-            {geoNames.regionNames.join(", ")}
+            {geoNames.regionNames.join(", ") || <LineContentLoader />}
           </span>
         </Typography>
         <Typography
@@ -174,7 +176,7 @@ const UpgradeVillageInformation = ({ details, userInfo }) => {
         >
           <i className="ri-hotel-line h-4"></i>دهستان :{" "}
           <span className="mr-1 font-medium text-secondary">
-            {geoNames.dehestanName}
+            {geoNames.dehestanName || <LineContentLoader />}
           </span>
         </Typography>
         <div className="my-5">
