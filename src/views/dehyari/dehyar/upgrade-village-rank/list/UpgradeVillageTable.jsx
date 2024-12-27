@@ -33,14 +33,9 @@ const UpgradeVillageTable = ({
     }, 0);
   }, [upgradeVillageRanks]);
 
-  const [currentDegree, setCurrentDegree] = useState(totalScore);
-
-  rebuildVillageRanks(details);
-
   useEffect(() => {
     if (details) {
       setUpgradeVillageRanks(rebuildVillageRanks(details));
-      console.log("Details => ", details);
     }
   }, [details]);
 
@@ -51,51 +46,40 @@ const UpgradeVillageTable = ({
       prev.map((row) => (row.id === rowId ? { ...row, [key]: value } : row))
     );
 
-    if (key === "value" || key === "year") {
-      const newDegree = calculateNewDegree(upgradeVillageRanks);
-      setCurrentDegree(newDegree);
+    try {
+      setLoading(true);
+
+      const areaHectares = parseInt(
+        upgradeVillageRanks.find((row) => row.id === 2)?.value || 0
+      );
+      const incomePerCapital = parseInt(
+        upgradeVillageRanks.find((row) => row.id === 3)?.value || 0
+      );
+
+      console.log("Hierarchy Code:", details?.hierarchy_code);
+      console.log("Area Hectares:", areaHectares);
+      console.log("Income Per Capital:", incomePerCapital);
+
+      const response = await api.post(
+        updateDivisionInformation(),
+        {
+          hierarchyCode: details?.hierarchy_code,
+          areaHectares: areaHectares,
+          incomePerCapital: incomePerCapital,
+        },
+        {
+          requiresAuth: true,
+        }
+      );
+      console.log("response => ", response);
+
+      toast.success("اطلاعات با موفقیت به‌روزرسانی شد");
+    } catch (error) {
+      console.error("خطا در به‌روزرسانی اطلاعات:", error);
+      toast.error("خطا در به‌روزرسانی اطلاعات");
+    } finally {
+      setLoading(false);
     }
-
-    if (key === "value" && (rowId === 2 || rowId === 3)) {
-      try {
-        setLoading(true);
-
-        const areaHectares = parseInt(
-          upgradeVillageRanks.find((row) => row.id === 2)?.value || 0
-        );
-        const incomePerCapital = parseInt(
-          upgradeVillageRanks.find((row) => row.id === 3)?.value || 0
-        );
-
-        console.log("Hierarchy Code:", details?.hierarchy_code);
-        console.log("Area Hectares:", areaHectares);
-        console.log("Income Per Capital:", incomePerCapital);
-
-        const response = await api.post(
-          updateDivisionInformation(),
-          {
-            hierarchyCode: details?.hierarchy_code,
-            areaHectares: areaHectares,
-            incomePerCapital: incomePerCapital,
-          },
-          {
-            requiresAuth: true,
-          }
-        );
-        console.log("response => ", response);
-
-        toast.success("اطلاعات با موفقیت به‌روزرسانی شد");
-      } catch (error) {
-        console.error("خطا در به‌روزرسانی اطلاعات:", error);
-        toast.error("خطا در به‌روزرسانی اطلاعات");
-      } finally {
-        setLoading(false);
-      }
-    }
-  };
-
-  const calculateNewDegree = (villageRanks) => {
-    return villageRanks.reduce((acc, curr) => acc + curr.score, 0);
   };
 
   // Handlers
@@ -247,15 +231,13 @@ const UpgradeVillageTable = ({
           className={`grid grid-cols-4 gap-2 items-center justify-between mt-1 w-full`}
         >
           <Box className="col-span-2">
-            {currentDegree == totalScore && (
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleSaveVillageInformation}
-              >
-                ذخیره و ارسال درخواست ارتقاء درجه
-              </Button>
-            )}
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleSaveVillageInformation}
+            >
+              ذخیره و ارسال درخواست ارتقاء درجه
+            </Button>
           </Box>
           {Object.values(validationErrors).some((error) => !!error) && (
             <Typography color="error">
