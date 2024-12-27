@@ -13,7 +13,7 @@ const getDivisionInformation = () => {
 };
 
 const updateDivisionInformation = () => {
-  return `${BaseUrl}/division-information/grade`;
+  return `${BaseUrl}/village-information/grade`;
 };
 
 export {

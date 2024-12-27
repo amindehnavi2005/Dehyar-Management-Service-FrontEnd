@@ -21,7 +21,7 @@ const UpgradeVillageRank = () => {
       const response = await api.get(getDivisionInformation(), {
         requiresAuth: true,
       });
-      setDivisionInformation(response.data.data[0]);
+      setDivisionInformation(response.data.data);
     };
     const userDetails = async () => {
       const response = await api.get(`${me()}`, { requiresAuth: true });

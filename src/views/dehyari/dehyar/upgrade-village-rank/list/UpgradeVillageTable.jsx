@@ -5,7 +5,10 @@ import React, { useEffect, useMemo, useState } from "react";
 import { toast } from "react-toastify";
 import { MaterialReactTable } from "material-react-table";
 import useCustomTable from "@/hooks/useCustomTable";
-import { getDivisionInformation } from "@/Services/UpgradeVillage";
+import {
+  getDivisionInformation,
+  updateDivisionInformation,
+} from "@/Services/UpgradeVillage";
 import { me } from "@/Services/Auth/AuthService";
 
 const UpgradeVillageTable = ({
@@ -15,65 +18,7 @@ const UpgradeVillageTable = ({
   handleAddEventSidebarToggle,
   addEventSidebarOpen,
 }) => {
-  useEffect(() => {
-    if (details) {
-      setUpgradeVillageRanks(rebuildVillageRanks(details));
-    }
-  }, [details]);
-
   const [upgradeVillageRanks, setUpgradeVillageRanks] = useState([]);
-  const rebuildVillageRanks = (details) => {
-    console.log("Details => ", details);
-
-    return [
-      {
-        id: 1,
-        parameter: "جمعیت",
-        year: (details?.populations && details?.populations[0]?.year) || "-",
-        value:
-          (details?.populations && details?.populations[0]?.population) || 0,
-        score: 5,
-      },
-      {
-        id: 2,
-        parameter: "وسعت (هکتار)",
-        year: "-",
-        value: details?.area_hectares || 0,
-        score: 8,
-        isValueEditing: false,
-      },
-      {
-        id: 3,
-        parameter: "درآمد (میلیون ریال)",
-        year: details?.incomes?.length || "-",
-        value: details?.incomes?.length || "-",
-        score: 3,
-        isYearEditing: false,
-        isValueEditing: false,
-      },
-      {
-        id: 4,
-        parameter: "هدف گردشگری",
-        year: "-",
-        value: details?.tourism_goal === 1,
-        score: 6,
-      },
-      {
-        id: 5,
-        parameter: "مرکز دهستان",
-        year: "-",
-        value: details?.centralization === 1,
-        score: 2,
-      },
-      {
-        id: 6,
-        parameter: "مرکز بخش",
-        year: "-",
-        value: details?.city_grade === 1,
-        score: 5,
-      },
-    ];
-  };
   const [editedVillageRate, setEditedVillageRate] = useState({});
   const [validationErrors, setValidationErrors] = useState({});
   const [isUpdatingVillageRate, setIsUpdatingVillageRate] = useState(false);
@@ -90,7 +35,67 @@ const UpgradeVillageTable = ({
   const [currentDegree, setCurrentDegree] = useState(totalScore);
   const [userDetails, setUserDetails] = useState();
 
-  const handleEditCell = (rowId, key, value) => {
+  const rebuildVillageRanks = (details) => {
+    return [
+      {
+        id: 1,
+        parameter: "جمعیت",
+        year: (details?.populations && details?.populations[0]?.year) || "-",
+        value:
+          (details?.populations && details?.populations[0]?.population) || 0,
+        score: details?.population_score || 0,
+      },
+      {
+        id: 2,
+        parameter: "وسعت (هکتار)",
+        year: "-",
+        value: details?.area_hectares || 0,
+        score: details?.area_hectar_score || 0,
+        isValueEditing: false,
+      },
+      {
+        id: 3,
+        parameter: "درآمد (میلیون ریال)",
+        year: details?.incomes?.length || "-",
+        value: details?.incomes?.length || "-",
+        score: details?.income_per_capita_score || 0,
+        isYearEditing: false,
+        isValueEditing: false,
+      },
+      {
+        id: 4,
+        parameter: "هدف گردشگری",
+        year: "-",
+        value: details?.tourism_goal === 1,
+        score: details?.tourism_goal_score || 0,
+      },
+      {
+        id: 5,
+        parameter: "مرکز دهستان",
+        year: "-",
+        value: details?.centralization === 1,
+        score: details?.centralization_score || 0,
+      },
+      {
+        id: 6,
+        parameter: "مرکز بخش",
+        year: "-",
+        value: details?.city_grade === 1,
+        score: 0,
+      },
+    ];
+  };
+
+  useEffect(() => {
+    if (details) {
+      setUpgradeVillageRanks(rebuildVillageRanks(details));
+      console.log("Details => ", details);
+    }
+  }, [details]);
+
+  const handleEditCell = async (rowId, key, value) => {
+    console.log("UpgradeVillageRank => ", upgradeVillageRanks);
+
     setUpgradeVillageRanks((prev) =>
       prev.map((row) => (row.id === rowId ? { ...row, [key]: value } : row))
     );
@@ -98,6 +103,43 @@ const UpgradeVillageTable = ({
     if (key === "value" || key === "year") {
       const newDegree = calculateNewDegree(upgradeVillageRanks);
       setCurrentDegree(newDegree);
+    }
+
+    if (key === "value" && (rowId === 2 || rowId === 3)) {
+      try {
+        setLoading(true);
+
+        const areaHectares = parseInt(
+          upgradeVillageRanks.find((row) => row.id === 2)?.value || 0
+        );
+        const incomePerCapital = parseInt(
+          upgradeVillageRanks.find((row) => row.id === 3)?.value || 0
+        );
+
+        console.log("Hierarchy Code:", details?.hierarchy_code);
+        console.log("Area Hectares:", areaHectares);
+        console.log("Income Per Capital:", incomePerCapital);
+
+        const response = await api.post(
+          updateDivisionInformation(),
+          {
+            hierarchyCode: details?.hierarchy_code,
+            areaHectares: areaHectares,
+            incomePerCapital: incomePerCapital,
+          },
+          {
+            requiresAuth: true,
+          }
+        );
+        console.log("response => ", response);
+
+        toast.success("اطلاعات با موفقیت به‌روزرسانی شد");
+      } catch (error) {
+        console.error("خطا در به‌روزرسانی اطلاعات:", error);
+        toast.error("خطا در به‌روزرسانی اطلاعات");
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -255,7 +297,11 @@ const UpgradeVillageTable = ({
         >
           <Box className="col-span-2">
             {currentDegree == totalScore && (
-              <Button variant="contained" color="primary">
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleSaveVillageInformation}
+              >
                 ذخیره و ارسال درخواست ارتقاء درجه
               </Button>
             )}
@@ -266,10 +312,11 @@ const UpgradeVillageTable = ({
             </Typography>
           )}
           <Typography textAlign={"center"}>
-            درجه نهایی<p className="text-primary font-bold">{totalScore}</p>
+            درجه نهایی<p className="text-primary font-bold">{details?.grade}</p>
           </Typography>
           <Typography textAlign={"center"}>
-            امتیاز<p className="text-primary font-bold">{totalScore}</p>
+            امتیاز
+            <p className="text-primary font-bold">{details?.total_score}</p>
           </Typography>
         </Box>
       );
