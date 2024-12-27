@@ -85,7 +85,10 @@ const RequestHistory = ({ details, history }) => {
                     >
                       {item.full_name} - {roles[item.work_group]}
                     </Typography>
-                    <Typography variant="caption" color="text.secondary">
+                    <Typography
+                      variant="caption"
+                      className="text-xs text-secondary"
+                    >
                       {item.comments}
                     </Typography>
                   </Box>
