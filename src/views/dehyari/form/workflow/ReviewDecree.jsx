@@ -108,6 +108,10 @@ const ReviewDecree = ({
           <UserInfoItem
             icon="ri-arrow-down-s-line"
             label="نوع درخواست"
+            value={details ? details.request_type : "نامشخص"}
+          />
+          <UserInfoItem
+            icon="ri-arrow-down-s-line"
             value={
               details ? (
                 <span className="text-xl font-bold">
