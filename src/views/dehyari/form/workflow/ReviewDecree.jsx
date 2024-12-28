@@ -61,14 +61,14 @@ const ReviewDecree = ({
             icon="ri-calendar-line"
             label="تاریخ شروع قرارداد"
             value={
-              details ? convertUnixToJalali(details.execute_start) : "نامشخص"
+              details ? convertUnixToJalali(details.contract_start) : "نامشخص"
             }
           />
           <UserInfoItem
             icon="ri-calendar-line"
             label="تاریخ اجرای قرارداد"
             value={
-              details ? convertUnixToJalali(details.contract_end) : "نامشخص"
+              details ? convertUnixToJalali(details.execute_start) : "نامشخص"
             }
           />
           <UserInfoItem
