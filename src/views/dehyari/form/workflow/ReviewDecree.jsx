@@ -123,10 +123,10 @@ const ReviewDecree = ({
               تاریخچه درجه‌بندی
             </Typography>
             <Box display="flex" alignItems="center" gap={1}>
-              <Typography variant="h6" color="error">
+              <Typography variant="h4" color="error">
                 {details.current_grade}
               </Typography>
-              <Typography variant="h6" color="primary">
+              <Typography variant="h4" color="primary">
                 → {details.new_grade}
               </Typography>
             </Box>
