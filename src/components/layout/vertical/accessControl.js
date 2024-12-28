@@ -8,7 +8,7 @@ const accessControl = {
       label: "پرسنل دهیاری ها",
       icon: <i className="ri-survey-line" />,
       href: "/dehyari/rsd",
-      badge: "0",
+      badge: 0,
     },
     {
       label: "درجه بندی دهیاری",
@@ -108,7 +108,7 @@ const accessControl = {
       label: "پرسنل دهیاری ها",
       icon: <i className="ri-group-line" />,
       href: "/dehyari/governor/table",
-      badge: "0",
+      badge: 0,
     },
     {
       label: "مدیریت کاربران",
@@ -131,7 +131,7 @@ const accessControl = {
       label: "پرسنل دهیاری ها",
       icon: <i className="ri-group-line" />,
       href: "/dehyari/bakhshdar/table",
-      badge: "0",
+      badge: 0,
     },
     {
       label: "تشکیلات دهیاری",
