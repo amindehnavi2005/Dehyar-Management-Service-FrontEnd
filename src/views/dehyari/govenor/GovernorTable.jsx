@@ -22,6 +22,8 @@ import WorkFlowDrawer from "../form/workflow/WorkFlowDialog";
 import useCustomTable from "@/hooks/useCustomTable";
 import FilterChip from "@/@core/components/mui/FilterButton";
 import TitleDehyariPanel from "@/components/common/TitleDehyariPanel";
+import WORK_GROUPS from "@/components/layout/vertical/workGroups";
+import accessControl from "@/components/layout/vertical/accessControl";
 
 function GovernorTable(props) {
   const [data, setData] = useState([]);
@@ -36,6 +38,23 @@ function GovernorTable(props) {
   const [filterStatus, setFilterStatus] = useState("my_inbox");
   const buttonRefs = useRef([]);
   const [tableLoading, setTableLoading] = useState(true);
+  const [myInboxCount, setMyInboxCount] = useState(0);
+
+  useEffect(() => {
+    const count = data.filter(
+      (item) => item.contract_state === "pending_governor"
+    ).length;
+    setMyInboxCount(count);
+
+    accessControl[WORK_GROUPS.GOVERNOR] = accessControl[
+      WORK_GROUPS.GOVERNOR
+    ].map((item) => {
+      if (item.badge !== undefined) {
+        return { ...item, badge: count };
+      }
+      return item;
+    });
+  }, [data]);
 
   useEffect(() => {
     // Set initial highlight on the "همه" button
