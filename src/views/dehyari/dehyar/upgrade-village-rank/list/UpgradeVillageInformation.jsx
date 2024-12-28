@@ -39,6 +39,7 @@ const UpgradeVillageInformation = ({ details, userInfo }) => {
           { geo_type: "state", geo_code: `${userInfo.geo_state}` },
           { geo_type: "city", geo_code: `${userInfo.geo_city}` },
           { geo_type: "dehestan", geo_code: `${userInfo.geo_dehestan}` },
+          { geo_type: "village", geo_code: `${userInfo.geo_village}` },
           ...(Array.isArray(userInfo.geo_region)
             ? userInfo.geo_region.map((region) => ({
                 geo_type: "region",
@@ -64,6 +65,9 @@ const UpgradeVillageInformation = ({ details, userInfo }) => {
         const geoCity = userInfo.geo_city;
         const geoRegion = userInfo.geo_region;
         const geoDehestan = userInfo.geo_dehestan;
+        console.log("User Village => ", userInfo.geo_village);
+        const geoVillage = userInfo.geo_village;
+
         const stateInfo = geoData.find(
           (geo) => geo.info.length && geo.info[0].hierarchy_code === geoState
         );
@@ -88,13 +92,20 @@ const UpgradeVillageInformation = ({ details, userInfo }) => {
         const dehestanInfo = geoData.find(
           (geo) => geo.info.length && geo.info[0].hierarchy_code === geoDehestan
         );
+        console.log("Geo Data => ", geoData);
+
+        const villageInfo = geoData.find(
+          (geo) => geo.info.length && geo.info[0].hierarchy_code === geoVillage
+        );
 
         setGeoNames({
           stateName: stateInfo?.info[0]?.approved_name || "",
           cityName: cityInfo?.info[0]?.approved_name || "",
           regionNames: regionInfos,
           dehestanName: dehestanInfo?.info[0]?.approved_name || "",
+          villageName: villageInfo?.info[0]?.approved_name || "",
         });
+        console.log("Village Name => ", villageInfo?.info[0]?.approved_name);
       } catch (error) {
         console.error("Error fetching geo details:", error);
       }
@@ -124,7 +135,7 @@ const UpgradeVillageInformation = ({ details, userInfo }) => {
                 objectFit: "contain",
               }}
             />
-            {details ? details.hierarchy_code : "نامشخص"}
+            {geoNames.villageName || <LineContentLoader />}
           </span>
           <span></span>
         </Typography>

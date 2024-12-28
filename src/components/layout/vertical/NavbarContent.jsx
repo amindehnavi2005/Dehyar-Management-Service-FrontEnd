@@ -38,6 +38,7 @@ const NavbarContent = () => {
           geoCity={userDetails?.geo_city}
           geoRegion={userDetails?.geo_region}
           geoDehestan={userDetails?.geo_dehestan}
+          geoVillage={userDetails?.geo_village}
         />
         <ModeDropdown />
         <UserDropdown userDetails={userDetails} />

@@ -10,17 +10,20 @@ const UserDivisionChip = ({
   geoCity,
   geoRegion,
   geoDehestan,
+  geoVillage,
 }) => {
   const [geoNames, setGeoNames] = useState({
     stateName: "",
     cityName: "",
     regionNames: [],
     dehestanName: "",
+    villageName: "",
   });
 
   useEffect(() => {
     const fetchGeoDetails = async () => {
-      if (!geoState && !geoCity && !geoRegion && !geoDehestan) return;
+      if (!geoState && !geoCity && !geoRegion && !geoDehestan && !geoVillage)
+        return;
       try {
         const geoDetails = [
           { geo_type: "state", geo_code: `${geoState}` },
@@ -34,6 +37,7 @@ const UserDivisionChip = ({
               ? [{ geo_type: "region", geo_code: geoRegion.toString() }]
               : []),
           { geo_type: "dehestan", geo_code: `${geoDehestan}` },
+          { geo_type: "village", geo_code: `${geoVillage}` },
         ].filter((item) => item.geo_code !== "undefined");
 
         const geoResponse = await api.post(
@@ -67,12 +71,16 @@ const UserDivisionChip = ({
         const dehestanInfo = geoData.find(
           (geo) => geo.info.length && geo.info[0].hierarchy_code === geoDehestan
         );
+        const villageInfo = geoData.find(
+          (geo) => geo.info.length && geo.info[0].hierarchy_code === geoVillage
+        );
 
         setGeoNames({
           stateName: stateInfo?.info[0]?.approved_name || "",
           cityName: cityInfo?.info[0]?.approved_name || "",
           regionNames: regionInfos,
           dehestanName: dehestanInfo?.info[0]?.approved_name || "",
+          villageName: villageInfo?.info[0]?.approved_name || "",
         });
       } catch (error) {
         console.error("Error fetching geo details:", error);
@@ -80,7 +88,7 @@ const UserDivisionChip = ({
     };
 
     fetchGeoDetails();
-  }, [geoState, geoCity, geoRegion, geoDehestan]);
+  }, [geoState, geoCity, geoRegion, geoDehestan, geoVillage]);
 
   const getLocationLabel = () => {
     const parts = [];
@@ -88,8 +96,9 @@ const UserDivisionChip = ({
     if (geoNames.cityName) parts.push(geoNames.cityName);
     if (geoNames.regionNames.length)
       parts.push(...geoNames.regionNames.slice(0, -1));
+    if (geoNames.dehestanName) parts.push(geoNames.dehestanName);
     const lastLocation =
-      geoNames.dehestanName ||
+      geoNames.villageName ||
       geoNames.regionNames[geoNames.regionNames.length - 1];
 
     return (

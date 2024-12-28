@@ -50,39 +50,43 @@ const UpgradeVillageTable = ({
   };
 
   const handleUpgradeVillageRate = async () => {
-    try {
-      setLoading(true);
+    if (upgradeVillageRanks.length < 1) {
+      return toast.error("مقداری یافت نشد!");
+    } else {
+      try {
+        setLoading(true);
 
-      const areaHectares = parseInt(
-        upgradeVillageRanks.find((row) => row.id === 2)?.value || 0
-      );
-      const incomePerCapital = parseInt(
-        upgradeVillageRanks.find((row) => row.id === 3)?.value || 0
-      );
+        const areaHectares = parseInt(
+          upgradeVillageRanks.find((row) => row.id === 2)?.value || 0
+        );
+        const incomePerCapital = parseInt(
+          upgradeVillageRanks.find((row) => row.id === 3)?.value || 0
+        );
 
-      console.log("Hierarchy Code:", details?.hierarchy_code);
-      console.log("Area Hectares:", areaHectares);
-      console.log("Income Per Capital:", incomePerCapital);
+        console.log("Hierarchy Code:", details?.hierarchy_code);
+        console.log("Area Hectares:", areaHectares);
+        console.log("Income Per Capital:", incomePerCapital);
 
-      const response = await api.post(
-        updateDivisionInformation(),
-        {
-          hierarchyCode: details?.hierarchy_code,
-          areaHectares: areaHectares,
-          incomePerCapital: incomePerCapital,
-        },
-        {
-          requiresAuth: true,
-        }
-      );
-      console.log("response => ", response);
+        const response = await api.post(
+          updateDivisionInformation(),
+          {
+            hierarchyCode: details?.hierarchy_code,
+            areaHectares: areaHectares,
+            incomePerCapital: incomePerCapital,
+          },
+          {
+            requiresAuth: true,
+          }
+        );
+        console.log("response => ", response);
 
-      toast.success("اطلاعات با موفقیت به‌روزرسانی شد");
-    } catch (error) {
-      console.error("خطا در به‌روزرسانی اطلاعات:", error);
-      toast.error("خطا در به‌روزرسانی اطلاعات");
-    } finally {
-      setLoading(false);
+        toast.success("اطلاعات با موفقیت به‌روزرسانی شد");
+      } catch (error) {
+        console.error("خطا در به‌روزرسانی اطلاعات:", error);
+        toast.error("خطا در به‌روزرسانی اطلاعات");
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
