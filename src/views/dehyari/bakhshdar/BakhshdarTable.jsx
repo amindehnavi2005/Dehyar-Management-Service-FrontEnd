@@ -17,6 +17,8 @@ import useCustomTable from "@/hooks/useCustomTable";
 import FilterChip from "@/@core/components/mui/FilterButton";
 import TitleDehyariPanel from "@/components/common/TitleDehyariPanel";
 import { Tooltip } from "@mui/material";
+import accessControl from "@/components/layout/vertical/accessControl";
+import WORK_GROUPS from "@/components/layout/vertical/workGroups";
 
 function BakhshdarTable(props) {
   const [data, setData] = useState([]);
@@ -31,6 +33,26 @@ function BakhshdarTable(props) {
   const [filterStatus, setFilterStatus] = useState("my_inbox");
   const buttonRefs = useRef([]);
   const [tableLoading, setTableLoading] = useState(true);
+  const [myInboxCount, setMyInboxCount] = useState(0);
+
+
+  useEffect(() => {
+    const count = data.filter(
+      (item) =>
+        item.contract_state === "pending_supervisor" ||
+        item.contract_state === "rejected_to_supervisor"
+    ).length;
+    setMyInboxCount(count);
+
+    accessControl[WORK_GROUPS.BAKHSHDAR] = accessControl[
+      WORK_GROUPS.BAKHSHDAR
+    ].map((item) => {
+      if (item.badge !== undefined) {
+        return { ...item, badge: count };
+      }
+      return item;
+    });
+  }, [data]);
 
   useEffect(() => {
     // Set initial highlight on the "همه" button

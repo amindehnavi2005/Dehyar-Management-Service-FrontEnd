@@ -1,7 +1,7 @@
 const WORK_GROUPS = {
   RSD: 12204,
-  Admin: 11,
-  Dehyar: 12,
+  ADMIN: 11,
+  DEHYAR: 12,
   CFO: 13,
   GOVERNOR: 16,
   BAKHSHDAR: 14,

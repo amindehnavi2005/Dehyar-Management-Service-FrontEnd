@@ -16,7 +16,7 @@ const accessControl = {
       href: "/dehyari/rsd/upgrade-village-rank",
     },
   ],
-  [WORK_GROUPS.Dehyar]: [
+  [WORK_GROUPS.DEHYAR]: [
     {
       label: "مرخصی",
       icon: <i className="ri-survey-line" />,
@@ -56,7 +56,7 @@ const accessControl = {
       showOnSidebar: false,
     },
   ],
-  [WORK_GROUPS.Admin]: [
+  [WORK_GROUPS.ADMIN]: [
     {
       label: "مرخصی",
       icon: <i className="ri-survey-line" />,
