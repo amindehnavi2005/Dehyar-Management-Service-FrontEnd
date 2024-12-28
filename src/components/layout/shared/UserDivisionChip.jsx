@@ -97,7 +97,7 @@ const UserDivisionChip = ({
         {parts.map((part, index) => (
           <span key={index}>
             {part}
-            {index < parts.length - 1 && " - "}
+            {parts.length > 1 && " - "}
           </span>
         ))}
         {lastLocation && <b>{lastLocation}</b>}
