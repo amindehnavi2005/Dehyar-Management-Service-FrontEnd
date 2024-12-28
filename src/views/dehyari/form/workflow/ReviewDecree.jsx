@@ -6,6 +6,7 @@ import { convertUnixToJalali } from "@/utils/dateConverter";
 import { downloadHumanResourcePdf } from "@/utils/humanResourcePdfUtils";
 import Chip from "@mui/material/Chip";
 import ArticleIcon from "@mui/icons-material/Article";
+import { Typography } from "@mui/material";
 
 const ReviewDecree = ({
   details,
@@ -110,18 +111,26 @@ const ReviewDecree = ({
             label="نوع درخواست"
             value={details ? details.request_type : "نامشخص"}
           />
-          <UserInfoItem
-            icon="ri-arrow-down-s-line"
-            value={
-              details ? (
-                <span className="text-xl font-bold">
-                  {details.new_grade} → {details.current_grade}
-                </span>
-              ) : (
-                "نامشخص"
-              )
-            }
-          />
+          <Box display="flex" flexDirection="column" alignItems="center">
+            <Typography
+              variant="caption"
+              sx={{
+                fontSize: "12px",
+                color: "text.secondary",
+                marginBottom: "4px",
+              }}
+            >
+              تاریخچه درجه‌بندی
+            </Typography>
+            <Box display="flex" alignItems="center" gap={1}>
+              <Typography variant="h6" color="error">
+                {details.current_grade}
+              </Typography>
+              <Typography variant="h6" color="primary">
+                → {details.new_grade}
+              </Typography>
+            </Box>
+          </Box>
         </>
       );
     }
