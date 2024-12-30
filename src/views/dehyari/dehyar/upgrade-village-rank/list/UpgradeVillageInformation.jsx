@@ -65,7 +65,6 @@ const UpgradeVillageInformation = ({ details, userInfo }) => {
         const geoCity = userInfo.geo_city;
         const geoRegion = userInfo.geo_region;
         const geoDehestan = userInfo.geo_dehestan;
-        console.log("User Village => ", userInfo.geo_village);
         const geoVillage = userInfo.geo_village;
 
         const stateInfo = geoData.find(
@@ -92,7 +91,6 @@ const UpgradeVillageInformation = ({ details, userInfo }) => {
         const dehestanInfo = geoData.find(
           (geo) => geo.info.length && geo.info[0].hierarchy_code === geoDehestan
         );
-        console.log("Geo Data => ", geoData);
 
         const villageInfo = geoData.find(
           (geo) => geo.info.length && geo.info[0].hierarchy_code === geoVillage
@@ -105,7 +103,6 @@ const UpgradeVillageInformation = ({ details, userInfo }) => {
           dehestanName: dehestanInfo?.info[0]?.approved_name || "",
           villageName: villageInfo?.info[0]?.approved_name || "",
         });
-        console.log("Village Name => ", villageInfo?.info[0]?.approved_name);
       } catch (error) {
         console.error("Error fetching geo details:", error);
       }
