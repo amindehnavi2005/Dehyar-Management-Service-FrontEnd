@@ -115,8 +115,8 @@ const UpgradeVillageInformation = ({ details, userInfo }) => {
     <FormProvider {...methods}>
       {" "}
       <Grid>
-        <Typography display={"flex"} variant={"h5"} mb={5} gap={1}>
-          <span>بررسی درجه بندی</span>
+        <Typography display={"flex"} variant={"h6"} mb={5} gap={1} justifyContent={"center"}>
+          <span>درجه بندی دهیاری</span>
 
           <span className={"text-error font-bold relative inline-block"}>
             <img
@@ -188,7 +188,7 @@ const UpgradeVillageInformation = ({ details, userInfo }) => {
           </span>
         </Typography>
         <div className="my-5">
-          <DividerSimple title={"درجه دهیاری"} />
+          <DividerSimple title={"درجه فعلی دهیاری"} />
         </div>
         <div className="grid grid-cols-2">
           <Typography
@@ -198,7 +198,7 @@ const UpgradeVillageInformation = ({ details, userInfo }) => {
             alignItems={"center"}
             my={2}
           >
-            <i className="ri-medal-line h-4"></i>درجه فعلی :{" "}
+            <i className="ri-medal-line h-4"></i>درجه :{" "}
             <span className="mr-1 font-medium text-secondary">
               {details ? details.grade : "نامشخص"}
             </span>

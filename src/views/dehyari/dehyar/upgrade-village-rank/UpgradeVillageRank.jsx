@@ -40,13 +40,20 @@ const UpgradeVillageRank = () => {
       className="bg-backgroundPaper"
     >
       <div className="w-full h-full md:flex justify-around">
-        <UpgradeVillageInformation
-          details={divisionInformation}
-          userInfo={userInfo}
-        />
-        <Divider className="bg-backgroundDefault md:w-[3px] sm:w-full md:ml-5" />
-        <div className="">
-          <Typography my={5} variant="h5">
+        <div className="flex-1">
+          <UpgradeVillageInformation
+            details={divisionInformation}
+            userInfo={userInfo}
+          />
+        </div>
+        <Divider className="bg-backgroundDefault md:w-[3px] sm:w-full md:ml-5 mx-5" />
+        <div className="flex-[2]">
+          <Typography
+            display={"flex"}
+            mb={5}
+            variant="h6"
+            justifyContent={"center"}
+          >
             جزئیات محاسبه درجه بندی دهیاری
           </Typography>
           <UpgradeVillageTable

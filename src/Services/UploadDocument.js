@@ -48,7 +48,7 @@ const DocumentUpload = () => {
         onupdatefiles={handleFileChange}
         allowMultiple={false}
         name="file"
-        labelIdle='فایل PDF خود را اینجا بکشید یا <span class="filepond--label-action">انتخاب کنید</span>'
+        labelIdle='فایل پیوست خود را اینجا بکشید یا <span class="filepond--label-action">انتخاب کنید</span>'
         acceptedFileTypes={["application/pdf"]}
         maxFileSize="2MB"
         fileValidateTypeLabelExpectedTypes="فقط فایل‌های PDF مجاز هستند"
