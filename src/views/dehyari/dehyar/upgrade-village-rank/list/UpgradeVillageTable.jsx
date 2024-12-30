@@ -5,11 +5,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { toast } from "react-toastify";
 import { MaterialReactTable } from "material-react-table";
 import useCustomTable from "@/hooks/useCustomTable";
-import {
-  getDivisionInformation,
-  updateDivisionInformation,
-} from "@/Services/UpgradeVillage";
-import { me } from "@/Services/Auth/AuthService";
+import { updateDivisionInformation } from "@/Services/UpgradeVillage";
 import { rebuildVillageRanks } from "@/utils/rebuildVillageRank";
 
 const UpgradeVillageTable = ({
@@ -26,22 +22,18 @@ const UpgradeVillageTable = ({
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedRow, setSelectedRow] = useState(null);
   const open = Boolean(anchorEl);
-
-  const totalScore = useMemo(() => {
-    return upgradeVillageRanks.reduce((accumulator, current) => {
-      return accumulator + current.score;
-    }, 0);
-  }, [upgradeVillageRanks]);
+  const [totalScore, setTotalScore] = useState(0);
+  const [newGrade, setNewGrade] = useState(0);
 
   useEffect(() => {
     if (details) {
       setUpgradeVillageRanks(rebuildVillageRanks(details));
+      setTotalScore(details.total_score);
+      setNewGrade(details.grade);
     }
   }, [details]);
 
   const handleEditCell = async (rowId, key, value) => {
-    console.log("UpgradeVillageRank => ", upgradeVillageRanks);
-
     setUpgradeVillageRanks((prev) =>
       prev.map((row) => (row.id === rowId ? { ...row, [key]: value } : row))
     );
@@ -63,10 +55,6 @@ const UpgradeVillageTable = ({
           upgradeVillageRanks.find((row) => row.id === 3)?.value || 0
         );
 
-        console.log("Hierarchy Code:", details?.hierarchy_code);
-        console.log("Area Hectares:", areaHectares);
-        console.log("Income Per Capital:", incomePerCapital);
-
         const response = await api.post(
           updateDivisionInformation(),
           {
@@ -78,9 +66,53 @@ const UpgradeVillageTable = ({
             requiresAuth: true,
           }
         );
-        console.log("response => ", response);
 
-        toast.success("اطلاعات با موفقیت به‌روزرسانی شد");
+        const updatedData = response.data.data;
+        console.log("Updated Data:", updatedData);
+
+        setTotalScore(updatedData.total_score);
+        setNewGrade(updatedData.new_grade);
+
+        setUpgradeVillageRanks((prevRanks) =>
+          prevRanks.map((row) => {
+            switch (row.id) {
+              case 1:
+                return {
+                  ...row,
+                  score: updatedData.population_score || row.score,
+                };
+              case 2:
+                return {
+                  ...row,
+                  value: updatedData.area_hectares || row.value,
+                  score: updatedData.area_hectar_score || row.score,
+                };
+              case 3:
+                return {
+                  ...row,
+                  value: updatedData.income_per_capita || row.value,
+                  score: updatedData.income_per_capita_score || row.score,
+                };
+              case 4:
+                return {
+                  ...row,
+                  score: updatedData.tourism_goal_score || row.score,
+                };
+              case 5:
+                return {
+                  ...row,
+                  score: updatedData.centralization_dehstan_score || row.score,
+                };
+              case 6:
+                return {
+                  ...row,
+                  score: updatedData.centralization_bakhsh_score || row.score,
+                };
+              default:
+                return row;
+            }
+          })
+        );
       } catch (error) {
         console.error("خطا در به‌روزرسانی اطلاعات:", error);
         toast.error("خطا در به‌روزرسانی اطلاعات");
@@ -211,7 +243,7 @@ const UpgradeVillageTable = ({
         Cell: ({ cell }) => <div>{cell.getValue()}</div>,
       },
     ],
-    [anchorEl, selectedRow]
+    [anchorEl, selectedRow, details, upgradeVillageRanks]
   );
 
   const table = useCustomTable(columns, upgradeVillageRanks, {
@@ -238,7 +270,7 @@ const UpgradeVillageTable = ({
           className={`grid grid-cols-4 gap-2 items-center justify-between mt-1 w-full`}
         >
           <Box className="col-span-2">
-            {details?.new_grade > details.grade && (
+            {newGrade > details.grade && (
               <Button
                 variant="contained"
                 color="primary"
@@ -254,11 +286,11 @@ const UpgradeVillageTable = ({
             </Typography>
           )}
           <Typography textAlign={"center"}>
-            درجه نهایی<p className="text-primary font-bold">{details?.grade}</p>
+            درجه نهایی<p className="text-primary font-bold">{newGrade}</p>
           </Typography>
           <Typography textAlign={"center"}>
             امتیاز
-            <p className="text-primary font-bold">{details?.total_score}</p>
+            <p className="text-primary font-bold">{totalScore}</p>
           </Typography>
         </Box>
       );
