@@ -34,8 +34,6 @@ const UserDivisionChip = ({
     getGeoNames();
   }, [geoState, geoCity, geoRegion, geoDehestan, geoVillage]);
 
-  console.log("Geo Names => ", geoNames);
-
   const getLocationLabel = () => {
     const parts = [];
     if (geoNames.stateName) parts.push(geoNames.stateName);
@@ -50,7 +48,6 @@ const UserDivisionChip = ({
       geoNames.villageName ||
       geoNames.regionNames[geoNames.regionNames.length - 1];
 
-    console.log("Parts => ", parts);
     return (
       <>
         {parts.map((part, index) => (
