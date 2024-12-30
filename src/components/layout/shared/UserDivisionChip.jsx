@@ -1,8 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { Chip } from "@mui/material";
-import api from "@/utils/axiosInstance";
-import { getGeoDetails } from "@/Services/CountryDivision";
+import { fetchGeoDetails } from "@/utils/fetchGeoDetails";
 
 const UserDivisionChip = ({
   workGroup,
@@ -21,86 +20,37 @@ const UserDivisionChip = ({
   });
 
   useEffect(() => {
-    const fetchGeoDetails = async () => {
-      if (!geoState && !geoCity && !geoRegion && !geoDehestan && !geoVillage)
-        return;
-      try {
-        const geoDetails = [
-          { geo_type: "state", geo_code: `${geoState}` },
-          { geo_type: "city", geo_code: `${geoCity}` },
-          ...(Array.isArray(geoRegion)
-            ? geoRegion.map((region) => ({
-                geo_type: "region",
-                geo_code: region.toString(),
-              }))
-            : geoRegion
-              ? [{ geo_type: "region", geo_code: geoRegion.toString() }]
-              : []),
-          { geo_type: "dehestan", geo_code: `${geoDehestan}` },
-          { geo_type: "village", geo_code: `${geoVillage}` },
-        ].filter((item) => item.geo_code !== "undefined");
-
-        const geoResponse = await api.post(
-          getGeoDetails(),
-          { geo_data: geoDetails },
-          { requiresAuth: true }
-        );
-        const geoData = geoResponse.data;
-
-        const stateInfo = geoData.find(
-          (geo) => geo.info.length && geo.info[0].hierarchy_code === geoState
-        );
-        const cityInfo = geoData.find(
-          (geo) => geo.info.length && geo.info[0].hierarchy_code === geoCity
-        );
-        const regionInfos = Array.isArray(geoRegion)
-          ? geoRegion.map((region) => {
-              const info = geoData.find(
-                (geo) => geo.info.length && geo.info[0].hierarchy_code == region
-              );
-              return info?.info[0]?.approved_name || region;
-            })
-          : geoRegion
-            ? [
-                geoData.find(
-                  (geo) =>
-                    geo.info.length && geo.info[0].hierarchy_code == geoRegion
-                )?.info[0]?.approved_name || geoRegion,
-              ]
-            : [];
-        const dehestanInfo = geoData.find(
-          (geo) => geo.info.length && geo.info[0].hierarchy_code === geoDehestan
-        );
-        const villageInfo = geoData.find(
-          (geo) => geo.info.length && geo.info[0].hierarchy_code === geoVillage
-        );
-
-        setGeoNames({
-          stateName: stateInfo?.info[0]?.approved_name || "",
-          cityName: cityInfo?.info[0]?.approved_name || "",
-          regionNames: regionInfos,
-          dehestanName: dehestanInfo?.info[0]?.approved_name || "",
-          villageName: villageInfo?.info[0]?.approved_name || "",
-        });
-      } catch (error) {
-        console.error("Error fetching geo details:", error);
-      }
+    const getGeoNames = async () => {
+      const geoData = await fetchGeoDetails({
+        geoState,
+        geoCity,
+        geoRegion,
+        geoDehestan,
+        geoVillage,
+      });
+      setGeoNames(geoData);
     };
 
-    fetchGeoDetails();
+    getGeoNames();
   }, [geoState, geoCity, geoRegion, geoDehestan, geoVillage]);
+
+  console.log("Geo Names => ", geoNames);
 
   const getLocationLabel = () => {
     const parts = [];
     if (geoNames.stateName) parts.push(geoNames.stateName);
     if (geoNames.cityName) parts.push(geoNames.cityName);
-    if (geoNames.regionNames.length)
-      parts.push(...geoNames.regionNames.slice(0, -1));
+    if (
+      geoNames.regionNames.length &&
+      parts.push(...geoNames.regionNames.slice(0))
+    );
+
     if (geoNames.dehestanName) parts.push(geoNames.dehestanName);
     const lastLocation =
       geoNames.villageName ||
       geoNames.regionNames[geoNames.regionNames.length - 1];
 
+    console.log("Parts => ", parts);
     return (
       <>
         {parts.map((part, index) => (
