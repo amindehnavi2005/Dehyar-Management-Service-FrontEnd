@@ -31,8 +31,13 @@ export const rebuildVillageRanks = (details) => {
     {
       id: 3,
       parameter: "درآمد (میلیون ریال)",
-      year: isLoading ? <LineContentLoader /> : details?.incomes?.length || "-",
-      value: details?.incomes?.length || "-",
+      year: isLoading ? (
+        <LineContentLoader />
+      ) : (
+        (details?.incomes && details?.incomes[0]?.year) || "-"
+      ),
+      value:
+        (details?.incomes && details?.incomes[0]?.income_per_capital) || "-",
       score: isLoading ? (
         <LineContentLoader />
       ) : (
