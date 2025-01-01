@@ -47,23 +47,27 @@ const UpgradeVillageRank = () => {
           />
         </div>
         <Divider className="bg-backgroundDefault md:w-[3px] sm:w-full md:ml-5 mx-5" />
-        <div className="flex-[2]">
-          <Typography
-            display={"flex"}
-            mb={5}
-            variant="h6"
-            justifyContent={"center"}
-          >
-            جزئیات محاسبه درجه بندی دهیاری
-          </Typography>
-          <UpgradeVillageTable
-            details={divisionInformation}
-            loading={loading}
-            setLoading={setLoading}
-            handleAddEventSidebarToggle={handleAddEventSidebarToggle}
-            addEventSidebarOpen={addEventSidebarOpen}
-          />
-        </div>
+        {divisionInformation ? (
+          <div className="flex-[2]">
+            <Typography
+              display={"flex"}
+              mb={5}
+              variant="h6"
+              justifyContent={"center"}
+            >
+              جزئیات محاسبه درجه بندی دهیاری
+            </Typography>
+            <UpgradeVillageTable
+              details={divisionInformation}
+              loading={loading}
+              setLoading={setLoading}
+              handleAddEventSidebarToggle={handleAddEventSidebarToggle}
+              addEventSidebarOpen={addEventSidebarOpen}
+            />
+          </div>
+        ) : (
+          <div>sss</div>
+        )}
       </div>
     </Grid>
   );

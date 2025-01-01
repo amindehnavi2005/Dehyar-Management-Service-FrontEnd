@@ -7,6 +7,7 @@ import { MaterialReactTable } from "material-react-table";
 import useCustomTable from "@/hooks/useCustomTable";
 import { updateDivisionInformation } from "@/Services/UpgradeVillage";
 import { rebuildVillageRanks } from "@/utils/rebuildVillageRank";
+import TableLoading from "@/components/loadings/TableLoading";
 
 const UpgradeVillageTable = ({
   details,
@@ -22,6 +23,7 @@ const UpgradeVillageTable = ({
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedRow, setSelectedRow] = useState(null);
   const open = Boolean(anchorEl);
+  const isLoading = !details || Object.keys(details).length === 0;
   const [totalScore, setTotalScore] = useState(0);
   const [newGrade, setNewGrade] = useState(0);
 
@@ -296,6 +298,10 @@ const UpgradeVillageTable = ({
       );
     },
   });
+
+  if (isLoading) {
+    return <TableLoading />;
+  }
 
   return <MaterialReactTable table={table} />;
 };

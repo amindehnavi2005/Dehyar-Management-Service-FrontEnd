@@ -11,10 +11,12 @@ import { useRouter } from "next/navigation";
 import { getGeoDetails } from "@/Services/CountryDivision";
 import ContentLoader from "react-content-loader";
 import LineContentLoader from "@/components/common/LineContentLoader";
+import LineInformationLoading from "@/components/loadings/InformationLoading";
 
 const UpgradeVillageInformation = ({ details, userInfo }) => {
   const methods = useForm();
   const router = useRouter();
+  const isLoading = !details || Object.keys(details).length === 0;
   const [geoNames, setGeoNames] = React.useState({
     stateName: "",
     cityName: "",
@@ -111,11 +113,21 @@ const UpgradeVillageInformation = ({ details, userInfo }) => {
     fetchGeoDetails();
   }, [userInfo]);
 
+  if (isLoading) {
+    return <LineInformationLoading />;
+  }
+
   return (
     <FormProvider {...methods}>
       {" "}
       <Grid>
-        <Typography display={"flex"} variant={"h6"} mb={5} gap={1} justifyContent={"center"}>
+        <Typography
+          display={"flex"}
+          variant={"h6"}
+          mb={5}
+          gap={1}
+          justifyContent={"center"}
+        >
           <span>درجه بندی دهیاری</span>
 
           <span className={"text-error font-bold relative inline-block"}>
