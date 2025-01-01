@@ -155,8 +155,8 @@ const ReviewDecree = ({
                 <Box
                   sx={{
                     position: "absolute",
-                    top: "-4px",
-                    right: "-10px",
+                    top: "-4.5px",
+                    right: "-8px",
                     width: "0",
                     height: "0",
                     borderLeft: "10px solid #ccc",
