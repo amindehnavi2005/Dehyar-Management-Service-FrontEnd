@@ -2,27 +2,21 @@
 import DividerSimple from "@/components/common/Divider/DividerSimple";
 import { Button, Grid, Typography } from "@mui/material";
 import KeyboardReturnIcon from "@mui/icons-material/KeyboardReturn";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import DocumentUpload from "@/Services/UploadDocument";
 import { FormProvider, useForm } from "react-hook-form";
 import api from "@/utils/axiosInstance";
-import { getDivisionInformation } from "@/Services/UpgradeVillage";
 import { useRouter } from "next/navigation";
 import { getGeoDetails } from "@/Services/CountryDivision";
-import ContentLoader from "react-content-loader";
 import LineContentLoader from "@/components/common/LineContentLoader";
 import LineInformationLoading from "@/components/loadings/InformationLoading";
+import { convertUnixToJalali } from "@/utils/dateConverter";
 
 const UpgradeVillageInformation = ({ details, userInfo }) => {
   const methods = useForm();
   const router = useRouter();
-  const isLoading = !details || Object.keys(details).length === 0;
-  const [geoNames, setGeoNames] = React.useState({
-    stateName: "",
-    cityName: "",
-    regionNames: [],
-    dehestanName: "",
-  });
+  const [geoNames, setGeoNames] = useState({});
+  const isLoading = !geoNames || Object.keys(geoNames).length === 0;
 
   const handleBack = () => {
     router.back();
@@ -223,7 +217,9 @@ const UpgradeVillageInformation = ({ details, userInfo }) => {
             my={2}
           >
             <i className="ri-calendar-line h-4"></i>تاریخ :{" "}
-            <span className="mr-1 font-medium text-secondary"></span>
+            <span className="mr-1 font-medium text-secondary">
+              {convertUnixToJalali(details?.grade_date)}
+            </span>
           </Typography>
         </div>
         <DocumentUpload />
