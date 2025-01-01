@@ -12,7 +12,7 @@ const accessControl = {
     },
     {
       label: "درجه بندی دهیاری",
-      icon: <i className="ri-arrow-up-wide-fill" />,
+      icon: <i className="ri-medal-line" />,
       href: "/dehyari/rsd/upgrade-village-rank",
     },
   ],
@@ -34,7 +34,7 @@ const accessControl = {
     },
     {
       label: "درجه بندی دهیاری",
-      icon: <i className="ri-arrow-up-wide-fill" />,
+      icon: <i className="ri-medal-line" />,
       href: "/dehyari/dehyar",
     },
   ],
@@ -74,7 +74,7 @@ const accessControl = {
     },
     {
       label: "درجه بندی دهیاری",
-      icon: <i className="ri-arrow-up-wide-fill" />,
+      icon: <i className="ri-medal-line" />,
       href: "/dehyari/dehyar",
     },
     {
@@ -122,7 +122,7 @@ const accessControl = {
     },
     {
       label: "درجه بندی دهیاری",
-      icon: <i className="ri-arrow-up-wide-fill" />,
+      icon: <i className="ri-medal-line" />,
       href: "/dehyari/governor/upgrade-village-rank",
     },
   ],
@@ -140,7 +140,7 @@ const accessControl = {
     },
     {
       label: "درجه بندی دهیاری",
-      icon: <i className="ri-arrow-up-wide-fill" />,
+      icon: <i className="ri-medal-line" />,
       href: "/dehyari/bakhshdar/upgrade-village-rank",
     },
   ],
