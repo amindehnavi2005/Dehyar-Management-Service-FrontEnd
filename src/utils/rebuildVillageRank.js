@@ -65,15 +65,15 @@ export const rebuildVillageRanks = (details) => {
       score: isLoading ? (
         <LineContentLoader />
       ) : (
-        details?.centralization_score || 0
+        details?.centralization_dehestan_score || 0
       ),
     },
     {
       id: 6,
       parameter: "مرکز بخش",
       year: "-",
-      value: details?.city_grade === 1,
-      score: 0,
+      value: details?.centralization === 2,
+      score: details?.centralization_bakhsh_score || 0,
     },
   ];
 };
