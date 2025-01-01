@@ -1,5 +1,4 @@
 import LineContentLoader from "@/components/common/LineContentLoader";
-import ContentLoader from "react-content-loader";
 
 export const rebuildVillageRanks = (details) => {
   const isLoading = !details || Object.keys(details).length === 0;
@@ -14,7 +13,11 @@ export const rebuildVillageRanks = (details) => {
         (details?.populations && details?.populations[0]?.year) || "-"
       ),
       value: (details?.populations && details?.populations[0]?.population) || 0,
-      score: isLoading ? <LineContentLoader /> : details?.population_score || 0,
+      score: isLoading ? (
+        <LineContentLoader />
+      ) : (
+        Math.round(details?.population_score || 0)
+      ),
     },
     {
       id: 2,
@@ -24,7 +27,7 @@ export const rebuildVillageRanks = (details) => {
       score: isLoading ? (
         <LineContentLoader />
       ) : (
-        details?.area_hectar_score || 0
+        Math.round(details?.area_hectar_score || 0)
       ),
       isValueEditing: false,
     },
@@ -37,11 +40,13 @@ export const rebuildVillageRanks = (details) => {
         (details?.incomes && details?.incomes[0]?.year) || "-"
       ),
       value:
-        (details?.incomes && details?.incomes[0]?.income_per_capital) || "-",
+        (details?.incomes &&
+          Math.round(details?.incomes[0]?.income_per_capital)) ||
+        "-",
       score: isLoading ? (
         <LineContentLoader />
       ) : (
-        details?.income_per_capita_score || 0
+        Math.round(details?.income_per_capita_score || 0)
       ),
       isYearEditing: false,
       isValueEditing: false,
@@ -54,7 +59,7 @@ export const rebuildVillageRanks = (details) => {
       score: isLoading ? (
         <LineContentLoader />
       ) : (
-        details?.tourism_goal_score || 0
+        Math.round(details?.tourism_goal_score || 0)
       ),
     },
     {
@@ -65,7 +70,7 @@ export const rebuildVillageRanks = (details) => {
       score: isLoading ? (
         <LineContentLoader />
       ) : (
-        details?.centralization_dehestan_score || 0
+        Math.round(details?.centralization_dehestan_score || 0)
       ),
     },
     {
@@ -73,7 +78,7 @@ export const rebuildVillageRanks = (details) => {
       parameter: "مرکز بخش",
       year: "-",
       value: details?.centralization === 2,
-      score: details?.centralization_bakhsh_score || 0,
+      score: Math.round(details?.centralization_bakhsh_score || 0),
     },
   ];
 };
