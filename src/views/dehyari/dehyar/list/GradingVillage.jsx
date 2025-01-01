@@ -12,6 +12,7 @@ import WorkFlowDrawer from "../../form/workflow/WorkFlowDialog";
 import WorkFlowDrawerForUpdateVillageRank from "../../form/workflow/WorkFlowDrawerForUpgradeVillageRank";
 import { translateContractState } from "@/utils/contractStateTranslator";
 import ContractStateChip from "@/components/badges/ContractStateChip";
+import HistoryArrow from "@/components/badges/HistoryArrow";
 
 function GradingVillage() {
   const [data, setData] = useState([]);
@@ -61,16 +62,16 @@ function GradingVillage() {
   const columns = useMemo(
     () => [
       {
-        accessorKey: "previous_degree",
-        header: "درجه قبلی",
+        accessorKey: "grade_date",
+        header: "تاریخ",
         size: 150,
         Cell: ({ cell }) => (
           <div style={{ textAlign: "right" }}>{cell.getValue()}</div>
         ),
       },
       {
-        accessorKey: "date",
-        header: "تاریخ",
+        accessorKey: "previous_degree",
+        header: "درجه قبلی",
         size: 150,
         Cell: ({ cell }) => (
           <div style={{ textAlign: "right" }}>{cell.getValue()}</div>
@@ -98,6 +99,21 @@ function GradingVillage() {
         size: 150,
         Cell: ({ cell }) => (
           <div style={{ textAlign: "right" }}>{cell.getValue()}</div>
+        ),
+      },
+      {
+        accessorKey: "grade_history",
+        header: "درجه بندی",
+        size: 150,
+        Cell: ({ row }) => (
+          <div className="flex items-center justify-start">
+            <HistoryArrow
+              prevBadge={row.original.current_grade}
+              nextBadge={row.original.new_grade}
+              text={"تاریخچه درجه بندی"}
+              size={"small"}
+            />
+          </div>
         ),
       },
       {
