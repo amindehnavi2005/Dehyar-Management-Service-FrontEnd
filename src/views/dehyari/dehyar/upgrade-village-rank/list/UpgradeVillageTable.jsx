@@ -8,6 +8,7 @@ import useCustomTable from "@/hooks/useCustomTable";
 import { updateDivisionInformation } from "@/Services/UpgradeVillage";
 import { rebuildVillageRanks } from "@/utils/rebuildVillageRank";
 import TableLoading from "@/components/loadings/TableLoading";
+import { changeStateWorkflowForUpgradeVillageRank } from "@/utils/workflowService";
 
 const UpgradeVillageTable = ({
   details,
@@ -22,10 +23,11 @@ const UpgradeVillageTable = ({
   const [isUpdatingVillageRate, setIsUpdatingVillageRate] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedRow, setSelectedRow] = useState(null);
-  const open = Boolean(anchorEl);
-  const isLoading = !details || Object.keys(details).length === 0;
   const [totalScore, setTotalScore] = useState(0);
   const [newGrade, setNewGrade] = useState(0);
+  const [isWaitingForSupervisor, setIsWaitingForSupervisor] = useState(false);
+  const isLoading = !details || Object.keys(details).length === 0;
+  const open = Boolean(anchorEl);
 
   useEffect(() => {
     if (details) {
@@ -70,7 +72,6 @@ const UpgradeVillageTable = ({
         );
 
         const updatedData = response.data.data;
-        console.log("Updated Data:", updatedData);
 
         setTotalScore(updatedData.total_score);
         setNewGrade(updatedData.new_grade);
@@ -81,34 +82,40 @@ const UpgradeVillageTable = ({
               case 1:
                 return {
                   ...row,
-                  score: updatedData.population_score || row.score,
+                  score: parseInt(updatedData.population_score || row.score),
                 };
               case 2:
                 return {
                   ...row,
                   value: updatedData.area_hectares || row.value,
-                  score: updatedData.area_hectar_score || row.score,
+                  score: parseInt(updatedData.area_hectar_score || row.score),
                 };
               case 3:
                 return {
                   ...row,
                   value: updatedData.income_per_capita || row.value,
-                  score: updatedData.income_per_capita_score || row.score,
+                  score: parseInt(
+                    updatedData.income_per_capita_score || row.score
+                  ),
                 };
               case 4:
                 return {
                   ...row,
-                  score: updatedData.tourism_goal_score || row.score,
+                  score: parseInt(updatedData.tourism_goal_score || row.score),
                 };
               case 5:
                 return {
                   ...row,
-                  score: updatedData.centralization_dehstan_score || row.score,
+                  score: parseInt(
+                    updatedData.centralization_dehstan_score || row.score
+                  ),
                 };
               case 6:
                 return {
                   ...row,
-                  score: updatedData.centralization_bakhsh_score || row.score,
+                  score: parseInt(
+                    updatedData.centralization_bakhsh_score || row.score
+                  ),
                 };
               default:
                 return row;
@@ -138,7 +145,13 @@ const UpgradeVillageTable = ({
     handleAddEventSidebarToggle();
   };
 
-  const handleSaveVillageInformation = () => {
+  const handleSaveVillageInformation = async () => {
+    changeStateWorkflowForUpgradeVillageRank(
+      details?.id,
+      "pending_supervisor",
+      ""
+    );
+    setIsWaitingForSupervisor(true);
     setIsUpdatingVillageRate(true);
     console.log("Saving changes: ", upgradeVillageRanks);
     setIsUpdatingVillageRate(false);
@@ -272,13 +285,19 @@ const UpgradeVillageTable = ({
           className={`grid grid-cols-4 gap-2 items-center justify-between mt-1 w-full`}
         >
           <Box className="col-span-2">
-            {newGrade > details.grade && (
+            {newGrade > details.grade && !isWaitingForSupervisor && (
               <Button
                 variant="contained"
                 color="primary"
                 onClick={handleSaveVillageInformation}
               >
                 ذخیره و ارسال درخواست ارتقاء درجه
+              </Button>
+            )}
+
+            {isWaitingForSupervisor && (
+              <Button variant="contained" color="secondary" disabled>
+                در انتظار ارسال به بخشداری
               </Button>
             )}
           </Box>
