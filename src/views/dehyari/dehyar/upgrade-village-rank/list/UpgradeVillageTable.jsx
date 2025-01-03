@@ -146,15 +146,22 @@ const UpgradeVillageTable = ({
   };
 
   const handleSaveVillageInformation = async () => {
-    changeStateWorkflowForUpgradeVillageRank(
-      details?.id,
-      "pending_supervisor",
-      ""
-    );
-    setIsWaitingForSupervisor(true);
-    setIsUpdatingVillageRate(true);
-    console.log("Saving changes: ", upgradeVillageRanks);
-    setIsUpdatingVillageRate(false);
+    try {
+      await changeStateWorkflowForUpgradeVillageRank(
+        details?.id,
+        "pending_supervisor",
+        ""
+      );
+
+      setIsWaitingForSupervisor(true);
+      setIsUpdatingVillageRate(true);
+      console.log("Saving changes: ", upgradeVillageRanks);
+    } catch (error) {
+      console.error("Error during state change:", error);
+      toast.error("خطا در ارسال درخواست ارتقاء رتبه");
+    } finally {
+      setIsUpdatingVillageRate(false);
+    }
   };
 
   const columns = useMemo(
