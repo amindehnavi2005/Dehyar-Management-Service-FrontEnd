@@ -12,10 +12,9 @@ import LineContentLoader from "@/components/common/LineContentLoader";
 import LineInformationLoading from "@/components/loadings/InformationLoading";
 import { convertUnixToJalali } from "@/utils/dateConverter";
 
-const UpgradeVillageInformation = ({ details, userInfo }) => {
+const UpgradeVillageInformation = ({ details, userInfo, geoNames }) => {
   const methods = useForm();
   const router = useRouter();
-  const [geoNames, setGeoNames] = useState({});
   const isLoading = !geoNames || Object.keys(geoNames).length === 0;
 
   const handleBack = () => {
@@ -25,91 +24,6 @@ const UpgradeVillageInformation = ({ details, userInfo }) => {
   const onSubmit = (data) => {
     // console.log(data);
   };
-
-  useEffect(() => {
-    const fetchGeoDetails = async () => {
-      if (!userInfo.geo_state && !userInfo.geo_city && !userInfo.geo_region)
-        return;
-      try {
-        const geoDetails = [
-          { geo_type: "state", geo_code: `${userInfo.geo_state}` },
-          { geo_type: "city", geo_code: `${userInfo.geo_city}` },
-          { geo_type: "dehestan", geo_code: `${userInfo.geo_dehestan}` },
-          { geo_type: "village", geo_code: `${userInfo.geo_village}` },
-          ...(Array.isArray(userInfo.geo_region)
-            ? userInfo.geo_region.map((region) => ({
-                geo_type: "region",
-                geo_code: region.toString(),
-              }))
-            : userInfo.geo_region
-              ? [
-                  {
-                    geo_type: "region",
-                    geo_code: userInfo.geo_region.toString(),
-                  },
-                ]
-              : []),
-        ].filter((item) => item.geo_code !== "undefined");
-
-        const geoResponse = await api.post(
-          getGeoDetails(),
-          { geo_data: geoDetails },
-          { requiresAuth: true }
-        );
-        const geoData = geoResponse.data;
-        const geoState = userInfo.geo_state;
-        const geoCity = userInfo.geo_city;
-        const geoRegion = userInfo.geo_region;
-        const geoDehestan = userInfo.geo_dehestan;
-        const geoVillage = userInfo.geo_village;
-
-        const stateInfo = geoData.find(
-          (geo) => geo.info.length && geo.info[0].hierarchy_code === geoState
-        );
-        const cityInfo = geoData.find(
-          (geo) => geo.info.length && geo.info[0].hierarchy_code === geoCity
-        );
-        const regionInfos = Array.isArray(geoRegion)
-          ? geoRegion.map((region) => {
-              const info = geoData.find(
-                (geo) => geo.info.length && geo.info[0].hierarchy_code == region
-              );
-              return info?.info[0]?.approved_name || region;
-            })
-          : geoRegion
-            ? [
-                geoData.find(
-                  (geo) =>
-                    geo.info.length && geo.info[0].hierarchy_code == geoRegion
-                )?.info[0]?.approved_name || geoRegion,
-              ]
-            : [];
-        const dehestanInfo = geoData.find(
-          (geo) => geo.info.length && geo.info[0].hierarchy_code === geoDehestan
-        );
-
-        const villageInfo = geoData.find(
-          (geo) => geo.info.length && geo.info[0].hierarchy_code === geoVillage
-        );
-
-        setGeoNames({
-          stateName: stateInfo?.info[0]?.approved_name || "",
-          cityName: cityInfo?.info[0]?.approved_name || "",
-          regionNames: regionInfos,
-          dehestanName: dehestanInfo?.info[0]?.approved_name || "",
-          villageName: villageInfo?.info[0]?.approved_name || "",
-        });
-      } catch (error) {
-        console.error("Error fetching geo details:", error);
-      }
-    };
-
-    fetchGeoDetails();
-  }, [userInfo]);
-
-  if (isLoading) {
-    return <LineInformationLoading />;
-  }
 
   return (
     <FormProvider {...methods}>
