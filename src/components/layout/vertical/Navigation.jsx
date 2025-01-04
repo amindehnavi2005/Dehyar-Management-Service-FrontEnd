@@ -128,7 +128,7 @@ const Navigation = (props) => {
       <NavHeader>
         <Logo />
         {!(isCollapsed && !isHovered) && (
-          <span className="mr-2 min-w-36 text-base font-medium text-textPrimary">
+          <span className="flex justify-center min-w-36 text-base font-medium text-textPrimary">
             پنجره واحد خدمات
           </span>
         )}
