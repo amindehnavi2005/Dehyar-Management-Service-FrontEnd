@@ -54,6 +54,7 @@ const DocumentUpload = () => {
         fileValidateTypeLabelExpectedTypes="فقط فایل‌های PDF مجاز هستند"
         fileValidateSizeLabelMaxFileSizeExceeded="حجم فایل نباید بیشتر از 2MB باشد"
         fileValidateSizeLabelMaxFileSize="حجم فایل مجاز: {filesize}"
+        credits={false}
       />
       <ToastContainer />
     </Box>
